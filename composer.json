@@ -1,5 +1,11 @@
 {
     "name": "phaldan/asset-builder",
+    "authors": [
+        {
+            "name": "Philipp Daniels",
+            "email": "philipp.daniels@gmail.com"
+        }
+    ],
     "require": {
         "beelab/bowerphp": "1.0.*@dev",
         "tedivm/jshrink": "~1.0",
@@ -9,10 +15,10 @@
     "require-dev": {
         "phpunit/phpunit": "~4.8"
     },
-    "authors": [
-        {
-            "name": "Philipp Daniels",
-            "email": "philipp.daniels@gmail.com"
-        }
-    ]
+    "autoload": {
+        "psr-4": { "Phaldan\\AssetBuilder\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Phaldan\\AssetBuilder\\": "tests/" }
+    }
 }
