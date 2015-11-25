@@ -71,7 +71,7 @@ class FluentBuilder implements Builder {
    * @param $path
    * @return Builder
    */
-  public function setCacheDir($path = null) {
+  public function setCachePath($path = null) {
   }
 
   /**

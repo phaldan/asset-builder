@@ -2,7 +2,7 @@
 
 namespace Processor;
 
-use Context;
+use Phaldan\AssetBuilder\Context;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>

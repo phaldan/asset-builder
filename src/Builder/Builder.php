@@ -71,7 +71,7 @@ interface Builder {
    * @param $path
    * @return Builder
    */
-  public function setCacheDir($path = null);
+  public function setCachePath($path = null);
 
   /**
    * Executes compiler, minifier, combines all files and prints the result.
