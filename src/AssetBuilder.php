@@ -2,18 +2,18 @@
 
 namespace Phaldan\AssetBuilder;
 
+use Phaldan\AssetBuilder\Builder\Builder;
+use Phaldan\AssetBuilder\Builder\FluentBuilder;
+
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class AssetBuilder {
+abstract class AssetBuilder {
 
-  private $value;
-
-  public function set($value) {
-    $this->value = $value;
-  }
-
-  public function get() {
-    return $this->value;
+  /**
+   * @return Builder
+   */
+  public static function create() {
+    return new FluentBuilder();
   }
 }

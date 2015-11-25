@@ -3,6 +3,7 @@
 namespace Phaldan\AssetBuilder;
 
 use PHPUnit_Framework_TestCase;
+use Phaldan\AssetBuilder\Builder\Builder;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -10,10 +11,8 @@ use PHPUnit_Framework_TestCase;
 class AssetBuilderTest extends PHPUnit_Framework_TestCase {
 
   public function test() {
-    $target = new AssetBuilder();
-    $target->set('test');
-
+    $target = AssetBuilder::create();
     $this->assertNotNull($target);
-    $this->assertEquals('test', $target->get());
+    $this->assertInstanceOf(Builder::class, $target);
   }
 }
