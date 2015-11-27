@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
-use Iterator;
+use ArrayAccess;
 use IteratorAggregate;
 use Processor\Processor;
 
@@ -12,10 +12,9 @@ use Processor\Processor;
 interface Builder {
 
   /**
-   * Create new instance and set base path for file search
    * @param string $path
    */
-  public function __construct($path = '.');
+  public function setRootPath($path = '.');
 
   /**
    * Add single group with a list of files. A IteratorAggregate is needed for the files, because on complex iterators it
@@ -31,10 +30,10 @@ interface Builder {
   /**
    * Iterator returns a list of Group instances
    *
-   * @param Iterator $groups
+   * @param ArrayAccess $groups
    * @return Builder
    */
-  public function addGroups(Iterator $groups);
+  public function addGroups(ArrayAccess $groups);
 
   /**
    * @param bool|true $boolean

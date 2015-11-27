@@ -11,6 +11,7 @@ use Phaldan\AssetBuilder\Builder\Builder;
 class AssetBuilderTest extends PHPUnit_Framework_TestCase {
 
   public function test() {
+    $this->markTestIncomplete('Needs Binder');
     $target = AssetBuilder::create();
     $this->assertNotNull($target);
     $this->assertInstanceOf(Builder::class, $target);

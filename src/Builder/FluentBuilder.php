@@ -2,8 +2,10 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
-use Iterator;
+use ArrayAccess;
+use ArrayIterator;
 use IteratorAggregate;
+use Phaldan\AssetBuilder\Binder\Binder;
 use Processor\Processor;
 
 /**
@@ -12,9 +14,27 @@ use Processor\Processor;
 class FluentBuilder implements Builder {
 
   /**
+   * @var Binder
+   */
+  private $binder;
+
+  /**
+   * @var ArrayAccess
+   */
+  private $groups;
+
+  /**
+   * @param Binder $binder
+   */
+  public function __construct(Binder $binder) {
+    $this->binder = $binder;
+    $this->groups = new ArrayIterator();
+  }
+
+  /**
    * @param string $path
    */
-  public function __construct($path = '.') {
+  public function setRootPath($path = '.') {
   }
 
   /**
@@ -23,13 +43,15 @@ class FluentBuilder implements Builder {
    * @return Builder
    */
   public function addGroup($name, IteratorAggregate $files) {
+    $this->groups->offsetSet($name, $files);
   }
 
   /**
-   * @param Iterator $groups
+   * @param ArrayAccess $groups
    * @return Builder
    */
-  public function addGroups(Iterator $groups) {
+  public function addGroups(ArrayAccess $groups) {
+    $this->groups = $groups;
   }
 
   /**
@@ -76,7 +98,13 @@ class FluentBuilder implements Builder {
 
   /**
    * @param $group
+   * @return string
    */
   public function execute($group) {
+    if (!$this->groups->offsetExists($group)) {
+      Exception::createGroupNotFound($group);
+    }
+    $files = $this->groups->offsetGet($group);
+    return $this->binder->bind($files);
   }
 }
