@@ -4,7 +4,7 @@ namespace Phaldan\AssetBuilder\Builder;
 
 use ArrayAccess;
 use IteratorAggregate;
-use Processor\Processor;
+use Phaldan\AssetBuilder\Compiler\Compiler;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -54,10 +54,10 @@ interface Builder {
   public function enableStopWatch($boolean = true);
 
   /**
-   * @param Processor $processor
+   * @param Compiler $compiler
    * @return Builder
    */
-  public function addProcessor(Processor $processor);
+  public function addCompiler(Compiler $compiler);
 
   /**
    * Set to null to disable caching

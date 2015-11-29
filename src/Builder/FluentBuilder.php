@@ -6,8 +6,8 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Binder\Binder;
+use Phaldan\AssetBuilder\Compiler\Compiler;
 use Phaldan\AssetBuilder\Context;
-use Processor\Processor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -91,10 +91,10 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param Processor $processor
+   * @param Compiler $compiler
    * @return Builder
    */
-  public function addProcessor(Processor $processor) {
+  public function addCompiler(Compiler $compiler) {
   }
 
   /**

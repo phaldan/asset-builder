@@ -1,11 +1,11 @@
 <?php
 
-namespace Processor;
+namespace Phaldan\AssetBuilder\Compiler;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-interface Processor {
+interface Compiler {
 
   /**
    * Returns file extension
