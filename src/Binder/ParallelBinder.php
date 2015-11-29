@@ -8,12 +8,13 @@ use Phaldan\AssetBuilder\Compiler\CompilerList;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-interface Binder {
+class ParallelBinder implements Binder {
 
   /**
    * @param IteratorAggregate $files
    * @param CompilerList $compiler
    * @return string
    */
-  public function bind(IteratorAggregate $files, CompilerList $compiler);
+  public function bind(IteratorAggregate $files, CompilerList $compiler) {
+  }
 }

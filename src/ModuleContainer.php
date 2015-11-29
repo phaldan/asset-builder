@@ -11,6 +11,6 @@ class ModuleContainer extends IocContainer {
 
   public function configure() {
     $this->register(Builder\Builder::class, Builder\FluentBuilder::class);
-    $this->register(Binder\Binder::class, Binder\AsyncBinder::class);
+    $this->register(Binder\Binder::class, Binder\ParallelBinder::class);
   }
 }

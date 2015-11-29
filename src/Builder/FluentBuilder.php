@@ -124,6 +124,6 @@ class FluentBuilder implements Builder {
       Exception::createGroupNotFound($group);
     } // @codeCoverageIgnore
     $files = $this->groups->offsetGet($group);
-    return $this->binder->bind($files);
+    return $this->binder->bind($files, $this->compiler);
   }
 }
