@@ -5,6 +5,8 @@ namespace Phaldan\AssetBuilder\Builder;
 use ArrayIterator;
 use Exception;
 use Phaldan\AssetBuilder\Binder\BinderStub;
+use Phaldan\AssetBuilder\Compiler\CompilerList;
+use Phaldan\AssetBuilder\Compiler\CompilerStub;
 use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\Group\FileList;
 use PHPUnit_Framework_TestCase;
@@ -29,10 +31,16 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   private $context;
 
+  /**
+   * @var CompilerList
+   */
+  private $compiler;
+
   protected function setUp() {
     $this->binder = new BinderStub();
     $this->context = new ContextMock();
-    $this->target = new FluentBuilder($this->binder, $this->context);
+    $this->compiler = new CompilerList();
+    $this->target = new FluentBuilder($this->binder, $this->context, $this->compiler);
   }
 
   private function stubBinder($return) {
@@ -123,5 +131,16 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   public function setCachePath_success() {
     $this->assertSame($this->target, $this->target->setCachePath('test'));
     $this->assertEquals('test', $this->context->getCachePath());
+  }
+
+  /**
+   * @test
+   */
+  public function addCompiler_success() {
+    $compiler = new CompilerStub();
+    $compiler->setSupportedExtension('css');
+    $this->target->addCompiler($compiler);
+
+    $this->assertSame($compiler, $this->compiler->get('asset/test.css'));
   }
 }

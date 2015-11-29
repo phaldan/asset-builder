@@ -7,6 +7,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Binder\Binder;
 use Phaldan\AssetBuilder\Compiler\Compiler;
+use Phaldan\AssetBuilder\Compiler\CompilerList;
 use Phaldan\AssetBuilder\Context;
 
 /**
@@ -30,12 +31,19 @@ class FluentBuilder implements Builder {
   private $context;
 
   /**
+   * @var CompilerList
+   */
+  private $compiler;
+
+  /**
    * @param Binder $binder
    * @param Context $context
+   * @param CompilerList $compiler
    */
-  public function __construct(Binder $binder, Context $context) {
+  public function __construct(Binder $binder, Context $context, CompilerList $compiler) {
     $this->binder = $binder;
     $this->context = $context;
+    $this->compiler = $compiler;
     $this->groups = new ArrayIterator();
   }
 
@@ -95,6 +103,7 @@ class FluentBuilder implements Builder {
    * @return Builder
    */
   public function addCompiler(Compiler $compiler) {
+    $this->compiler->add($compiler);
   }
 
   /**
