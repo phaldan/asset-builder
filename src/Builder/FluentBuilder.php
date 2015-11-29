@@ -120,7 +120,7 @@ class FluentBuilder implements Builder {
   public function execute($group) {
     if (!$this->groups->offsetExists($group)) {
       Exception::createGroupNotFound($group);
-    }
+    } // @codeCoverageIgnore
     $files = $this->groups->offsetGet($group);
     return $this->binder->bind($files);
   }

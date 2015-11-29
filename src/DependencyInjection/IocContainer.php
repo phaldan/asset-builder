@@ -46,7 +46,7 @@ class IocContainer {
     $reflection = new ReflectionClass($class);
     if ($reflection->isInterface() || $reflection->isAbstract()) {
       InvalidArgumentException::createNewInstance($class);
-    }
+    } // @codeCoverageIgnore
     return $class;
   }
 
@@ -69,9 +69,9 @@ class IocContainer {
     $reflection = new ReflectionClass($concreteClass);
     if (!$reflection->isSubclassOf($abstractClass) && $abstractClass != $reflection->getName()) {
       InvalidArgumentException::createNotSubclass($concreteClass, $abstractClass);
-    }
+    } // @codeCoverageIgnore
     if ($reflection->isInterface() || $reflection->isAbstract()) {
       InvalidArgumentException::createNotConcrete($concreteClass);
-    }
+    } // @codeCoverageIgnore
   }
 }
