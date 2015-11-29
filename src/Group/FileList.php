@@ -16,7 +16,7 @@ class FileList implements IteratorAggregate {
   /**
    * @param array $array
    */
-  public function __construct(array $array) {
+  public function __construct(array $array = []) {
     $this->array = new ArrayIterator($array);
   }
 
@@ -25,5 +25,12 @@ class FileList implements IteratorAggregate {
    */
   public function getIterator() {
     return $this->array;
+  }
+
+  /**
+   * @param $file
+   */
+  public function add($file) {
+    $this->array->append($file);
   }
 }
