@@ -6,6 +6,7 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Binder\Binder;
+use Phaldan\AssetBuilder\Context;
 use Processor\Processor;
 
 /**
@@ -24,10 +25,17 @@ class FluentBuilder implements Builder {
   private $groups;
 
   /**
-   * @param Binder $binder
+   * @var Context
    */
-  public function __construct(Binder $binder) {
+  private $context;
+
+  /**
+   * @param Binder $binder
+   * @param Context $context
+   */
+  public function __construct(Binder $binder, Context $context) {
     $this->binder = $binder;
+    $this->context = $context;
     $this->groups = new ArrayIterator();
   }
 
@@ -35,6 +43,7 @@ class FluentBuilder implements Builder {
    * @param string $path
    */
   public function setRootPath($path = '.') {
+    $this->context->setRootPath($path);
   }
 
   /**
@@ -55,24 +64,30 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param bool|true $boolean
+   * @param bool $boolean
    * @return Builder
    */
   public function enableMinifier($boolean = true) {
+    $this->context->enableMinifier($boolean);
+    return $this;
   }
 
   /**
-   * @param bool|true $boolean
+   * @param bool $boolean
    * @return Builder
    */
   public function enableDebug($boolean = true) {
+    $this->context->enableDebug($boolean);
+    return $this;
   }
 
   /**
-   * @param bool|true $boolean
+   * @param bool $boolean
    * @return Builder
    */
   public function enableStopWatch($boolean = true) {
+    $this->context->enableStopWatch($boolean);
+    return $this;
   }
 
   /**
@@ -94,6 +109,8 @@ class FluentBuilder implements Builder {
    * @return Builder
    */
   public function setCachePath($path = null) {
+    $this->context->setCachePath($path);
+    return $this;
   }
 
   /**
