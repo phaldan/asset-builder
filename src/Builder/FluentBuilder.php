@@ -94,14 +94,7 @@ class FluentBuilder implements Builder {
    * @param Processor $processor
    * @return Builder
    */
-  public function setCssProcessor(Processor $processor) {
-  }
-
-  /**
-   * @param Processor $processor
-   * @return Builder
-   */
-  public function setJsProcessor(Processor $processor) {
+  public function addProcessor(Processor $processor) {
   }
 
   /**

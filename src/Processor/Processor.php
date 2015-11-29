@@ -2,22 +2,20 @@
 
 namespace Processor;
 
-use Phaldan\AssetBuilder\Context;
-
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
 interface Processor {
 
   /**
-   * @param Context $context
-   * @return Processor
-   */
-  public function setContext(Context $context);
-
-  /**
-   * @param $file
+   * Returns file extension
    * @return string
    */
-  public function get($file);
+  public function getSupportedExtension();
+
+  /**
+   * @param $content
+   * @return string
+   */
+  public function process($content);
 }
