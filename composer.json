@@ -10,7 +10,8 @@
         "beelab/bowerphp": "1.0.*@dev",
         "tedivm/jshrink": "~1.0",
         "leafo/scssphp": "0.*",
-        "oyejorge/less.php": "~1.7.0.9"
+        "oyejorge/less.php": "~1.7.0.9",
+        "league/flysystem": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8"
