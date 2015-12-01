@@ -17,6 +17,13 @@ class CompilerStub implements Compiler {
     $this->extension = $extension;
   }
 
+  private $responses = [];
+
   public function process($content) {
+    return $this->responses[$content];
+  }
+
+  public function set($content, $response) {
+    $this->responses[$content] = $response;
   }
 }

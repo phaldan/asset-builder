@@ -24,4 +24,14 @@ class CompilerList {
     $extension = pathinfo($file, PATHINFO_EXTENSION);
     return isset($this->list[$extension]) ? $this->list[$extension] : null;
   }
+
+  /**
+   * @param $file
+   * @param $content
+   * @return null|string
+   */
+  public function process($file, $content) {
+    $compiler = $this->get($file);
+    return is_null($compiler) ? null : $compiler->process($content);
+  }
 }

@@ -18,6 +18,13 @@ class CompilerListTest extends PHPUnit_Framework_TestCase {
     $this->target = new CompilerList();
   }
 
+  private function stubCompiler($extension) {
+    $compiler = new CompilerStub();
+    $compiler->setSupportedExtension($extension);
+    $this->target->add($compiler);
+    return $compiler;
+  }
+
   /**
    * @test
    */
@@ -29,9 +36,16 @@ class CompilerListTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function get_success() {
-    $compiler = new CompilerStub();
-    $compiler->setSupportedExtension('css');
-    $this->target->add($compiler);
+    $compiler = $this->stubCompiler('css');
     $this->assertSame($compiler, $this->target->get('asset/test.css'));
+  }
+
+  /**
+   * @test
+   */
+  public function process_success() {
+    $compiler = $this->stubCompiler('css');
+    $compiler->set('some-css-definition', 'content');
+    $this->assertEquals('content', $this->target->process('example.css', 'some-css-definition'));
   }
 }

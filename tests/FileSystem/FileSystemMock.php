@@ -7,17 +7,13 @@ namespace Phaldan\AssetBuilder\FileSystem;
  */
 class FileSystemMock implements FileSystem {
 
-  private $readContent = [];
+  private $content = [];
 
-  /**
-   * @param $filePath
-   * @return null|string
-   */
   public function getContent($filePath) {
-    return isset($this->readContent[$filePath]) ? $this->readContent[$filePath] : null;
+    return isset($this->content[$filePath]) ? $this->content[$filePath] : null;
   }
 
-  public function setRead($file, $content) {
-    $this->readContent[$file] = $content;
+  public function setContent($filePath, $content) {
+    $this->content[$filePath] = $content;
   }
 }

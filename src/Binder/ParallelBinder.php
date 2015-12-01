@@ -16,5 +16,6 @@ class ParallelBinder implements Binder {
    * @return string
    */
   public function bind(IteratorAggregate $files, CompilerList $compiler) {
+    //TODO implement method
   }
 }
