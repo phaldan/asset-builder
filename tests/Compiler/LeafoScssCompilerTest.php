@@ -32,6 +32,7 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
   protected function setUp() {
     $this->fileSystem = new FileSystemMock();
     $this->context = new ContextMock();
+    $this->context->enableMinifier(true);
     $this->target = new LeafoScssCompiler($this->fileSystem, $this->context);
   }
 
@@ -51,30 +52,6 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
-  public function getCompiler_success() {
-    $return = $this->target->getCompiler();
-    $this->assertNotNull($return);
-    $this->assertInstanceOf(LeafoCompiler::class, $return);
-  }
-
-  /**
-   * @test
-   */
-  public function setCompiler_success() {
-    $paths = ['import/css'];
-    $expected = ['/absolute/import/css'];
-    $this->fileSystem->setAbsolutePaths($paths, $expected);
-    $this->target->setImportDirs($paths);
-    $compiler = $this->stubCompiler();
-
-    $this->assertSame($compiler, $this->target->getCompiler());
-    $this->assertEquals($expected, $compiler->getImportPaths());
-    $this->assertEquals(Expanded::class, $compiler->getFormatter());
-  }
-
-  /**
-   * @test
-   */
   public function setImportDirs_success() {
     $paths = ['import/css'];
     $expected = ['/absolute/import/css'];
@@ -88,19 +65,48 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
-  public function compile_success() {
-    $compiler = $this->stubCompiler();
-    $compiler->setCompileReturn('input', 'output');
-    $this->assertEquals('output', $this->target->process('input'));
-    $this->assertNotNull($compiler->getImportPaths());
-    $this->assertEmpty($compiler->getImportPaths());
+  public function process_success() {
+    $content = "
+      body {
+        padding: 0;
+        margin: 0;
+
+        p {
+          padding: 20px 0;
+        }
+      }
+    ";
+    $expected = "body{padding:0;margin:0}body p{padding:20px 0}";
+    $this->assertEquals($expected, $this->target->process($content));
   }
 
   /**
    * @test
    */
-  public function setCompiler_successMinify() {
-    $this->context->enableMinifier(true);
-    $this->assertEquals(Crunched::class, $this->stubCompiler()->getFormatter());
+  public function process_false() {
+    $this->context->enableMinifier(false);
+    $compiler = $this->stubCompiler();
+    $compiler->setCompileReturn('input', 'output');
+
+    $paths = ['import/css'];
+    $expected = ['/absolute/import/css'];
+    $this->fileSystem->setAbsolutePaths($paths, $expected);
+    $this->target->setImportDirs($paths);
+
+    $this->assertEquals(Expanded::class, $compiler->getFormatter());
+    $this->assertEquals($expected, $compiler->getImportPaths());
+    $this->assertEquals('output', $this->target->process('input'));
+  }
+
+  /**
+   * @test
+   */
+  public function setCompiler_success() {
+    $compiler = new LeafoCompilerMock();
+    $compiler->setCompileReturn('input', 'output');
+
+    $this->assertSame($this->target, $this->target->setCompiler($compiler));
+    $this->assertEquals(Crunched::class, $compiler->getFormatter());
+    $this->assertEquals('output', $this->target->process('input'));
   }
 }

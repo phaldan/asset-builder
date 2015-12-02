@@ -22,11 +22,19 @@ class LeafoScssCompiler extends ScssCompiler {
    */
   private $compiler;
 
+  /**
+   * @param FileSystem $fileSystem
+   * @param Context $context
+   */
   public function __construct(FileSystem $fileSystem, Context $context) {
     $this->fileSystem = $fileSystem;
     $this->context = $context;
   }
 
+  /**
+   * @param array $paths
+   * @return $this
+   */
   public function setImportDirs(array $paths) {
     $this->importPaths = $this->fileSystem->getAbsolutePaths($paths);
     if (!is_null($this->compiler)) {
@@ -35,17 +43,22 @@ class LeafoScssCompiler extends ScssCompiler {
     return $this;
   }
 
+  /**
+   * @param LeafoCompiler $compiler
+   * @return LeafoScssCompiler
+   */
   public function setCompiler(LeafoCompiler $compiler) {
     $compiler->setImportPaths($this->importPaths);
     $compiler->setFormatter($this->getFormatter());
     $this->compiler = $compiler;
+    return $this;
   }
 
   private function getFormatter() {
     return ($this->context->hasMinifier()) ? Crunched::class : Expanded::class;
   }
 
-  public function getCompiler() {
+  private function getCompiler() {
     if (is_null($this->compiler)) {
       $this->setCompiler(new LeafoCompiler());
     }
