@@ -54,11 +54,44 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
-  public function getFlySystem() {
-    $this->context->setRootPath(__DIR__);
+  public function getFlySystem_success() {
+    $root = __DIR__ . DIRECTORY_SEPARATOR;
+    $this->context->setRootPath($root);
     $return = $this->target->getFlySystem();
     $this->assertNotNull($return);
     $this->assertInstanceOf(Local::class, $return->getAdapter());
-    $this->assertEquals(__DIR__ . DIRECTORY_SEPARATOR, $return->getAdapter()->getPathPrefix());
+    $this->assertEquals($root, $return->getAdapter()->getPathPrefix());
+  }
+
+  /**
+   * @test
+   */
+  public function getAbsolutePaths_success() {
+    $this->context->setRootPath('/absolute/');
+    $this->assertEquals(['/absolute/file.txt', '/absolute/style.css'], $this->target->getAbsolutePaths(['file.txt', 'style.css']));
+  }
+
+  /**
+   * @test
+   */
+  public function getAbsolutePath_success() {
+    $this->context->setRootPath('/absolute/');
+    $this->assertEquals('/absolute/file.txt', $this->target->getAbsolutePath('file.txt'));
+  }
+
+  /**
+   * @test
+   */
+  public function getAbsolutePath_successForUnix() {
+    $this->context->setRootPath('/absolute/');
+    $this->assertEquals('/root/file.txt', $this->target->getAbsolutePath('/root/file.txt'));
+  }
+
+  /**
+   * @test
+   */
+  public function getAbsolutePath_successForWindows() {
+    $this->context->setRootPath('C:\\absolute\\');
+    $this->assertEquals('C:\\root\\file.txt', $this->target->getAbsolutePath('C:\\root\\file.txt'));
   }
 }

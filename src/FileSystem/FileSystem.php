@@ -12,4 +12,18 @@ interface FileSystem {
    * @return null|string
    */
   public function getContent($filePath);
+
+  /**
+   * Turns a list of relative and absolute paths to a list of absolute paths
+   * @param array $paths
+   * @return array
+   */
+  public function getAbsolutePaths(array $paths);
+
+  /**
+   * Turns a relative or absolute path into a absolute path
+   * @param $path
+   * @return string
+   */
+  public function getAbsolutePath($path);
 }

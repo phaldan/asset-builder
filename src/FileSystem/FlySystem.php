@@ -12,6 +12,11 @@ use Phaldan\AssetBuilder\Context;
  */
 class FlySystem implements FileSystem {
 
+  const ABSOLUTE_PATH_REGEX = '/^([a-zA-Z]:\\\\|\/)/';
+
+  /**
+   * @var FlyFileSystem
+   */
   private $flySystem;
   private $context;
 
@@ -46,5 +51,27 @@ class FlySystem implements FileSystem {
   public function getContent($filePath) {
     $result = $this->getFlySystem()->read($filePath);
     return ($result === false) ? null : $result;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getAbsolutePaths(array $paths) {
+    $array = [];
+    foreach ($paths as $path) {
+      $array[] = $this->getAbsolutePath($path);
+    }
+    return $array;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getAbsolutePath($path) {
+    return $this->isAbsolute($path) ? $path : $this->context->getRootPath() . $path;
+  }
+
+  private function isAbsolute($path) {
+    return preg_match(self::ABSOLUTE_PATH_REGEX, $path) === 1;
   }
 }

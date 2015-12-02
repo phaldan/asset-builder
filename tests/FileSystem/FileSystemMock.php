@@ -16,4 +16,10 @@ class FileSystemMock implements FileSystem {
   public function setContent($filePath, $content) {
     $this->content[$filePath] = $content;
   }
+
+  public function getAbsolutePaths(array $paths) {
+  }
+
+  public function getAbsolutePath($path) {
+  }
 }
