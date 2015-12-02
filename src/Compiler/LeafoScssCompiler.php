@@ -28,9 +28,9 @@ class LeafoScssCompiler extends ScssCompiler {
   }
 
   public function setImportDirs(array $paths) {
-    $this->importPaths = $paths;
+    $this->importPaths = $this->fileSystem->getAbsolutePaths($paths);
     if (!is_null($this->compiler)) {
-      $this->compiler->setImportPaths($paths);
+      $this->compiler->setImportPaths($this->importPaths);
     }
     return $this;
   }
