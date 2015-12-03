@@ -12,6 +12,7 @@ class OyejorgeLessParserMock extends Less_Parser {
   private $return = [];
   private $str;
   private $importDirs;
+  private $option = [];
 
   public function __construct() {
   }
@@ -37,5 +38,11 @@ class OyejorgeLessParserMock extends Less_Parser {
     return $this->importDirs;
   }
 
+  public function SetOption($option, $value) {
+    $this->option[$option] = $value;
+  }
 
+  public function GetOption($option) {
+    return isset($this->option[$option]) ? $this->option[$option] : null;
+  }
 }

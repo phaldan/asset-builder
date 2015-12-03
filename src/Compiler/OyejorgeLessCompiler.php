@@ -3,6 +3,7 @@
 namespace Phaldan\AssetBuilder\Compiler;
 
 use Less_Parser;
+use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
 /**
@@ -10,10 +11,17 @@ use Phaldan\AssetBuilder\FileSystem\FileSystem;
  */
 class OyejorgeLessCompiler extends LessCompiler {
 
+  const OPTION_MINIFY = 'compress';
+
   /**
    * @var Less_Parser
    */
   private $compiler;
+
+  /**
+   * @var Context
+   */
+  private $context;
   private $importPaths = [];
 
   /**
@@ -23,15 +31,14 @@ class OyejorgeLessCompiler extends LessCompiler {
 
   /**
    * @param FileSystem $fileSystem
+   * @param Context $context
    */
-  public function __construct(FileSystem $fileSystem) {
+  public function __construct(FileSystem $fileSystem, Context $context) {
     $this->fileSystem = $fileSystem;
+    $this->context = $context;
   }
 
-  /**
-   * @return Less_Parser
-   */
-  public function getCompiler() {
+  private function getCompiler() {
     if (is_null($this->compiler)) {
       $this->setCompiler(new Less_Parser());
     }
@@ -44,6 +51,7 @@ class OyejorgeLessCompiler extends LessCompiler {
   public function setCompiler(Less_Parser $compiler) {
     $this->compiler = $compiler;
     $compiler->SetImportDirs($this->importPaths);
+    $compiler->SetOption(self::OPTION_MINIFY, $this->context->hasMinifier());
   }
 
   /**

@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Compiler;
 
-use Less_Parser;
+use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use PHPUnit_Framework_TestCase;
 
@@ -21,15 +21,27 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
    */
   private $fileSystem;
 
+  /**
+   * @var ContextMock
+   */
+  private $context;
+
   protected function setUp() {
     $this->fileSystem = new FileSystemMock();
-    $this->target = new OyejorgeLessCompiler($this->fileSystem);
+    $this->context = new ContextMock();
+    $this->context->enableMinifier(true);
+    $this->target = new OyejorgeLessCompiler($this->fileSystem, $this->context);
   }
 
   private function stubCompiler() {
     $compiler = new OyejorgeLessParserMock();
     $this->target->setCompiler($compiler);
     return $compiler;
+  }
+
+  private function stubImportPath(array $current, array $expected) {
+    $this->fileSystem->setAbsolutePaths($current, $expected);
+    return $this->target->setImportPaths($current);
   }
 
   /**
@@ -39,48 +51,56 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(OyejorgeLessCompiler::EXTENSION, $this->target->getSupportedExtension());
   }
 
-  /**
-   * @test
-   */
-  public function getCompiler_success() {
-    $return = $this->target->getCompiler();
-    $this->assertNotNull($return);
-    $this->assertInstanceOf(Less_Parser::class, $return);
-  }
 
   /**
    * @test
    */
   public function setCompiler_success() {
-    $dirs = ['asset/css'];
     $expected = ['/absolute/asset/css'];
-    $this->fileSystem->setAbsolutePaths($dirs, $expected);
-    $this->target->setImportPaths($dirs);
+    $this->stubImportPath(['asset/css'], $expected);
 
     $compiler = $this->stubCompiler();
-    $this->assertSame($compiler, $this->target->getCompiler());
     $this->assertEquals($expected, $compiler->GetImportDirs());
+    $this->assertTrue($compiler->GetOption(OyejorgeLessCompiler::OPTION_MINIFY));
   }
 
   /**
    * @test
    */
   public function process_success() {
+    $content = "
+      body {
+        padding: 0;
+        margin: 0;
+
+        p {
+          padding: 20px 0;
+        }
+      }
+    ";
+    $expected = "body{padding: 0;margin: 0}body p{padding: 20px 0}";
+    $this->assertEquals($expected, $this->target->process($content));
+  }
+
+  /**
+   * @test
+   */
+  public function process_false() {
+    $this->context->enableMinifier(false);
     $compiler = $this->stubCompiler();
     $compiler->setCss('input', 'output');
     $this->assertEquals('output', $this->target->process('input'));
+    $this->assertFalse($compiler->GetOption(OyejorgeLessCompiler::OPTION_MINIFY));
   }
 
   /**
    * @test
    */
   public function setImportPaths_success() {
-    $dirs = ['asset/css'];
-    $expected = ['/absolute/asset/css'];
-    $this->fileSystem->setAbsolutePaths($dirs, $expected);
     $compiler = $this->stubCompiler();
+    $expected = ['/absolute/asset/css'];
 
-    $this->assertSame($this->target, $this->target->setImportPaths($dirs));
+    $this->assertSame($this->target, $this->stubImportPath(['asset/css'], $expected));
     $this->assertEquals($expected, $compiler->GetImportDirs());
   }
 }
