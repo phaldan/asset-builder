@@ -9,6 +9,7 @@ class FileSystemMock implements FileSystem {
 
   private $content = [];
   private $paths = [];
+  private $globs = [];
 
   public function getContent($filePath) {
     return isset($this->content[$filePath]) ? $this->content[$filePath] : null;
@@ -31,6 +32,10 @@ class FileSystemMock implements FileSystem {
   }
 
   public function resolveGlob($pattern) {
-    // TODO: Implement resolveGlob() method.
+    return isset($this->globs[$pattern]) ? $this->globs[$pattern] : [];
+  }
+
+  public function setGlob($pattern, $result) {
+    $this->globs[$pattern] = $result;
   }
 }
