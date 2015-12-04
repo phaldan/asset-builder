@@ -13,6 +13,9 @@ class SerialBinder implements Binder {
 
   private $fileSystem;
 
+  /**
+   * @param FileSystem $fileSystem
+   */
   public function __construct(FileSystem $fileSystem) {
     $this->fileSystem = $fileSystem;
   }

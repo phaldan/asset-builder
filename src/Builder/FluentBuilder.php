@@ -48,32 +48,29 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param string $path
+   * @inheritdoc
    */
   public function setRootPath($path = '.') {
     $this->context->setRootPath($path);
+    return $this;
   }
 
   /**
-   * @param $name
-   * @param IteratorAggregate $files
-   * @return Builder
+   * @inheritdoc
    */
   public function addGroup($name, IteratorAggregate $files) {
     $this->groups->offsetSet($name, $files);
   }
 
   /**
-   * @param ArrayAccess $groups
-   * @return Builder
+   * @inheritdoc
    */
   public function addGroups(ArrayAccess $groups) {
     $this->groups = $groups;
   }
 
   /**
-   * @param bool $boolean
-   * @return Builder
+   * @inheritdoc
    */
   public function enableMinifier($boolean = true) {
     $this->context->enableMinifier($boolean);
@@ -81,8 +78,7 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param bool $boolean
-   * @return Builder
+   * @inheritdoc
    */
   public function enableDebug($boolean = true) {
     $this->context->enableDebug($boolean);
@@ -90,8 +86,7 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param bool $boolean
-   * @return Builder
+   * @inheritdoc
    */
   public function enableStopWatch($boolean = true) {
     $this->context->enableStopWatch($boolean);
@@ -99,16 +94,14 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param Compiler $compiler
-   * @return Builder
+   * @inheritdoc
    */
   public function addCompiler(Compiler $compiler) {
     $this->compiler->add($compiler);
   }
 
   /**
-   * @param $path
-   * @return Builder
+   * @inheritdoc
    */
   public function setCachePath($path = null) {
     $this->context->setCachePath($path);
@@ -116,8 +109,7 @@ class FluentBuilder implements Builder {
   }
 
   /**
-   * @param $group
-   * @return string
+   * @inheritdoc
    */
   public function execute($group) {
     if (!$this->groups->offsetExists($group)) {

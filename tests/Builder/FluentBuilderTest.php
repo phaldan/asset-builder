@@ -97,7 +97,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function setRootPath_success() {
-    $this->target->setRootPath('test');
+    $this->assertSame($this->target, $this->target->setRootPath('test'));
     $this->assertEquals('test', $this->context->getRootPath());
   }
 

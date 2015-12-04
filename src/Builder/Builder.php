@@ -13,6 +13,7 @@ interface Builder {
 
   /**
    * @param string $path
+   * @return Builder
    */
   public function setRootPath($path = '.');
 
