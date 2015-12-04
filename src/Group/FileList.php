@@ -33,4 +33,10 @@ class FileList implements IteratorAggregate {
   public function add($file) {
     $this->array->append($file);
   }
+
+  public function addAll(array $files) {
+    foreach ($files as $file) {
+      $this->add($file);
+    }
+  }
 }

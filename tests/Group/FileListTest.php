@@ -44,4 +44,24 @@ class FileListTest extends PHPUnit_Framework_TestCase {
     $this->assertCount(1, $this->target->getIterator());
     $this->assertContains('file.css', $this->target->getIterator());
   }
+
+  /**
+   * @test
+   */
+  public function add_successWithDouble() {
+    $this->target->add('file.css');
+    $this->target->add('file.css');
+    $this->assertCount(2, $this->target->getIterator());
+  }
+
+  /**
+   * @test
+   */
+  public function addAll_success() {
+    $array = ['file1.css', 'file2.css'];
+    $this->target->addAll($array);
+    $this->assertCount(2, $this->target->getIterator());
+    $this->assertContains('file1.css', $this->target->getIterator());
+    $this->assertContains('file2.css', $this->target->getIterator());
+  }
 }
