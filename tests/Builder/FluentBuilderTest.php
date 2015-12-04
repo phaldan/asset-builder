@@ -7,7 +7,9 @@ use Exception;
 use Phaldan\AssetBuilder\Binder\BinderStub;
 use Phaldan\AssetBuilder\Compiler\CompilerList;
 use Phaldan\AssetBuilder\Compiler\CompilerStub;
+use Phaldan\AssetBuilder\Compiler\DummyCompiler;
 use Phaldan\AssetBuilder\ContextMock;
+use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\Group\FileList;
 use PHPUnit_Framework_TestCase;
 
@@ -36,11 +38,17 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   private $compiler;
 
+  /**
+   * @var IocContainer
+   */
+  private $container;
+
   protected function setUp() {
     $this->binder = new BinderStub();
     $this->context = new ContextMock();
     $this->compiler = new CompilerList();
-    $this->target = new FluentBuilder($this->binder, $this->context, $this->compiler);
+    $this->container = new IocContainer();
+    $this->target = new FluentBuilder($this->binder, $this->context, $this->compiler, $this->container);
   }
 
   private function stubBinder($return) {
@@ -139,8 +147,32 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   public function addCompiler_success() {
     $compiler = new CompilerStub();
     $compiler->setSupportedExtension('css');
-    $this->target->addCompiler($compiler);
-
+    $this->assertSame($this->target, $this->target->addCompiler($compiler));
     $this->assertSame($compiler, $this->compiler->get('asset/test.css'));
+  }
+
+  /**
+   * @test
+   */
+  public function addCompiler_successWithClass() {
+    $this->target->addCompiler(DummyCompiler::class);
+    $file = 'file.' . DummyCompiler::EXTENSION;
+    $this->assertInstanceOf(DummyCompiler::class, $this->compiler->get($file));
+  }
+
+  /**
+   * @test
+   * @expectedException InvalidArgumentException
+   */
+  public function add_failNotObjectOrClass() {
+    $this->target->addCompiler(1234);
+  }
+
+  /**
+   * @test
+   * @expectedException InvalidArgumentException
+   */
+  public function add_failNotSubClass() {
+    $this->target->addCompiler(new \stdClass());
   }
 }

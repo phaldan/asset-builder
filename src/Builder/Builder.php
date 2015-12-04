@@ -55,10 +55,10 @@ interface Builder {
   public function enableStopWatch($boolean = true);
 
   /**
-   * @param Compiler $compiler
+   * @param Compiler|string $compiler
    * @return Builder
    */
-  public function addCompiler(Compiler $compiler);
+  public function addCompiler($compiler);
 
   /**
    * Set to null to disable caching

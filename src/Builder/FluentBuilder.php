@@ -9,6 +9,7 @@ use Phaldan\AssetBuilder\Binder\Binder;
 use Phaldan\AssetBuilder\Compiler\Compiler;
 use Phaldan\AssetBuilder\Compiler\CompilerList;
 use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -36,14 +37,21 @@ class FluentBuilder implements Builder {
   private $compiler;
 
   /**
+   * @var IocContainer
+   */
+  private $container;
+
+  /**
    * @param Binder $binder
    * @param Context $context
    * @param CompilerList $compiler
+   * @param IocContainer $container
    */
-  public function __construct(Binder $binder, Context $context, CompilerList $compiler) {
+  public function __construct(Binder $binder, Context $context, CompilerList $compiler, IocContainer $container) {
     $this->binder = $binder;
     $this->context = $context;
     $this->compiler = $compiler;
+    $this->container = $container;
     $this->groups = new ArrayIterator();
   }
 
@@ -96,8 +104,26 @@ class FluentBuilder implements Builder {
   /**
    * @inheritdoc
    */
-  public function addCompiler(Compiler $compiler) {
-    $this->compiler->add($compiler);
+  public function addCompiler($compiler) {
+    $instance = $this->getCompilerInstance($compiler);
+    $this->compiler->add($instance);
+    return $this;
+  }
+
+  private function getCompilerInstance($compiler) {
+    if (is_object($compiler)) {
+      $instance = $compiler;
+    } elseif (class_exists($compiler)) {
+      $instance = $this->container->getInstance($compiler);
+    } else {
+      $instance = null;
+      InvalidArgumentException::createNeitherObjectOrClass($compiler);
+    }
+    if (!is_subclass_of($instance, Compiler::class)) {
+      InvalidArgumentException::createNotSubclass($instance);
+    }
+
+    return $instance;
   }
 
   /**
