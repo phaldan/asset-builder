@@ -121,7 +121,7 @@ class FluentBuilder implements Builder {
     }
     if (!is_subclass_of($instance, Compiler::class)) {
       InvalidArgumentException::createNotSubclass($instance);
-    }
+    } // @codeCoverageIgnore
 
     return $instance;
   }
