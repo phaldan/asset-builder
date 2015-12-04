@@ -29,4 +29,8 @@ class FileSystemMock implements FileSystem {
 
   public function getAbsolutePath($path) {
   }
+
+  public function resolveGlob($pattern) {
+    // TODO: Implement resolveGlob() method.
+  }
 }

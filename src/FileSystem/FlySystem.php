@@ -74,4 +74,12 @@ class FlySystem implements FileSystem {
   private function isAbsolute($path) {
     return preg_match(self::ABSOLUTE_PATH_REGEX, $path) === 1;
   }
+
+  /**
+   * @inheritdoc
+   */
+  public function resolveGlob($pattern) {
+    $absolute = $this->getAbsolutePath($pattern);
+    return glob($absolute);
+  }
 }

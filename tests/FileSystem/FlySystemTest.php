@@ -94,4 +94,14 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     $this->context->setRootPath('C:\\absolute\\');
     $this->assertEquals('C:\\root\\file.txt', $this->target->getAbsolutePath('C:\\root\\file.txt'));
   }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_success() {
+    $this->context->setRootPath(__DIR__ . DIRECTORY_SEPARATOR);
+    $result = $this->target->resolveGlob('*.php');
+    $this->assertNotEmpty($result);
+    $this->assertContains(__FILE__, $result);
+  }
 }

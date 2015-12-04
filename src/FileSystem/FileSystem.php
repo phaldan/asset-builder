@@ -26,4 +26,11 @@ interface FileSystem {
    * @return string
    */
   public function getAbsolutePath($path);
+
+  /**
+   * Resolve glob pattern and returns list of files/directories
+   * @param $pattern
+   * @return array
+   */
+  public function resolveGlob($pattern);
 }
