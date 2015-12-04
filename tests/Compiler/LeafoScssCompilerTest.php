@@ -52,13 +52,13 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
-  public function setImportDirs_success() {
+  public function setImportPaths_success() {
     $paths = ['import/css'];
     $expected = ['/absolute/import/css'];
     $this->fileSystem->setAbsolutePaths($paths, $expected);
 
     $compiler = $this->stubCompiler();
-    $this->assertSame($this->target, $this->target->setImportDirs($paths));
+    $this->assertSame($this->target, $this->target->setImportPaths($paths));
     $this->assertEquals($expected, $compiler->getImportPaths());
   }
 
@@ -91,7 +91,7 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
     $paths = ['import/css'];
     $expected = ['/absolute/import/css'];
     $this->fileSystem->setAbsolutePaths($paths, $expected);
-    $this->target->setImportDirs($paths);
+    $this->target->setImportPaths($paths);
 
     $this->assertEquals(Expanded::class, $compiler->getFormatter());
     $this->assertEquals($expected, $compiler->getImportPaths());

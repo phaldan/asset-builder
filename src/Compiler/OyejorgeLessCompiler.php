@@ -55,8 +55,7 @@ class OyejorgeLessCompiler extends LessCompiler {
   }
 
   /**
-   * @param array $paths
-   * @return $this
+   * @inheritdoc
    */
   public function setImportPaths(array $paths) {
     $this->importPaths = $this->fileSystem->getAbsolutePaths($paths);
