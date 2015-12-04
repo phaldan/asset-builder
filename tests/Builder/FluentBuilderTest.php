@@ -86,8 +86,8 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   public function addGroups_success() {
     $iterator = $this->createGroupList('success', 'group-name');
-    $this->target->addGroups($iterator);
 
+    $this->assertSame($this->target, $this->target->addGroups($iterator));
     $this->assertEquals('success', $this->target->execute('group-name'));
   }
 
@@ -96,8 +96,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   public function addGroup_success() {
     $files = $this->stubBinder('success');
-    $this->target->addGroup('group-name', $files);
-
+    $this->assertSame($this->target, $this->target->addGroup('group-name', $files));
     $this->assertEquals('success', $this->target->execute('group-name'));
   }
 

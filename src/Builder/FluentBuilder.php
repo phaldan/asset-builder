@@ -68,6 +68,7 @@ class FluentBuilder implements Builder {
    */
   public function addGroup($name, IteratorAggregate $files) {
     $this->groups->offsetSet($name, $files);
+    return $this;
   }
 
   /**
@@ -75,6 +76,7 @@ class FluentBuilder implements Builder {
    */
   public function addGroups(ArrayAccess $groups) {
     $this->groups = $groups;
+    return $this;
   }
 
   /**
