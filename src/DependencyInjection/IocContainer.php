@@ -16,6 +16,7 @@ class IocContainer {
   public function __construct() {
     $this->configure();
     $this->instances[get_class($this)] = $this;
+    $this->instances[IocContainer::class] = $this;
     $this->generator = new Generator($this);
   }
 

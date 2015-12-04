@@ -154,6 +154,15 @@ class IocContainerTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
+   */
+  public function getInstance_successWithSubContainer() {
+    $target = new IocContainerDummy();
+    $this->assertSame($target, $target->getInstance(IocContainer::class));
+    $this->assertSame($target, $target->getInstance(IocContainerDummy::class));
+  }
+
+  /**
+   * @test
    * @expectedException InvalidArgumentException
    */
   public function getInstance_failStaticParameter() {

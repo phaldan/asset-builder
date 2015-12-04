@@ -5,15 +5,9 @@ namespace Phaldan\AssetBuilder\Compiler;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class ScssCompiler implements Compiler {
+abstract class ScssCompiler implements PreProcessorCompiler {
 
   const EXTENSION = 'scss';
-
-  /**
-   * @param array $paths
-   * @return LessCompiler
-   */
-  abstract public function setImportPaths(array $paths);
 
   /**
    * @inheritdoc

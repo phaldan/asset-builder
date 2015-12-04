@@ -5,15 +5,9 @@ namespace Phaldan\AssetBuilder\Compiler;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class LessCompiler implements Compiler {
+abstract class LessCompiler implements PreProcessorCompiler {
 
   const EXTENSION = 'less';
-
-  /**
-   * @param array $paths
-   * @return LessCompiler
-   */
-  abstract public function setImportPaths(array $paths);
 
   /**
    * @inheritdoc
