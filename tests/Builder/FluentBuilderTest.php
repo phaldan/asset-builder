@@ -50,7 +50,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
     $this->container = new IocContainer();
 
     $handler = new CompilerHandler($this->compiler, $this->container);
-    $executor = new Executor($this->binder);
+    $executor = new Executor($this->binder, $this->context);
     $this->target = new FluentBuilder($executor, $this->context, $handler);
   }
 
@@ -92,6 +92,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
 
     $this->assertSame($this->target, $this->target->addGroups($iterator));
     $this->assertEquals('success', $this->target->execute('group-name'));
+    $this->assertEmpty(headers_list());
   }
 
   /**

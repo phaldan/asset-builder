@@ -6,11 +6,14 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Binder\Binder;
+use Phaldan\AssetBuilder\Context;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
 class Executor {
+
+  const HEADER_TIMING = 'X-Runtime: %s';
 
   /**
    * @var Binder
@@ -22,8 +25,18 @@ class Executor {
    */
   private $groups;
 
-  public function __construct(Binder $binder) {
+  /**
+   * @var Context
+   */
+  private $context;
+
+  /**
+   * @param Binder $binder
+   * @param Context $context
+   */
+  public function __construct(Binder $binder, Context $context) {
     $this->binder = $binder;
+    $this->context = $context;
     $this->groups = new ArrayIterator();
   }
 
@@ -53,10 +66,28 @@ class Executor {
    * @throws Exception
    */
   public function execute($group, CompilerHandler $compiler) {
+    $time = $this->startTimer();
+    $result = $this->process($group, $compiler);
+    $this->stopTimer($time);
+    return $result;
+  }
+
+  private function process($group, CompilerHandler $compiler) {
     if (!$this->groups->offsetExists($group)) {
       Exception::createGroupNotFound($group);
     } // @codeCoverageIgnore
     $files = $this->groups->offsetGet($group);
     return $this->binder->bind($files, $compiler->get());
+  }
+
+  private function startTimer() {
+    return $this->context->hasStopWatch() ? microtime(true) : null;
+  }
+
+  private function stopTimer($startTime) {
+    if ($this->context->hasStopWatch()) {
+      $time = microtime(true) - $startTime;
+      header(sprintf(self::HEADER_TIMING, number_format($time, 3)));
+    }
   }
 }
