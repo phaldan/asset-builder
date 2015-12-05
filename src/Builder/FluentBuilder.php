@@ -32,26 +32,19 @@ class FluentBuilder implements Builder {
   private $context;
 
   /**
-   * @var CompilerList
+   * @var CompilerHandler
    */
   private $compiler;
 
   /**
-   * @var IocContainer
-   */
-  private $container;
-
-  /**
    * @param Binder $binder
    * @param Context $context
-   * @param CompilerList $compiler
-   * @param IocContainer $container
+   * @param CompilerHandler $compiler
    */
-  public function __construct(Binder $binder, Context $context, CompilerList $compiler, IocContainer $container) {
+  public function __construct(Binder $binder, Context $context, CompilerHandler $compiler) {
     $this->binder = $binder;
     $this->context = $context;
     $this->compiler = $compiler;
-    $this->container = $container;
     $this->groups = new ArrayIterator();
   }
 
@@ -107,25 +100,8 @@ class FluentBuilder implements Builder {
    * @inheritdoc
    */
   public function addCompiler($compiler) {
-    $instance = $this->getCompilerInstance($compiler);
-    $this->compiler->add($instance);
+    $this->compiler->add($compiler);
     return $this;
-  }
-
-  private function getCompilerInstance($compiler) {
-    if (is_object($compiler)) {
-      $instance = $compiler;
-    } elseif (class_exists($compiler)) {
-      $instance = $this->container->getInstance($compiler);
-    } else {
-      $instance = null;
-      InvalidArgumentException::createNeitherObjectOrClass($compiler);
-    }
-    if (!is_subclass_of($instance, Compiler::class)) {
-      InvalidArgumentException::createNotSubclass($instance);
-    } // @codeCoverageIgnore
-
-    return $instance;
   }
 
   /**
@@ -144,6 +120,6 @@ class FluentBuilder implements Builder {
       Exception::createGroupNotFound($group);
     } // @codeCoverageIgnore
     $files = $this->groups->offsetGet($group);
-    return $this->binder->bind($files, $this->compiler);
+    return $this->binder->bind($files, $this->compiler->get());
   }
 }
