@@ -50,7 +50,8 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
     $this->container = new IocContainer();
 
     $handler = new CompilerHandler($this->compiler, $this->container);
-    $this->target = new FluentBuilder($this->binder, $this->context, $handler);
+    $executor = new Executor($this->binder);
+    $this->target = new FluentBuilder($executor, $this->context, $handler);
   }
 
   private function stubBinder($return) {
