@@ -49,8 +49,14 @@ class FlySystem implements FileSystem {
    * @inheritdoc
    */
   public function getContent($filePath) {
-    $result = $this->getFlySystem()->read($filePath);
+    $relative = $this->getRelativePath($filePath);
+    $result = $this->getFlySystem()->read($relative);
     return ($result === false) ? null : $result;
+  }
+
+  private function getRelativePath($file) {
+    $root = $this->context->getRootPath();
+    return (strpos($file, $root) === 0) ? substr($file, strlen($root)) : $file;
   }
 
   /**

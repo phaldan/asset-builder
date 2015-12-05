@@ -32,6 +32,13 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     return $adapter;
   }
 
+  private function mockFileContent($file, $content) {
+    $adapter = $this->mockAdapter();
+    $adapter->setHas($file);
+    $adapter->setRead($file, $content);
+    return $adapter;
+  }
+
   /**
    * @test
    * @expectedException League\Flysystem\FileNotFoundException
@@ -45,10 +52,17 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function read_success() {
-    $adapter = $this->mockAdapter();
-    $adapter->setHas('file.txt');
-    $adapter->setRead('file.txt', 'Lorem ipsum');
+    $this->mockFileContent('file.txt', 'Lorem ipsum');
     $this->assertSame('Lorem ipsum', $this->target->getContent('file.txt'));
+  }
+
+  /**
+   * @test
+   */
+  public function read_successWithAbsolute() {
+    $this->context->setRootPath('/absolute/');
+    $this->mockFileContent('test/file.txt', 'Lorem ipsum');
+    $this->assertSame('Lorem ipsum', $this->target->getContent('/absolute/test/file.txt'));
   }
 
   /**

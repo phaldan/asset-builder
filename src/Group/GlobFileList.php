@@ -37,7 +37,8 @@ class GlobFileList extends FileList {
   private function processGlobs() {
     $this->iterator = new FileList();
     foreach (parent::getIterator() as $pattern) {
-      $this->iterator->addAll($this->fileSystem->resolveGlob($pattern));
+      $files = $this->fileSystem->resolveGlob($pattern);
+      $this->iterator->addAll($files);
     }
     return $this->iterator;
   }

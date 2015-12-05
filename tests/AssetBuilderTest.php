@@ -12,6 +12,11 @@ use Phaldan\AssetBuilder\Builder\Builder;
 class AssetBuilderTest extends PHPUnit_Framework_TestCase {
 
   /**
+   * @var AssetBuilder
+   */
+  private $target;
+
+  /**
    * @var ContextMock
    */
   private $context;
@@ -22,8 +27,8 @@ class AssetBuilderTest extends PHPUnit_Framework_TestCase {
   private $compiler;
 
   protected function setUp() {
-    AssetBuilderDouble::clearContainer();
-    $container = AssetBuilder::getContainer();
+    $this->target = new AssetBuilder();
+    $container = $this->target->getContainer();
 
     $this->context = new ContextMock();
     $container->register(Context::class, $this->context);
@@ -36,9 +41,9 @@ class AssetBuilderTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function createProduction_success() {
-    $target = AssetBuilder::createProduction('/absolute/', 'assets/css');
-    $this->assertNotNull($target);
-    $this->assertInstanceOf(Builder::class, $target);
+    $builder = $this->target->createProduction('/absolute/', 'assets/css');
+    $this->assertNotNull($builder);
+    $this->assertInstanceOf(Builder::class, $builder);
     $this->assertEquals('/absolute/', $this->context->getRootPath());
     $this->assertTrue($this->context->hasMinifier());
     $this->assertFalse($this->context->hasDebug());
@@ -49,9 +54,9 @@ class AssetBuilderTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function createDebug_success() {
-    $target = AssetBuilder::createDebug('/absolute/', 'assets/css');
-    $this->assertNotNull($target);
-    $this->assertInstanceOf(Builder::class, $target);
+    $builder = $this->target->createDebug('/absolute/', 'assets/css');
+    $this->assertNotNull($builder);
+    $this->assertInstanceOf(Builder::class, $builder);
     $this->assertEquals('/absolute/', $this->context->getRootPath());
     $this->assertFalse($this->context->hasMinifier());
     $this->assertTrue($this->context->hasDebug());
