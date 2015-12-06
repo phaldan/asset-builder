@@ -14,6 +14,7 @@ use Phaldan\AssetBuilder\Context;
 class Executor {
 
   const HEADER_TIMING = 'X-Runtime: %s';
+  const COMMENT_TIMING = '/*! Runtime: %s */';
 
   /**
    * @var Binder
@@ -66,10 +67,10 @@ class Executor {
    * @throws Exception
    */
   public function execute($group, CompilerHandler $compiler) {
-    $time = $this->startTimer();
+    $start = $this->startTimer();
     $result = $this->process($group, $compiler);
-    $this->stopTimer($time);
-    return $result;
+    $runtime = $this->stopTimer($start);
+    return $this->createRuntimeComment($runtime) . $result;
   }
 
   private function process($group, CompilerHandler $compiler) {
@@ -87,7 +88,17 @@ class Executor {
   private function stopTimer($startTime) {
     if ($this->context->hasStopWatch()) {
       $time = microtime(true) - $startTime;
-      header(sprintf(self::HEADER_TIMING, number_format($time, 3)));
+      $formatted = number_format($time, 3);
+      header(sprintf(self::HEADER_TIMING, $formatted));
+      return $formatted;
     }
+    return null;
+  }
+
+  private function createRuntimeComment($runtime) {
+    if ($this->context->hasStopWatch()) {
+      return sprintf(self::COMMENT_TIMING, $runtime);
+    }
+    return '';
   }
 }

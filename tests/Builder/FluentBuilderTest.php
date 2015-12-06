@@ -97,6 +97,20 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
+   * @runInSeparateProcess
+   */
+  public function addGroups_successWithTiming() {
+    $this->context->enableStopWatch(true);
+    $iterator = $this->createGroupList('success', 'group-name');
+
+    $this->assertSame($this->target, $this->target->addGroups($iterator));
+    $result = sprintf(Executor::COMMENT_TIMING, '0.000');
+    $this->assertEquals($result . 'success', $this->target->execute('group-name'));
+    $this->assertEmpty(headers_list());
+  }
+
+  /**
+   * @test
    */
   public function addGroup_success() {
     $files = $this->stubBinder('success');
