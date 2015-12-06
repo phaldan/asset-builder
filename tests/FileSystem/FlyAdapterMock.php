@@ -14,11 +14,17 @@ class FlyAdapterMock implements AdapterInterface {
 
   private $has = [];
   private $read = [];
+  private $write = [];
 
   /**
    * @inheritdoc
    */
   public function write($path, $contents, Config $config) {
+    $this->write[$path] = $contents;
+  }
+
+  public function getWrite($path) {
+    return isset($this->write[$path]) ? $this->write[$path] : null;
   }
 
   /**

@@ -118,4 +118,13 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     $this->assertNotEmpty($result);
     $this->assertContains(__FILE__, $result);
   }
+
+  /**
+   * @test
+   */
+  public function setContent_success() {
+    $adapter = $this->mockAdapter();
+    $this->target->setContent('file.css', 'content');
+    $this->assertEquals('content', $adapter->getWrite('file.css'));
+  }
 }

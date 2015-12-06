@@ -14,6 +14,12 @@ interface FileSystem {
   public function getContent($filePath);
 
   /**
+   * @param $filePath
+   * @param $content
+   */
+  public function setContent($filePath, $content);
+
+  /**
    * Turns a list of relative and absolute paths to a list of absolute paths
    * @param array $paths
    * @return array

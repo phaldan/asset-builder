@@ -62,6 +62,13 @@ class FlySystem implements FileSystem {
   /**
    * @inheritdoc
    */
+  public function setContent($filePath, $content) {
+    $this->getFlySystem()->write($filePath, $content);
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function getAbsolutePaths(array $paths) {
     $array = [];
     foreach ($paths as $path) {
