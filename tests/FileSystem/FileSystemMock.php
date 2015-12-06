@@ -38,4 +38,7 @@ class FileSystemMock implements FileSystem {
   public function setGlob($pattern, $result) {
     $this->globs[$pattern] = $result;
   }
+
+  public function exists($filePath) {
+  }
 }

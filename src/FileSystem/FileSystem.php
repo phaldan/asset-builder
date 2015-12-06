@@ -20,6 +20,12 @@ interface FileSystem {
   public function setContent($filePath, $content);
 
   /**
+   * @param $filePath
+   * @return boolean
+   */
+  public function exists($filePath);
+
+  /**
    * Turns a list of relative and absolute paths to a list of absolute paths
    * @param array $paths
    * @return array

@@ -95,4 +95,12 @@ class FlySystem implements FileSystem {
     $absolute = $this->getAbsolutePath($pattern);
     return glob($absolute);
   }
+
+  /**
+   * @param $filePath
+   * @return boolean
+   */
+  public function exists($filePath) {
+    return $this->getFlySystem()->has($filePath);
+  }
 }
