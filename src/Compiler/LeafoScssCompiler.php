@@ -49,12 +49,17 @@ class LeafoScssCompiler extends ScssCompiler {
   public function setCompiler(LeafoCompiler $compiler) {
     $compiler->setImportPaths($this->importPaths);
     $compiler->setFormatter($this->getFormatter());
+    $compiler->setLineNumberStyle($this->getLineNumberStyle());
     $this->compiler = $compiler;
     return $this;
   }
 
   private function getFormatter() {
     return ($this->context->hasMinifier()) ? Crunched::class : Expanded::class;
+  }
+
+  private function getLineNumberStyle() {
+    return $this->context->hasDebug() ? LeafoCompiler::LINE_COMMENTS : null;
   }
 
   private function getCompiler() {

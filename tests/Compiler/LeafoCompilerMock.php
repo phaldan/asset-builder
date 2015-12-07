@@ -12,6 +12,7 @@ class LeafoCompilerMock extends LeafoCompiler {
   private $import;
   protected $formatter;
   private $compileReturn = [];
+  private $style;
 
   public function __construct() {
   }
@@ -47,5 +48,13 @@ class LeafoCompilerMock extends LeafoCompiler {
 
   public function setCompileReturn($code, $return) {
     $this->compileReturn[$code] = $return;
+  }
+
+  public function setLineNumberStyle($lineNumberStyle) {
+    $this->style = $lineNumberStyle;
+  }
+
+  public function getLineNumberStyle() {
+    return $this->style;
   }
 }

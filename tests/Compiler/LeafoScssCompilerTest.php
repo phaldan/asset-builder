@@ -107,6 +107,21 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
 
     $this->assertSame($this->target, $this->target->setCompiler($compiler));
     $this->assertEquals(Crunched::class, $compiler->getFormatter());
+    $this->assertNull($compiler->getLineNumberStyle());
+    $this->assertEquals('output', $this->target->process('input'));
+  }
+
+
+  /**
+   * @test
+   */
+  public function setCompiler_successWithDebug() {
+    $this->context->enableDebug(true);
+    $compiler = new LeafoCompilerMock();
+    $compiler->setCompileReturn('input', 'output');
+
+    $this->target->setCompiler($compiler);
+    $this->assertEquals(LeafoCompiler::LINE_COMMENTS, $compiler->getLineNumberStyle());
     $this->assertEquals('output', $this->target->process('input'));
   }
 }
