@@ -1,6 +1,7 @@
 <?php
 
 namespace Phaldan\AssetBuilder\FileSystem;
+
 use DateTime;
 
 /**
@@ -49,7 +50,7 @@ interface FileSystem {
 
   /**
    * @param $filePath
-   * @return int
+   * @return DateTime
    */
   public function getModifiedTime($filePath);
 }

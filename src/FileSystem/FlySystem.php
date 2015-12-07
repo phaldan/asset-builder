@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\FileSystem;
 
+use DateTime;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem as FlyFileSystem;
@@ -98,8 +99,7 @@ class FlySystem implements FileSystem {
   }
 
   /**
-   * @param $filePath
-   * @return boolean
+   * @inheritdoc
    */
   public function exists($filePath) {
     $relative = $this->getRelativePath($filePath);
@@ -107,11 +107,12 @@ class FlySystem implements FileSystem {
   }
 
   /**
-   * @param $filePath
-   * @return int
+   * @inheritdoc
    */
   public function getModifiedTime($filePath) {
     $relative = $this->getRelativePath($filePath);
-    return $this->getFlySystem()->getTimestamp($relative);
+    $timestamp = $this->getFlySystem()->getTimestamp($relative);
+    $time = new DateTime();
+    return $time->setTimestamp($timestamp);
   }
 }

@@ -57,7 +57,7 @@ class FileCache implements Cache {
   }
 
   private function checkExpire($filePath, DateTime $expire) {
-    return $this->fileSystem->getModifiedTime($filePath) >= $expire->getTimestamp();
+    return $this->fileSystem->getModifiedTime($filePath)->getTimestamp() >= $expire->getTimestamp();
   }
 
   /**

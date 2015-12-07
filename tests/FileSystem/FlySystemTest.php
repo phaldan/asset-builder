@@ -152,7 +152,9 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     $adapter = $this->mockAdapter();
     $adapter->setTimestamp('file.css', 1337);
     $adapter->setHas('file.css');
-    $this->assertEquals(1337, $this->target->getModifiedTime('file.css'));
+    $result = $this->target->getModifiedTime('file.css');
+    $this->assertNotNull($result);
+    $this->assertEquals(1337, $result->getTimestamp());
   }
 
   /**

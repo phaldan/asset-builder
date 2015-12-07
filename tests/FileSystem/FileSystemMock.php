@@ -1,6 +1,7 @@
 <?php
 
 namespace Phaldan\AssetBuilder\FileSystem;
+use DateTime;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -53,7 +54,7 @@ class FileSystemMock implements FileSystem {
     return isset($this->mTime[$filePath]) ? $this->mTime[$filePath] : null;
   }
 
-  public function setModifiedTime($filePath, $time) {
+  public function setModifiedTime($filePath, DateTime $time) {
     $this->mTime[$filePath] = $time;
   }
 }
