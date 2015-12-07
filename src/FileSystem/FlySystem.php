@@ -18,7 +18,7 @@ class FlySystem implements FileSystem {
   /**
    * @var FlyFileSystem
    */
-  private $flySystem;
+  private $flySystem = [];
   private $context;
 
   /**
@@ -29,21 +29,42 @@ class FlySystem implements FileSystem {
   }
 
   /**
+   * @param $filePath
    * @return FlyFileSystem
    */
-  public function getFlySystem() {
-    if (is_null($this->flySystem)) {
-      $adapter = new Local($this->context->getRootPath());
-      $this->setAdapter($adapter);
+  public function getFlySystem($filePath) {
+    return $this->isAlternative($filePath) ? $this->getAlternativeSystem($filePath) : $this->getRootSystem();
+  }
+
+  private function isAlternative($filePath) {
+    return $this->isAbsolute($filePath) && strpos($filePath, $this->context->getRootPath()) !== 0;
+  }
+
+  private function getAlternativeSystem($filePath) {
+    $dir = dirname($filePath) . DIRECTORY_SEPARATOR;
+    $this->setFileSystem($dir);
+    return $this->flySystem[$dir];
+  }
+
+  private function getRootSystem() {
+    $path = $this->context->getRootPath();
+    $this->setFileSystem($path);
+    return $this->flySystem[$path];
+  }
+
+  private function setFileSystem($path) {
+    if (!isset($this->flySystem[$path])) {
+      $adapter = new Local($path);
+      $this->setAdapter($adapter, $path);
     }
-    return $this->flySystem;
   }
 
   /**
    * @param AdapterInterface $adapter
+   * @param $path
    */
-  public function setAdapter(AdapterInterface $adapter) {
-    $this->flySystem = new FlyFileSystem($adapter);
+  public function setAdapter(AdapterInterface $adapter, $path) {
+    $this->flySystem[$path] = new FlyFileSystem($adapter);
   }
 
   /**
@@ -51,13 +72,17 @@ class FlySystem implements FileSystem {
    */
   public function getContent($filePath) {
     $relative = $this->getRelativePath($filePath);
-    $result = $this->getFlySystem()->read($relative);
+    $result = $this->getFlySystem($filePath)->read($relative);
     return ($result === false) ? null : $result;
   }
 
   private function getRelativePath($file) {
     $root = $this->context->getRootPath();
-    return (strpos($file, $root) === 0) ? substr($file, strlen($root)) : $file;
+    return (strpos($file, $root) === 0) ? substr($file, strlen($root)) : $this->getAlternativeRelativePath($file);
+  }
+
+  private function getAlternativeRelativePath($filePath) {
+    return $this->isAbsolute($filePath) ? basename($filePath) : $filePath;
   }
 
   /**
@@ -65,7 +90,7 @@ class FlySystem implements FileSystem {
    */
   public function setContent($filePath, $content) {
     $relative = $this->getRelativePath($filePath);
-    $this->getFlySystem()->write($relative, $content);
+    $this->getFlySystem($filePath)->write($relative, $content);
   }
 
   /**
@@ -103,7 +128,7 @@ class FlySystem implements FileSystem {
    */
   public function exists($filePath) {
     $relative = $this->getRelativePath($filePath);
-    return $this->getFlySystem()->has($relative);
+    return $this->getFlySystem($filePath)->has($relative);
   }
 
   /**
@@ -111,7 +136,7 @@ class FlySystem implements FileSystem {
    */
   public function getModifiedTime($filePath) {
     $relative = $this->getRelativePath($filePath);
-    $timestamp = $this->getFlySystem()->getTimestamp($relative);
+    $timestamp = $this->getFlySystem($filePath)->getTimestamp($relative);
     $time = new DateTime();
     return $time->setTimestamp($timestamp);
   }

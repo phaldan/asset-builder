@@ -26,14 +26,15 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     $this->target = new FlySystem($this->context);
   }
 
-  private function mockAdapter() {
+  private function mockAdapter($root) {
+    $this->context->setRootPath($root);
     $adapter = new FlyAdapterMock();
-    $this->target->setAdapter($adapter);
+    $this->target->setAdapter($adapter, $root);
     return $adapter;
   }
 
-  private function mockFileContent($file, $content) {
-    $adapter = $this->mockAdapter();
+  private function mockFileContent($root, $file, $content) {
+    $adapter = $this->mockAdapter($root);
     $adapter->setHas($file);
     $adapter->setRead($file, $content);
     return $adapter;
@@ -44,15 +45,15 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @expectedException League\Flysystem\FileNotFoundException
    */
   public function read_fail() {
-    $this->mockAdapter();
+    $this->mockAdapter('/absolute/');
     $this->target->getContent('file.txt');
   }
 
   /**
    * @test
    */
-  public function read_success() {
-    $this->mockFileContent('file.txt', 'Lorem ipsum');
+  public function read_successRelative() {
+    $this->mockFileContent('/absolute/', 'file.txt', 'Lorem ipsum');
     $this->assertSame('Lorem ipsum', $this->target->getContent('file.txt'));
   }
 
@@ -60,9 +61,20 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function read_successWithAbsolute() {
-    $this->context->setRootPath('/absolute/');
-    $this->mockFileContent('test/file.txt', 'Lorem ipsum');
+    $this->mockFileContent('/absolute/', 'test/file.txt', 'Lorem ipsum');
     $this->assertSame('Lorem ipsum', $this->target->getContent('/absolute/test/file.txt'));
+  }
+
+  /**
+   * @test
+   */
+  public function read_successDifferentAbsolute() {
+    $this->mockAdapter('/absolute/');
+    $adapter = new FlyAdapterMock();
+    $this->target->setAdapter($adapter, '/tmp/');
+    $adapter->setHas('example.txt');
+    $adapter->setRead('example.txt', 'Lorem ipsum');
+    $this->assertSame('Lorem ipsum', $this->target->getContent('/tmp/example.txt'));
   }
 
   /**
@@ -71,7 +83,7 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
   public function getFlySystem_success() {
     $root = __DIR__ . DIRECTORY_SEPARATOR;
     $this->context->setRootPath($root);
-    $return = $this->target->getFlySystem();
+    $return = $this->target->getFlySystem($root);
     $this->assertNotNull($return);
     $this->assertInstanceOf(Local::class, $return->getAdapter());
     $this->assertEquals($root, $return->getAdapter()->getPathPrefix());
@@ -123,7 +135,7 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function setContent_success() {
-    $adapter = $this->mockAdapter();
+    $adapter = $this->mockAdapter('/absolute/');
     $this->target->setContent('file.css', 'content');
     $this->assertEquals('content', $adapter->getWrite('file.css'));
   }
@@ -132,7 +144,7 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function exists_success() {
-    $adapter = $this->mockAdapter();
+    $adapter = $this->mockAdapter('/absolute/');
     $adapter->setHas('file.css');
     $this->assertTrue($this->target->exists('file.css'));
   }
@@ -141,7 +153,7 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function exists_fail() {
-    $this->mockAdapter();
+    $this->mockAdapter('/absolute/');
     $this->assertFalse($this->target->exists('file.css'));
   }
 
@@ -149,7 +161,7 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function getModifiedTime_success() {
-    $adapter = $this->mockAdapter();
+    $adapter = $this->mockAdapter('/absolute/');
     $adapter->setTimestamp('file.css', 1337);
     $adapter->setHas('file.css');
     $result = $this->target->getModifiedTime('file.css');
@@ -162,7 +174,7 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @expectedException League\Flysystem\FileNotFoundException
    */
   public function getModifiedTime_fail() {
-    $this->mockAdapter();
+    $this->mockAdapter('/absolute/');
     $this->target->getModifiedTime('file.css');
   }
 }
