@@ -30,8 +30,8 @@ class ContextTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function setRootPath_success() {
-    $this->target->setRootPath('test');
-    $this->assertEquals('test', $this->target->getRootPath());
+    $this->target->setRootPath('.');
+    $this->assertEquals(dirname(__DIR__) . DIRECTORY_SEPARATOR, $this->target->getRootPath());
   }
 
   /**
@@ -93,7 +93,23 @@ class ContextTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function setCachePath_success() {
-    $this->target->setCachePath('test');
-    $this->assertEquals('test', $this->target->getCachePath());
+    $this->target->setCachePath(sys_get_temp_dir());
+    $this->assertEquals(sys_get_temp_dir() . DIRECTORY_SEPARATOR, $this->target->getCachePath());
+    $this->assertTrue($this->target->hasCache());
+  }
+
+  /**
+   * @test
+   * @expectedException \InvalidArgumentException
+   */
+  public function setCachePath_fail() {
+    $this->target->setCachePath('Lorem Ipsum');
+  }
+
+  /**
+   * @test
+   */
+  public function hasCache_fail() {
+    $this->assertFalse($this->target->hasCache());
   }
 }

@@ -8,6 +8,7 @@ namespace Phaldan\AssetBuilder;
 class Context {
 
   const DEFAULT_ROOT_PATH = '.';
+  const MESSAGE_REAL_PATH = "The following path doesn't exists: '%s'";
 
   private $path = self::DEFAULT_ROOT_PATH;
   private $cache = null;
@@ -20,7 +21,15 @@ class Context {
    * @param string $path
    */
   public function setRootPath($path = '.') {
-    $this->path = $path;
+    $this->path = $this->getRealPath($path);
+  }
+
+  private function getRealPath($path) {
+    $realPath = realpath($path);
+    if (!$realPath) {
+      throw new \InvalidArgumentException(sprintf(self::MESSAGE_REAL_PATH, $path));
+    }
+    return $realPath . DIRECTORY_SEPARATOR;
   }
 
   /**
@@ -77,7 +86,7 @@ class Context {
    * @param null $path
    */
   public function setCachePath($path = null) {
-    $this->cache = $path;
+    $this->cache = $this->getRealPath($path);
   }
 
   /**
