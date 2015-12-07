@@ -63,7 +63,8 @@ class FlySystem implements FileSystem {
    * @inheritdoc
    */
   public function setContent($filePath, $content) {
-    $this->getFlySystem()->write($filePath, $content);
+    $relative = $this->getRelativePath($filePath);
+    $this->getFlySystem()->write($relative, $content);
   }
 
   /**
@@ -101,6 +102,16 @@ class FlySystem implements FileSystem {
    * @return boolean
    */
   public function exists($filePath) {
-    return $this->getFlySystem()->has($filePath);
+    $relative = $this->getRelativePath($filePath);
+    return $this->getFlySystem()->has($relative);
+  }
+
+  /**
+   * @param $filePath
+   * @return int
+   */
+  public function getModifiedTime($filePath) {
+    $relative = $this->getRelativePath($filePath);
+    return $this->getFlySystem()->getTimestamp($relative);
   }
 }

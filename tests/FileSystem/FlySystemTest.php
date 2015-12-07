@@ -140,8 +140,27 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
-  public function exists_false() {
+  public function exists_fail() {
     $this->mockAdapter();
     $this->assertFalse($this->target->exists('file.css'));
+  }
+
+  /**
+   * @test
+   */
+  public function getModifiedTime_success() {
+    $adapter = $this->mockAdapter();
+    $adapter->setTimestamp('file.css', 1337);
+    $adapter->setHas('file.css');
+    $this->assertEquals(1337, $this->target->getModifiedTime('file.css'));
+  }
+
+  /**
+   * @test
+   * @expectedException League\Flysystem\FileNotFoundException
+   */
+  public function getModifiedTime_fail() {
+    $this->mockAdapter();
+    $this->target->getModifiedTime('file.css');
   }
 }

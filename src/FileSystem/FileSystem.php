@@ -1,6 +1,7 @@
 <?php
 
 namespace Phaldan\AssetBuilder\FileSystem;
+use DateTime;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -45,4 +46,10 @@ interface FileSystem {
    * @return array
    */
   public function resolveGlob($pattern);
+
+  /**
+   * @param $filePath
+   * @return int
+   */
+  public function getModifiedTime($filePath);
 }

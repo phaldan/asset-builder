@@ -15,6 +15,7 @@ class FlyAdapterMock implements AdapterInterface {
   private $has = [];
   private $read = [];
   private $write = [];
+  private $time = [];
 
   /**
    * @inheritdoc
@@ -137,6 +138,11 @@ class FlyAdapterMock implements AdapterInterface {
    * @inheritdoc
    */
   public function getTimestamp($path) {
+    return isset($this->time[$path]) ? ['timestamp' => $this->time[$path]] : null;
+  }
+
+  public function setTimestamp($path, $time) {
+    $this->time[$path] = $time;
   }
 
   /**

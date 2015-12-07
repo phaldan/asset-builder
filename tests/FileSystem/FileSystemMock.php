@@ -10,6 +10,7 @@ class FileSystemMock implements FileSystem {
   private $content = [];
   private $paths = [];
   private $globs = [];
+  private $exists = [];
 
   public function getContent($filePath) {
     return isset($this->content[$filePath]) ? $this->content[$filePath] : null;
@@ -40,5 +41,13 @@ class FileSystemMock implements FileSystem {
   }
 
   public function exists($filePath) {
+    return isset($this->exists[$filePath]);
+  }
+
+  public function setExists($filePath) {
+    $this->exists[$filePath] = true;
+  }
+
+  public function getModifiedTime($filePath) {
   }
 }
