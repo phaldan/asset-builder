@@ -40,6 +40,12 @@ class CachedSerialBinder extends SerialBinder {
 
   private function caching($file, $compiler) {
     $time = $this->fileSystem->getModifiedTime($file);
-    return $this->cache->hasEntry($file, $time) ? $this->cache->getEntry($file) : parent::process($file, $compiler);
+    return $this->cache->hasEntry($file, $time) ? $this->cache->getEntry($file) : $this->set($file, $compiler);
+  }
+
+  private function set($file, $compiler) {
+    $content = parent::process($file, $compiler);
+    $this->cache->setEntry($file, $content);
+    return $content;
   }
 }

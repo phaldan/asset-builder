@@ -84,5 +84,6 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
 
     $compiler = $this->stubCompiler('example.css', 'content');
     $this->assertEquals('content', $this->target->bind(new FileList([$file]), $compiler));
+    $this->assertEquals('content', $this->cache->getEntry($file));
   }
 }
