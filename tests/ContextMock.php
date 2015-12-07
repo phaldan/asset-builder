@@ -8,6 +8,7 @@ namespace Phaldan\AssetBuilder;
 class ContextMock extends Context {
 
   private $root;
+  private $cachePath;
   private $cache;
 
   public function setRootPath($path = '.') {
@@ -19,12 +20,18 @@ class ContextMock extends Context {
   }
 
   public function setCachePath($path = null) {
-    $this->cache = $path;
+    $this->cachePath = $path;
   }
 
   public function getCachePath() {
+    return $this->cachePath;
+  }
+
+  public function hasCache() {
     return $this->cache;
   }
 
-
+  public function setCache($boolean) {
+    $this->cache = $boolean;
+  }
 }

@@ -28,9 +28,13 @@ class SerialBinder implements Binder {
   public function bind(IteratorAggregate $files, CompilerList $compiler) {
     $return = '';
     foreach ($files as $file) {
-      $content = $this->fileSystem->getContent($file);
-      $return .= $compiler->process($file, $content);
+      $return .= $this->process($file, $compiler);
     }
     return $return;
+  }
+
+  protected function process($file, CompilerList $compiler) {
+    $content = $this->fileSystem->getContent($file);
+    return $compiler->process($file, $content);
   }
 }

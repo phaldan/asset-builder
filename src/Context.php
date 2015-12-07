@@ -86,4 +86,11 @@ class Context {
   public function getCachePath() {
     return $this->cache;
   }
+
+  /**
+   * @return boolean
+   */
+  public function hasCache() {
+    return !is_null($this->cache);
+  }
 }
