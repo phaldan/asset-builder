@@ -82,6 +82,13 @@ class FileCacheTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function hasEntry_failExpire() {
+    $this->assertFalse($this->target->hasEntry('/path/file.txt', new DateTime()));
+  }
+
+  /**
+   * @test
+   */
+  public function hasEntry_failExpireToOld() {
     $key = '/path/file.txt';
     $this->fileSystem->setExists($this->target->getFilePath($key));
     $this->fileSystem->setModifiedTime($this->target->getFilePath($key), (new DateTime())->setTimestamp(1337));

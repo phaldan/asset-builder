@@ -53,7 +53,7 @@ class FileCache implements Cache {
   public function hasEntry($key, DateTime $expire = null) {
     $filePath = $this->getFilePath($key);
     $exists = $this->fileSystem->exists($filePath);
-    return is_null($expire) ? $exists : $this->checkExpire($filePath, $expire);
+    return $exists && !is_null($expire) ? $this->checkExpire($filePath, $expire) : $exists;
   }
 
   private function checkExpire($filePath, DateTime $expire) {
