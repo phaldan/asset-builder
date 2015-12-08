@@ -1,12 +1,13 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
+use Phaldan\AssetBuilder\Processor\ScssProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
