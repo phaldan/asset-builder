@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class CompilerListTest extends PHPUnit_Framework_TestCase {
+class ProcessorListTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @var ProcessorList
