@@ -9,7 +9,7 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
+class OyejorgeLessProcessorTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @var OyejorgeLessProcessor
