@@ -61,6 +61,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
+   * @runInSeparateProcess
    */
   public function process_fail() {
     $file = 'example.css';
@@ -70,6 +71,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
+   * @runInSeparateProcess
    */
   public function process_success() {
     $file = 'example.css';
@@ -81,6 +83,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
+   * @runInSeparateProcess
    */
   public function process_failExpire() {
     $file = 'example.css';

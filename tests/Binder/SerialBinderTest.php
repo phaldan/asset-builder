@@ -24,6 +24,11 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
   private $files;
 
   /**
+   * @var CompilerListStub
+   */
+  private $compiler;
+
+  /**
    * @var FileSystemMock
    */
   private $fileSystem;
@@ -33,18 +38,69 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->target = new SerialBinder($this->fileSystem);
 
     $this->files = new FileList();
+    $this->compiler = new CompilerListStub();
   }
 
-  public function test() {
-    $file = 'example.css';
+  private function assertBind($expected) {
+    $this->assertEquals($expected, $this->target->bind($this->files, $this->compiler));
+  }
+
+  private function stubFileWithCompiler($file, $return, $mimeType) {
     $this->files->add($file);
-    $this->fileSystem->setContent($file, 'some-css-content');
+    $this->fileSystem->setContent($file, 'plain');
 
     $compiler = new CompilerStub();
-    $compiler->set('some-css-content', 'success');
-    $list = new CompilerListStub();
-    $list->set('example.css', $compiler);
+    $compiler->set('plain', $return);
+    $compiler->setOutputMimeType($mimeType);
+    $this->compiler->set($file, $compiler);
+  }
 
-    $this->assertEquals('success', $this->target->bind($this->files, $list));
+  private function assertContentType($mimeType) {
+    $result = xdebug_get_headers();
+    $this->assertNotEmpty($result);
+    $this->assertContains(sprintf(SerialBinder::HEADER, $mimeType), $result);
+  }
+
+  /**
+   * @test
+   * @runInSeparateProcess
+   */
+  public function bind_successWithoutFiles() {
+    $this->assertBind('');
+    $this->assertEmpty(xdebug_get_headers());
+  }
+
+  /**
+   * @test
+   * @runInSeparateProcess
+   */
+  public function bind_successSingleFile() {
+    $this->stubFileWithCompiler('example.css', 'success', 'text/css');
+
+    $this->assertBind('success');
+    $this->assertContentType('text/css');
+  }
+
+  /**
+   * @test
+   * @runInSeparateProcess
+   */
+  public function bind_successMultipleFiles() {
+    $this->stubFileWithCompiler('example1.css', 'success1', 'text/css');
+    $this->stubFileWithCompiler('example2.css', 'success2', 'text/css');
+
+    $this->assertBind('success1success2');
+    $this->assertContentType('text/css');
+  }
+
+  /**
+   * @test
+   * @expectedException \Exception
+   */
+  public function bind_successDifferentContentTypes() {
+    $this->stubFileWithCompiler('example.css', 'success1', 'text/css');
+    $this->stubFileWithCompiler('example.js', 'success2', 'text/javascript');
+
+    $this->assertBind(null);
   }
 }

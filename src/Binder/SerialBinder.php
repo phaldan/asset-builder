@@ -9,7 +9,7 @@ use Phaldan\AssetBuilder\FileSystem\FileSystem;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class SerialBinder implements Binder {
+class SerialBinder extends ContentTypeBinder {
 
   private $fileSystem;
 
@@ -30,12 +30,14 @@ class SerialBinder implements Binder {
     foreach ($files as $file) {
       $return .= $this->process($file, $compiler);
     }
+    $this->outputContentTypeHeader();
     return $return;
   }
 
   protected function process($file, CompilerList $list) {
     $content = $this->fileSystem->getContent($file);
     $compiler = $list->get($file);
+    $this->addType($compiler->getOutputMimeType());
     return $compiler->process($content);
   }
 }

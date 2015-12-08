@@ -8,6 +8,7 @@ namespace Phaldan\AssetBuilder\Compiler;
 class CompilerStub implements Compiler {
 
   private $extension;
+  private $mimeType;
 
   public function getSupportedExtension() {
     return $this->extension;
@@ -28,5 +29,10 @@ class CompilerStub implements Compiler {
   }
 
   public function getOutputMimeType() {
+    return $this->mimeType;
+  }
+
+  public function setOutputMimeType($mimeType) {
+    $this->mimeType = $mimeType;
   }
 }
