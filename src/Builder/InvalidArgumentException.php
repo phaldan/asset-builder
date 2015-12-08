@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
-use Phaldan\AssetBuilder\Compiler\Compiler;
+use Phaldan\AssetBuilder\Processor\Compiler;
 
 
 /**

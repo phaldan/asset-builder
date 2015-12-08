@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder;
 
-use Phaldan\AssetBuilder\Compiler\CompilerList;
+use Phaldan\AssetBuilder\Processor\CompilerList;
 use PHPUnit_Framework_TestCase;
 use Phaldan\AssetBuilder\Builder\Builder;
 

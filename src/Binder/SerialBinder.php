@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use IteratorAggregate;
-use Phaldan\AssetBuilder\Compiler\CompilerList;
+use Phaldan\AssetBuilder\Processor\CompilerList;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
 /**

@@ -4,7 +4,7 @@ namespace Phaldan\AssetBuilder\Builder;
 
 use ArrayAccess;
 use IteratorAggregate;
-use Phaldan\AssetBuilder\Compiler\Compiler;
+use Phaldan\AssetBuilder\Processor\Compiler;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>

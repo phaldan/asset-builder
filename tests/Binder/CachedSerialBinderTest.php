@@ -4,8 +4,8 @@ namespace Phaldan\AssetBuilder\Binder;
 
 use DateTime;
 use Phaldan\AssetBuilder\Cache\CacheMock;
-use Phaldan\AssetBuilder\Compiler\CompilerListStub;
-use Phaldan\AssetBuilder\Compiler\CompilerStub;
+use Phaldan\AssetBuilder\Processor\CompilerListStub;
+use Phaldan\AssetBuilder\Processor\CompilerStub;
 use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;

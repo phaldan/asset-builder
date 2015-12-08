@@ -1,6 +1,6 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Compiler;
+namespace Phaldan\AssetBuilder\Processor;
 
 use CSSmin;
 

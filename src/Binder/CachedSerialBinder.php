@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use Phaldan\AssetBuilder\Cache\Cache;
-use Phaldan\AssetBuilder\Compiler\CompilerList;
+use Phaldan\AssetBuilder\Processor\CompilerList;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 

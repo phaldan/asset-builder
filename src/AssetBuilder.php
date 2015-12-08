@@ -4,11 +4,11 @@ namespace Phaldan\AssetBuilder;
 
 use Leafo\ScssPhp\Compiler;
 use Phaldan\AssetBuilder\Builder\Builder;
-use Phaldan\AssetBuilder\Compiler\CssCompiler;
-use Phaldan\AssetBuilder\Compiler\JavaScriptCompiler;
-use Phaldan\AssetBuilder\Compiler\LessCompiler;
-use Phaldan\AssetBuilder\Compiler\PreProcessorCompiler;
-use Phaldan\AssetBuilder\Compiler\ScssCompiler;
+use Phaldan\AssetBuilder\Processor\CssCompiler;
+use Phaldan\AssetBuilder\Processor\JavaScriptCompiler;
+use Phaldan\AssetBuilder\Processor\LessCompiler;
+use Phaldan\AssetBuilder\Processor\PreProcessorCompiler;
+use Phaldan\AssetBuilder\Processor\ScssCompiler;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 use Phaldan\AssetBuilder\Group\GlobFileList;

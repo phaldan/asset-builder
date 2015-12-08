@@ -1,6 +1,6 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Compiler;
+namespace Phaldan\AssetBuilder\Processor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>

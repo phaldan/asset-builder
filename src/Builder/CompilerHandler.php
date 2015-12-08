@@ -2,8 +2,8 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
-use Phaldan\AssetBuilder\Compiler\Compiler;
-use Phaldan\AssetBuilder\Compiler\CompilerList;
+use Phaldan\AssetBuilder\Processor\Compiler;
+use Phaldan\AssetBuilder\Processor\CompilerList;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 
 /**
