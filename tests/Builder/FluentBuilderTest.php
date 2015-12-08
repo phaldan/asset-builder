@@ -7,7 +7,7 @@ use Exception;
 use Phaldan\AssetBuilder\Binder\BinderStub;
 use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
-use Phaldan\AssetBuilder\Processor\DummyCompiler;
+use Phaldan\AssetBuilder\Processor\DummyProcessor;
 use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\Group\FileList;
@@ -172,9 +172,9 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function addCompiler_successWithClass() {
-    $this->target->addCompiler(DummyCompiler::class);
-    $file = 'file.' . DummyCompiler::EXTENSION;
-    $this->assertInstanceOf(DummyCompiler::class, $this->compiler->get($file));
+    $this->target->addCompiler(DummyProcessor::class);
+    $file = 'file.' . DummyProcessor::EXTENSION;
+    $this->assertInstanceOf(DummyProcessor::class, $this->compiler->get($file));
   }
 
   /**
