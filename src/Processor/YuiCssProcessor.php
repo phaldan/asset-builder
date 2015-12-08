@@ -8,7 +8,7 @@ use Phaldan\AssetBuilder\Context;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class YuiCssCompiler extends CssProcessor {
+class YuiCssProcessor extends CssProcessor {
 
   /**
    * @var CSSmin
@@ -41,7 +41,7 @@ class YuiCssCompiler extends CssProcessor {
 
   /**
    * @param CSSmin $compressor
-   * @return YuiCssCompiler
+   * @return YuiCssProcessor
    */
   public function setCompressor(CSSmin $compressor) {
     $this->compressor = $compressor;

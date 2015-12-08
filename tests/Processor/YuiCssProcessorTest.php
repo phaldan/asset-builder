@@ -8,10 +8,10 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class YuiCssCompilerTest extends PHPUnit_Framework_TestCase {
+class YuiCssProcessorTest extends PHPUnit_Framework_TestCase {
 
   /**
-   * @var YuiCssCompiler
+   * @var YuiCssProcessor
    */
   private $target;
 
@@ -23,7 +23,7 @@ class YuiCssCompilerTest extends PHPUnit_Framework_TestCase {
   protected function setUp() {
     $this->context = new ContextMock();
     $this->context->enableMinifier(true);
-    $this->target = new YuiCssCompiler($this->context);
+    $this->target = new YuiCssProcessor($this->context);
   }
 
   private function stubCompressor($current, $expected) {
@@ -49,7 +49,7 @@ class YuiCssCompilerTest extends PHPUnit_Framework_TestCase {
   public function getSupportedExtension_success() {
     $result = $this->target->getSupportedExtension();
     $this->assertNotEmpty($result);
-    $this->assertEquals(YuiCssCompiler::EXTENSION, $result);
+    $this->assertEquals(YuiCssProcessor::EXTENSION, $result);
   }
 
   /**
@@ -58,7 +58,7 @@ class YuiCssCompilerTest extends PHPUnit_Framework_TestCase {
   public function getOutputMimeType_success() {
     $result = $this->target->getOutputMimeType();
     $this->assertNotEmpty($result);
-    $this->assertEquals(YuiCssCompiler::MIME_TYPE, $result);
+    $this->assertEquals(YuiCssProcessor::MIME_TYPE, $result);
   }
 
   /**

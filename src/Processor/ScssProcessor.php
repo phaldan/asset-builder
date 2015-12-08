@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class ScssCompiler extends CssPreProcessor {
+abstract class ScssProcessor extends CssPreProcessor {
 
   const EXTENSION = 'scss';
 

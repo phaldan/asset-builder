@@ -11,7 +11,7 @@ use Phaldan\AssetBuilder\FileSystem\FileSystem;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class LeafoScssProcessor extends ScssCompiler {
+class LeafoScssProcessor extends ScssProcessor {
 
   private $fileSystem;
   private $context;

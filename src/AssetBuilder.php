@@ -8,7 +8,7 @@ use Phaldan\AssetBuilder\Processor\CssProcessor;
 use Phaldan\AssetBuilder\Processor\JavaScriptProcessor;
 use Phaldan\AssetBuilder\Processor\LessProcessor;
 use Phaldan\AssetBuilder\Processor\CssPreProcessor;
-use Phaldan\AssetBuilder\Processor\ScssCompiler;
+use Phaldan\AssetBuilder\Processor\ScssProcessor;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 use Phaldan\AssetBuilder\Group\GlobFileList;
@@ -68,7 +68,7 @@ class AssetBuilder {
   }
 
   private function getScssCompiler($importPath = null) {
-    $instance = $this->getContainer()->getInstance(ScssCompiler::class);
+    $instance = $this->getContainer()->getInstance(ScssProcessor::class);
     return $this->setImportPath($instance, $importPath);
   }
 
