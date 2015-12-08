@@ -8,7 +8,7 @@ use Phaldan\AssetBuilder\Context;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class JShrinkCompiler extends JavaScriptProcessor {
+class JShrinkProcessor extends JavaScriptProcessor {
 
   private $context;
 

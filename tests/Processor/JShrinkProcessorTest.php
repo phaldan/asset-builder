@@ -8,10 +8,10 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class JShrinkCompilerTest extends PHPUnit_Framework_TestCase {
+class JShrinkProcessorTest extends PHPUnit_Framework_TestCase {
 
   /**
-   * @var JShrinkCompiler
+   * @var JShrinkProcessor
    */
   private $target;
 
@@ -22,7 +22,7 @@ class JShrinkCompilerTest extends PHPUnit_Framework_TestCase {
 
   protected function setUp() {
     $this->context = new ContextMock();
-    $this->target = new JShrinkCompiler($this->context);
+    $this->target = new JShrinkProcessor($this->context);
   }
 
   private function getContent() {
@@ -45,7 +45,7 @@ class JShrinkCompilerTest extends PHPUnit_Framework_TestCase {
   public function getSupportedExtension_success() {
     $result = $this->target->getSupportedExtension();
     $this->assertNotEmpty($result);
-    $this->assertEquals(JShrinkCompiler::EXTENSION, $result);
+    $this->assertEquals(JShrinkProcessor::EXTENSION, $result);
   }
 
   /**
@@ -54,7 +54,7 @@ class JShrinkCompilerTest extends PHPUnit_Framework_TestCase {
   public function getOutputMimeType_success() {
     $result = $this->target->getOutputMimeType();
     $this->assertNotEmpty($result);
-    $this->assertEquals(JShrinkCompiler::MIME_TYPE, $result);
+    $this->assertEquals(JShrinkProcessor::MIME_TYPE, $result);
   }
 
   /**
