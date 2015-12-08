@@ -7,7 +7,7 @@ use Phaldan\AssetBuilder\Builder\Builder;
 use Phaldan\AssetBuilder\Processor\Minifier\CssProcessor;
 use Phaldan\AssetBuilder\Processor\Minifier\JavaScriptProcessor;
 use Phaldan\AssetBuilder\Processor\PreProcessor\LessProcessor;
-use Phaldan\AssetBuilder\Processor\CssPreProcessor;
+use Phaldan\AssetBuilder\Processor\PreProcessor\CssPreProcessor;
 use Phaldan\AssetBuilder\Processor\PreProcessor\ScssProcessor;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;

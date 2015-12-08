@@ -1,6 +1,8 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\PreProcessor;
+
+use Phaldan\AssetBuilder\Processor\Processor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>

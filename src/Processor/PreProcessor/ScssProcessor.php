@@ -2,8 +2,6 @@
 
 namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
-use Phaldan\AssetBuilder\Processor\CssPreProcessor;
-
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
