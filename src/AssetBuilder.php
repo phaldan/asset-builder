@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder;
 use Leafo\ScssPhp\Compiler;
 use Phaldan\AssetBuilder\Builder\Builder;
 use Phaldan\AssetBuilder\Processor\Minifier\CssProcessor;
-use Phaldan\AssetBuilder\Processor\JavaScriptProcessor;
+use Phaldan\AssetBuilder\Processor\Minifier\JavaScriptProcessor;
 use Phaldan\AssetBuilder\Processor\LessProcessor;
 use Phaldan\AssetBuilder\Processor\CssPreProcessor;
 use Phaldan\AssetBuilder\Processor\ScssProcessor;

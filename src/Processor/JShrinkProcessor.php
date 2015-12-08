@@ -4,6 +4,7 @@ namespace Phaldan\AssetBuilder\Processor;
 
 use JShrink\Minifier;
 use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\Processor\Minifier\JavaScriptProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
