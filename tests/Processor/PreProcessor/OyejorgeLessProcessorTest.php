@@ -1,6 +1,6 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
 use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;

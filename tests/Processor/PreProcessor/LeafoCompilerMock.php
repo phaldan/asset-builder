@@ -1,6 +1,6 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 
