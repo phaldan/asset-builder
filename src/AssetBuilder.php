@@ -7,7 +7,7 @@ use Phaldan\AssetBuilder\Builder\Builder;
 use Phaldan\AssetBuilder\Processor\CssProcessor;
 use Phaldan\AssetBuilder\Processor\JavaScriptProcessor;
 use Phaldan\AssetBuilder\Processor\LessCompiler;
-use Phaldan\AssetBuilder\Processor\PreProcessorProcessor;
+use Phaldan\AssetBuilder\Processor\CssPreProcessor;
 use Phaldan\AssetBuilder\Processor\ScssCompiler;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
@@ -72,7 +72,7 @@ class AssetBuilder {
     return $this->setImportPath($instance, $importPath);
   }
 
-  private function setImportPath(PreProcessorProcessor $compiler, $importPath = null) {
+  private function setImportPath(CssPreProcessor $compiler, $importPath = null) {
     if (!is_null($importPath)) {
       $compiler->setImportPaths((array)$importPath);
     }
