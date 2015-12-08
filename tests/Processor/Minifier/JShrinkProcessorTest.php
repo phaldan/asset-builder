@@ -1,8 +1,9 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\Minifier;
 
 use Phaldan\AssetBuilder\ContextMock;
+use Phaldan\AssetBuilder\Processor\Minifier\JShrinkProcessor;
 use PHPUnit_Framework_TestCase;
 
 /**

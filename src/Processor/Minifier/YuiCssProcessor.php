@@ -4,7 +4,6 @@ namespace Phaldan\AssetBuilder\Processor\Minifier;
 
 use CSSmin;
 use Phaldan\AssetBuilder\Context;
-use Phaldan\AssetBuilder\Processor\Minifier\CssProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
