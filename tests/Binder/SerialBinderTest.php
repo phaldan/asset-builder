@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use Phaldan\AssetBuilder\Processor\CompilerListStub;
-use Phaldan\AssetBuilder\Processor\CompilerStub;
+use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;
 use PHPUnit_Framework_TestCase;
@@ -49,7 +49,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->files->add($file);
     $this->fileSystem->setContent($file, 'plain');
 
-    $compiler = new CompilerStub();
+    $compiler = new ProcessorStub();
     $compiler->set('plain', $return);
     $compiler->setOutputMimeType($mimeType);
     $this->compiler->set($file, $compiler);

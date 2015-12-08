@@ -6,7 +6,7 @@ use ArrayIterator;
 use Exception;
 use Phaldan\AssetBuilder\Binder\BinderStub;
 use Phaldan\AssetBuilder\Processor\CompilerList;
-use Phaldan\AssetBuilder\Processor\CompilerStub;
+use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\Processor\DummyCompiler;
 use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
@@ -162,7 +162,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function addCompiler_success() {
-    $compiler = new CompilerStub();
+    $compiler = new ProcessorStub();
     $compiler->setSupportedExtension('css');
     $this->assertSame($this->target, $this->target->addCompiler($compiler));
     $this->assertSame($compiler, $this->compiler->get('asset/test.css'));

@@ -19,7 +19,7 @@ class CompilerListTest extends PHPUnit_Framework_TestCase {
   }
 
   private function stubCompiler($extension) {
-    $compiler = new CompilerStub();
+    $compiler = new ProcessorStub();
     $compiler->setSupportedExtension($extension);
     $this->target->add($compiler);
     return $compiler;

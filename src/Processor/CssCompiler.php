@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class CssCompiler implements Compiler {
+abstract class CssProcessor implements Processor {
 
   const EXTENSION = 'css';
   const MIME_TYPE = 'text/css';

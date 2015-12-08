@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
-use Phaldan\AssetBuilder\Processor\Compiler;
+use Phaldan\AssetBuilder\Processor\Processor;
 use Phaldan\AssetBuilder\Processor\CompilerList;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 
@@ -31,7 +31,7 @@ class CompilerHandler {
   }
 
   /**
-   * @param Compiler|string $compiler
+   * @param Processor|string $compiler
    */
   public function add($compiler) {
     $instance = $this->getInstance($compiler);
@@ -40,7 +40,7 @@ class CompilerHandler {
 
   /**
    * @param $compiler
-   * @return Compiler
+   * @return Processor
    */
   private function getInstance($compiler) {
     $instance = $this->processInstance($compiler);
@@ -58,7 +58,7 @@ class CompilerHandler {
   } // @codeCoverageIgnore
 
   private function validateInstance($instance) {
-    if (!is_subclass_of($instance, Compiler::class)) {
+    if (!is_subclass_of($instance, Processor::class)) {
       InvalidArgumentException::createNotSubclass($instance);
     } // @codeCoverageIgnore
   }

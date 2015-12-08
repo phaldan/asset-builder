@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class PreProcessorCompiler implements Compiler {
+abstract class PreProcessorProcessor implements Processor {
 
   const MIME_TYPE = 'text/css';
 

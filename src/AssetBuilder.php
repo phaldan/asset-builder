@@ -4,10 +4,10 @@ namespace Phaldan\AssetBuilder;
 
 use Leafo\ScssPhp\Compiler;
 use Phaldan\AssetBuilder\Builder\Builder;
-use Phaldan\AssetBuilder\Processor\CssCompiler;
-use Phaldan\AssetBuilder\Processor\JavaScriptCompiler;
+use Phaldan\AssetBuilder\Processor\CssProcessor;
+use Phaldan\AssetBuilder\Processor\JavaScriptProcessor;
 use Phaldan\AssetBuilder\Processor\LessCompiler;
-use Phaldan\AssetBuilder\Processor\PreProcessorCompiler;
+use Phaldan\AssetBuilder\Processor\PreProcessorProcessor;
 use Phaldan\AssetBuilder\Processor\ScssCompiler;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
@@ -59,7 +59,7 @@ class AssetBuilder {
   }
 
   private function addCompiler(Builder $builder, $importPath = null) {
-    return $builder->addCompiler(JavaScriptCompiler::class)->addCompiler(CssCompiler::class)->addCompiler($this->getLessCompiler($importPath))->addCompiler($this->getScssCompiler($importPath));
+    return $builder->addCompiler(JavaScriptProcessor::class)->addCompiler(CssProcessor::class)->addCompiler($this->getLessCompiler($importPath))->addCompiler($this->getScssCompiler($importPath));
   }
 
   private function getLessCompiler($importPath = null) {
@@ -72,7 +72,7 @@ class AssetBuilder {
     return $this->setImportPath($instance, $importPath);
   }
 
-  private function setImportPath(PreProcessorCompiler $compiler, $importPath = null) {
+  private function setImportPath(PreProcessorProcessor $compiler, $importPath = null) {
     if (!is_null($importPath)) {
       $compiler->setImportPaths((array)$importPath);
     }

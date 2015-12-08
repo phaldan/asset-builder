@@ -10,15 +10,15 @@ class CompilerList {
   private $list = [];
 
   /**
-   * @param Compiler $compiler
+   * @param Processor $compiler
    */
-  public function add(Compiler $compiler) {
+  public function add(Processor $compiler) {
     $this->list[$compiler->getSupportedExtension()] = $compiler;
   }
 
   /**
    * @param $file
-   * @return Compiler|null
+   * @return Processor|null
    */
   public function get($file) {
     $extension = pathinfo($file, PATHINFO_EXTENSION);

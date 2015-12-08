@@ -4,7 +4,7 @@ namespace Phaldan\AssetBuilder\Builder;
 
 use ArrayAccess;
 use IteratorAggregate;
-use Phaldan\AssetBuilder\Processor\Compiler;
+use Phaldan\AssetBuilder\Processor\Processor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -55,7 +55,7 @@ interface Builder {
   public function enableStopWatch($boolean = true);
 
   /**
-   * @param Compiler|string $compiler
+   * @param Processor|string $compiler
    * @return Builder
    */
   public function addCompiler($compiler);

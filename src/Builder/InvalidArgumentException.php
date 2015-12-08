@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
-use Phaldan\AssetBuilder\Processor\Compiler;
+use Phaldan\AssetBuilder\Processor\Processor;
 
 
 /**
@@ -26,6 +26,6 @@ class InvalidArgumentException extends \InvalidArgumentException {
    * @throws InvalidArgumentException
    */
   public static function createNotSubclass($instance) {
-    throw new self(sprintf(self::MESSAGE_NOT_SUBCLASS, get_class($instance), Compiler::class));
+    throw new self(sprintf(self::MESSAGE_NOT_SUBCLASS, get_class($instance), Processor::class));
   }
 }
