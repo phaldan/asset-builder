@@ -7,7 +7,6 @@ use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
-use Phaldan\AssetBuilder\Processor\ScssProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
