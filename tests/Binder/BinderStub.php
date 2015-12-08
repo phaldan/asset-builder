@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use IteratorAggregate;
-use Phaldan\AssetBuilder\Processor\CompilerList;
+use Phaldan\AssetBuilder\Processor\ProcessorList;
 use SplObjectStorage;
 
 /**
@@ -23,10 +23,10 @@ class BinderStub implements Binder {
 
   /**
    * @param IteratorAggregate $files
-   * @param CompilerList $compiler
+   * @param ProcessorList $compiler
    * @return string
    */
-  public function bind(IteratorAggregate $files, CompilerList $compiler) {
+  public function bind(IteratorAggregate $files, ProcessorList $compiler) {
     return $this->list->offsetExists($files) ? $this->list->offsetGet($files) : null;
   }
 

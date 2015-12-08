@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class CompilerList {
+class ProcessorList {
 
   private $list = [];
 

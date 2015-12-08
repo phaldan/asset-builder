@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use Phaldan\AssetBuilder\Cache\Cache;
-use Phaldan\AssetBuilder\Processor\CompilerList;
+use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
@@ -34,7 +34,7 @@ class CachedSerialBinder extends SerialBinder {
     $this->context = $context;
   }
 
-  protected function process($file, CompilerList $compiler) {
+  protected function process($file, ProcessorList $compiler) {
     return $this->context->hasCache() ? $this->caching($file, $compiler) : parent::process($file, $compiler);
   }
 

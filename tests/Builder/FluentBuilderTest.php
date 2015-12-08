@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Builder;
 use ArrayIterator;
 use Exception;
 use Phaldan\AssetBuilder\Binder\BinderStub;
-use Phaldan\AssetBuilder\Processor\CompilerList;
+use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\Processor\DummyCompiler;
 use Phaldan\AssetBuilder\ContextMock;
@@ -34,7 +34,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   private $context;
 
   /**
-   * @var CompilerList
+   * @var ProcessorList
    */
   private $compiler;
 
@@ -46,7 +46,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   protected function setUp() {
     $this->binder = new BinderStub();
     $this->context = new ContextMock();
-    $this->compiler = new CompilerList();
+    $this->compiler = new ProcessorList();
     $this->container = new IocContainer();
 
     $handler = new CompilerHandler($this->compiler, $this->container);

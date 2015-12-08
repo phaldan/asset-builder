@@ -4,7 +4,7 @@ namespace Phaldan\AssetBuilder\Binder;
 
 use DateTime;
 use Phaldan\AssetBuilder\Cache\CacheMock;
-use Phaldan\AssetBuilder\Processor\CompilerListStub;
+use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
@@ -54,7 +54,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->fileSystem->setContent($file, 'plain');
     $compiler = new ProcessorStub();
     $compiler->set('plain', $content);
-    $list = new CompilerListStub();
+    $list = new ProcessorListStub();
     $list->set($file, $compiler);
     return $list;
   }
@@ -78,7 +78,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
     $time = new DateTime();
     $this->stubCache($file, 'cached', $time, $time);
 
-    $this->assertEquals('cached', $this->target->bind(new FileList([$file]), new CompilerListStub()));
+    $this->assertEquals('cached', $this->target->bind(new FileList([$file]), new ProcessorListStub()));
   }
 
   /**

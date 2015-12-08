@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class CompilerListStub extends CompilerList {
+class ProcessorListStub extends ProcessorList {
 
   private $content = [];
   private $return = [];

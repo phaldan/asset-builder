@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Builder;
 
 use Phaldan\AssetBuilder\Processor\Processor;
-use Phaldan\AssetBuilder\Processor\CompilerList;
+use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 
 /**
@@ -12,7 +12,7 @@ use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 class CompilerHandler {
 
   /**
-   * @var CompilerList
+   * @var ProcessorList
    */
   private $compiler;
 
@@ -22,10 +22,10 @@ class CompilerHandler {
   private $container;
 
   /**
-   * @param CompilerList $compiler
+   * @param ProcessorList $compiler
    * @param IocContainer $container
    */
-  public function __construct(CompilerList $compiler, IocContainer $container) {
+  public function __construct(ProcessorList $compiler, IocContainer $container) {
     $this->compiler = $compiler;
     $this->container = $container;
   }
@@ -64,7 +64,7 @@ class CompilerHandler {
   }
 
   /**
-   * @return CompilerList
+   * @return ProcessorList
    */
   public function get() {
     return $this->compiler;

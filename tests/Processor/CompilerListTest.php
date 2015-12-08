@@ -10,12 +10,12 @@ use PHPUnit_Framework_TestCase;
 class CompilerListTest extends PHPUnit_Framework_TestCase {
 
   /**
-   * @var CompilerList
+   * @var ProcessorList
    */
   private $target;
 
   protected function setUp() {
-    $this->target = new CompilerList();
+    $this->target = new ProcessorList();
   }
 
   private function stubCompiler($extension) {

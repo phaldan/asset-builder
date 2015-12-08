@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Binder;
 
-use Phaldan\AssetBuilder\Processor\CompilerListStub;
+use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;
@@ -24,7 +24,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
   private $files;
 
   /**
-   * @var CompilerListStub
+   * @var ProcessorListStub
    */
   private $compiler;
 
@@ -38,7 +38,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->target = new SerialBinder($this->fileSystem);
 
     $this->files = new FileList();
-    $this->compiler = new CompilerListStub();
+    $this->compiler = new ProcessorListStub();
   }
 
   private function assertBind($expected) {

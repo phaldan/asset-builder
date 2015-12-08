@@ -3,7 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use IteratorAggregate;
-use Phaldan\AssetBuilder\Processor\CompilerList;
+use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
 /**
@@ -22,10 +22,10 @@ class SerialBinder extends ContentTypeBinder {
 
   /**
    * @param IteratorAggregate $files
-   * @param CompilerList $compiler
+   * @param ProcessorList $compiler
    * @return string
    */
-  public function bind(IteratorAggregate $files, CompilerList $compiler) {
+  public function bind(IteratorAggregate $files, ProcessorList $compiler) {
     $return = '';
     foreach ($files as $file) {
       $return .= $this->process($file, $compiler);
@@ -34,7 +34,7 @@ class SerialBinder extends ContentTypeBinder {
     return $return;
   }
 
-  protected function process($file, CompilerList $list) {
+  protected function process($file, ProcessorList $list) {
     $content = $this->fileSystem->getContent($file);
     $compiler = $list->get($file);
     $this->addType($compiler->getOutputMimeType());
