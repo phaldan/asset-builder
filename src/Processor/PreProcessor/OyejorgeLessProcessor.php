@@ -5,7 +5,6 @@ namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 use Less_Parser;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
-use Phaldan\AssetBuilder\Processor\LessProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
