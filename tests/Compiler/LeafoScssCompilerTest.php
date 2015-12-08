@@ -46,7 +46,18 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function getSupportedExtension_success() {
-    $this->assertEquals(LeafoScssCompiler::EXTENSION, $this->target->getSupportedExtension());
+    $result = $this->target->getSupportedExtension();
+    $this->assertNotEmpty($result);
+    $this->assertEquals(LeafoScssCompiler::EXTENSION, $result);
+  }
+
+  /**
+   * @test
+   */
+  public function getOutputMimeType_success() {
+    $result = $this->target->getOutputMimeType();
+    $this->assertNotEmpty($result);
+    $this->assertEquals(LeafoScssCompiler::MIME_TYPE, $result);
   }
 
   /**

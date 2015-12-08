@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Compiler;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class LessCompiler implements PreProcessorCompiler {
+abstract class LessCompiler extends PreProcessorCompiler {
 
   const EXTENSION = 'less';
 

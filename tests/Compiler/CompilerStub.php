@@ -26,4 +26,7 @@ class CompilerStub implements Compiler {
   public function set($content, $response) {
     $this->responses[$content] = $response;
   }
+
+  public function getOutputMimeType() {
+  }
 }

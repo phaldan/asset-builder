@@ -48,9 +48,19 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function getSupportedExtension_success() {
-    $this->assertEquals(OyejorgeLessCompiler::EXTENSION, $this->target->getSupportedExtension());
+    $result = $this->target->getSupportedExtension();
+    $this->assertNotEmpty($result);
+    $this->assertEquals(OyejorgeLessCompiler::EXTENSION, $result);
   }
 
+  /**
+   * @test
+   */
+  public function getOutputMimeType_success() {
+    $result = $this->target->getOutputMimeType();
+    $this->assertNotEmpty($result);
+    $this->assertEquals(OyejorgeLessCompiler::MIME_TYPE, $result);
+  }
 
   /**
    * @test

@@ -47,7 +47,18 @@ class YuiCssCompilerTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function getSupportedExtension_success() {
-    $this->assertEquals(YuiCssCompiler::EXTENSION, $this->target->getSupportedExtension());
+    $result = $this->target->getSupportedExtension();
+    $this->assertNotEmpty($result);
+    $this->assertEquals(YuiCssCompiler::EXTENSION, $result);
+  }
+
+  /**
+   * @test
+   */
+  public function getOutputMimeType_success() {
+    $result = $this->target->getOutputMimeType();
+    $this->assertNotEmpty($result);
+    $this->assertEquals(YuiCssCompiler::MIME_TYPE, $result);
   }
 
   /**

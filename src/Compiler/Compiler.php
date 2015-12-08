@@ -14,6 +14,12 @@ interface Compiler {
   public function getSupportedExtension();
 
   /**
+   * @return string
+   */
+  public function getOutputMimeType();
+
+  /**
+   * Transform to native language like CSS or JavaScript, and compress
    * @param $content
    * @return string
    */
