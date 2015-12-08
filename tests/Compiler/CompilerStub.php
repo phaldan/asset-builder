@@ -20,7 +20,7 @@ class CompilerStub implements Compiler {
   private $responses = [];
 
   public function process($content) {
-    return $this->responses[$content];
+    return isset($this->responses[$content]) ? $this->responses[$content] : null;
   }
 
   public function set($content, $response) {

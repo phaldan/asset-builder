@@ -9,6 +9,7 @@ class CompilerListStub extends CompilerList {
 
   private $content = [];
   private $return = [];
+  private $compiler = [];
 
   public function process($file, $content) {
     $this->content[$file] = $content;
@@ -21,5 +22,13 @@ class CompilerListStub extends CompilerList {
 
   public function getProcessContent($file) {
     return isset($this->content[$file]) ? $this->content[$file] : null;
+  }
+
+  public function get($file) {
+    return isset($this->compiler[$file]) ? $this->compiler[$file] : null;
+  }
+
+  public function set($file, $compiler) {
+    $this->compiler[$file] = $compiler;
   }
 }

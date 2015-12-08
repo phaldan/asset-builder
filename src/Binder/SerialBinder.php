@@ -33,8 +33,9 @@ class SerialBinder implements Binder {
     return $return;
   }
 
-  protected function process($file, CompilerList $compiler) {
+  protected function process($file, CompilerList $list) {
     $content = $this->fileSystem->getContent($file);
-    return $compiler->process($file, $content);
+    $compiler = $list->get($file);
+    return $compiler->process($content);
   }
 }

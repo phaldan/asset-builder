@@ -3,6 +3,7 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use Phaldan\AssetBuilder\Compiler\CompilerListStub;
+use Phaldan\AssetBuilder\Compiler\CompilerStub;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;
 use PHPUnit_Framework_TestCase;
@@ -34,18 +35,16 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->files = new FileList();
   }
 
-  private function assertBind($expected, $compiler) {
-    $this->assertEquals($expected, $this->target->bind($this->files, $compiler));
-  }
-
   public function test() {
-    $this->files->add('example.css');
-    $this->fileSystem->setContent('example.css', 'some-css-content');
+    $file = 'example.css';
+    $this->files->add($file);
+    $this->fileSystem->setContent($file, 'some-css-content');
 
-    $compiler = new CompilerListStub();
-    $compiler->setProcessReturn('example.css', 'success');
+    $compiler = new CompilerStub();
+    $compiler->set('some-css-content', 'success');
+    $list = new CompilerListStub();
+    $list->set('example.css', $compiler);
 
-    $this->assertBind('success', $compiler);
-    $this->assertEquals('some-css-content', $compiler->getProcessContent('example.css'));
+    $this->assertEquals('success', $this->target->bind($this->files, $list));
   }
 }
