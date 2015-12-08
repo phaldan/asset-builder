@@ -14,7 +14,7 @@ class ModuleContainer extends IocContainer {
     $this->register(Binder\Binder::class, Binder\CachedSerialBinder::class);
     $this->register(Cache\Cache::class, Cache\FileCache::class);
     $this->register(FileSystem\FileSystem::class, FileSystem\FlySystem::class);
-    $this->register(Processor\Minifier\CssProcessor::class, Processor\YuiCssProcessor::class);
+    $this->register(Processor\Minifier\CssProcessor::class, Processor\Minifier\YuiCssProcessor::class);
     $this->register(Processor\JavaScriptProcessor::class, Processor\JShrinkProcessor::class);
     $this->register(Processor\LessProcessor::class, Processor\OyejorgeLessProcessor::class);
     $this->register(Processor\ScssProcessor::class, Processor\LeafoScssProcessor::class);

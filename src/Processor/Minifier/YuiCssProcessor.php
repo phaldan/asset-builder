@@ -1,6 +1,6 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\Minifier;
 
 use CSSmin;
 use Phaldan\AssetBuilder\Context;

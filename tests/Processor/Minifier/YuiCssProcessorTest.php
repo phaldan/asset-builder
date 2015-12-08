@@ -1,8 +1,10 @@
 <?php
 
-namespace Phaldan\AssetBuilder\Processor;
+namespace Phaldan\AssetBuilder\Processor\Minifier;
 
 use Phaldan\AssetBuilder\ContextMock;
+use Phaldan\AssetBuilder\Processor\Minifier\YuiCssProcessor;
+use Phaldan\AssetBuilder\Processor\YuiCssMinMock;
 use PHPUnit_Framework_TestCase;
 
 /**
