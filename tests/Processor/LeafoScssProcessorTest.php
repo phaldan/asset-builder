@@ -12,10 +12,10 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
+class LeafoScssProcessorTest extends PHPUnit_Framework_TestCase {
 
   /**
-   * @var LeafoScssCompiler
+   * @var LeafoScssProcessor
    */
   private $target;
 
@@ -33,7 +33,7 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
     $this->fileSystem = new FileSystemMock();
     $this->context = new ContextMock();
     $this->context->enableMinifier(true);
-    $this->target = new LeafoScssCompiler($this->fileSystem, $this->context);
+    $this->target = new LeafoScssProcessor($this->fileSystem, $this->context);
   }
 
   private function stubCompiler() {
@@ -48,7 +48,7 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
   public function getSupportedExtension_success() {
     $result = $this->target->getSupportedExtension();
     $this->assertNotEmpty($result);
-    $this->assertEquals(LeafoScssCompiler::EXTENSION, $result);
+    $this->assertEquals(LeafoScssProcessor::EXTENSION, $result);
   }
 
   /**
@@ -57,7 +57,7 @@ class LeafoScssCompilerTest extends PHPUnit_Framework_TestCase {
   public function getOutputMimeType_success() {
     $result = $this->target->getOutputMimeType();
     $this->assertNotEmpty($result);
-    $this->assertEquals(LeafoScssCompiler::MIME_TYPE, $result);
+    $this->assertEquals(LeafoScssProcessor::MIME_TYPE, $result);
   }
 
   /**

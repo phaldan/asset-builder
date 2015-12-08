@@ -11,7 +11,7 @@ use Phaldan\AssetBuilder\FileSystem\FileSystem;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class LeafoScssCompiler extends ScssCompiler {
+class LeafoScssProcessor extends ScssCompiler {
 
   private $fileSystem;
   private $context;
@@ -44,7 +44,7 @@ class LeafoScssCompiler extends ScssCompiler {
 
   /**
    * @param LeafoCompiler $compiler
-   * @return LeafoScssCompiler
+   * @return LeafoScssProcessor
    */
   public function setCompiler(LeafoCompiler $compiler) {
     $compiler->setImportPaths($this->importPaths);

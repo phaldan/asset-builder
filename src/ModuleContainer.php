@@ -17,6 +17,6 @@ class ModuleContainer extends IocContainer {
     $this->register(Processor\CssProcessor::class, Processor\YuiCssCompiler::class);
     $this->register(Processor\JavaScriptProcessor::class, Processor\JShrinkProcessor::class);
     $this->register(Processor\LessCompiler::class, Processor\OyejorgeLessCompiler::class);
-    $this->register(Processor\ScssCompiler::class, Processor\LeafoScssCompiler::class);
+    $this->register(Processor\ScssCompiler::class, Processor\LeafoScssProcessor::class);
   }
 }
