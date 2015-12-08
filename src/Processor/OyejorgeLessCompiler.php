@@ -9,7 +9,7 @@ use Phaldan\AssetBuilder\FileSystem\FileSystem;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class OyejorgeLessCompiler extends LessCompiler {
+class OyejorgeLessProcessor extends LessProcessor {
 
   const OPTION_MINIFY = 'compress';
 

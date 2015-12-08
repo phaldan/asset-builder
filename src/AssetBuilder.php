@@ -6,7 +6,7 @@ use Leafo\ScssPhp\Compiler;
 use Phaldan\AssetBuilder\Builder\Builder;
 use Phaldan\AssetBuilder\Processor\CssProcessor;
 use Phaldan\AssetBuilder\Processor\JavaScriptProcessor;
-use Phaldan\AssetBuilder\Processor\LessCompiler;
+use Phaldan\AssetBuilder\Processor\LessProcessor;
 use Phaldan\AssetBuilder\Processor\CssPreProcessor;
 use Phaldan\AssetBuilder\Processor\ScssCompiler;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
@@ -63,7 +63,7 @@ class AssetBuilder {
   }
 
   private function getLessCompiler($importPath = null) {
-    $instance = $this->getContainer()->getInstance(LessCompiler::class);
+    $instance = $this->getContainer()->getInstance(LessProcessor::class);
     return $this->setImportPath($instance, $importPath);
   }
 

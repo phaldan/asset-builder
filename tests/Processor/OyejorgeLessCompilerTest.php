@@ -12,7 +12,7 @@ use PHPUnit_Framework_TestCase;
 class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
 
   /**
-   * @var OyejorgeLessCompiler
+   * @var OyejorgeLessProcessor
    */
   private $target;
 
@@ -30,7 +30,7 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
     $this->fileSystem = new FileSystemMock();
     $this->context = new ContextMock();
     $this->context->enableMinifier(true);
-    $this->target = new OyejorgeLessCompiler($this->fileSystem, $this->context);
+    $this->target = new OyejorgeLessProcessor($this->fileSystem, $this->context);
   }
 
   private function stubCompiler() {
@@ -50,7 +50,7 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
   public function getSupportedExtension_success() {
     $result = $this->target->getSupportedExtension();
     $this->assertNotEmpty($result);
-    $this->assertEquals(OyejorgeLessCompiler::EXTENSION, $result);
+    $this->assertEquals(OyejorgeLessProcessor::EXTENSION, $result);
   }
 
   /**
@@ -59,7 +59,7 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
   public function getOutputMimeType_success() {
     $result = $this->target->getOutputMimeType();
     $this->assertNotEmpty($result);
-    $this->assertEquals(OyejorgeLessCompiler::MIME_TYPE, $result);
+    $this->assertEquals(OyejorgeLessProcessor::MIME_TYPE, $result);
   }
 
   /**
@@ -71,7 +71,7 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
 
     $compiler = $this->stubCompiler();
     $this->assertEquals($expected, $compiler->GetImportDirs());
-    $this->assertTrue($compiler->GetOption(OyejorgeLessCompiler::OPTION_MINIFY));
+    $this->assertTrue($compiler->GetOption(OyejorgeLessProcessor::OPTION_MINIFY));
   }
 
   /**
@@ -100,7 +100,7 @@ class OyejorgeLessCompilerTest extends PHPUnit_Framework_TestCase {
     $compiler = $this->stubCompiler();
     $compiler->setCss('input', 'output');
     $this->assertEquals('output', $this->target->process('input'));
-    $this->assertFalse($compiler->GetOption(OyejorgeLessCompiler::OPTION_MINIFY));
+    $this->assertFalse($compiler->GetOption(OyejorgeLessProcessor::OPTION_MINIFY));
   }
 
   /**

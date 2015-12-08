@@ -11,7 +11,7 @@ abstract class CssPreProcessor implements Processor {
 
   /**
    * @param array $paths
-   * @return LessCompiler
+   * @return CssPreProcessor
    */
   public abstract function setImportPaths(array $paths);
 
