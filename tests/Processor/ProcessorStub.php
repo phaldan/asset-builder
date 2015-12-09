@@ -10,6 +10,9 @@ class ProcessorStub extends Processor {
   private $extension;
   private $mimeType;
 
+  public function __construct() {
+  }
+
   public function getSupportedExtension() {
     return $this->extension;
   }
@@ -20,8 +23,8 @@ class ProcessorStub extends Processor {
 
   private $responses = [];
 
-  public function process($content) {
-    return isset($this->responses[$content]) ? $this->responses[$content] : null;
+  public function process($file) {
+    return isset($this->responses[$file]) ? $this->responses[$file] : null;
   }
 
   public function set($content, $response) {

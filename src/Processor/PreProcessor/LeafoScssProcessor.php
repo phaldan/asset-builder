@@ -72,7 +72,7 @@ class LeafoScssProcessor extends ScssProcessor {
   /**
    * @inheritdoc
    */
-  public function process($content) {
-    return $this->getCompiler()->compile($content);
+  public function process($file) {
+    return $this->getCompiler()->compile($file);
   }
 }

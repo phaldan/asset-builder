@@ -9,11 +9,14 @@ use Phaldan\AssetBuilder\Processor\Minifier\JavaScriptProcessor;
  */
 class DummyProcessor extends JavaScriptProcessor {
 
+  public function __construct() {
+  }
+
   /**
-   * @param $content
+   * @param $file
    * @return string
    */
-  public function process($content) {
-    return $content;
+  public function process($file) {
+    return $file;
   }
 }

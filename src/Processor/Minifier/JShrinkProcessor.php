@@ -20,10 +20,11 @@ class JShrinkProcessor extends JavaScriptProcessor {
   }
 
   /**
-   * @param $content
+   * @param $file
    * @return string
+   * @throws \Exception
    */
-  public function process($content) {
-    return $this->context->hasMinifier() ? Minifier::minify($content) : $content;
+  public function process($file) {
+    return $this->context->hasMinifier() ? Minifier::minify($file) : $file;
   }
 }

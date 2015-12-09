@@ -25,11 +25,11 @@ class YuiCssProcessor extends CssProcessor {
   }
 
   /**
-   * @param $content
+   * @param $file
    * @return string
    */
-  public function process($content) {
-    return $this->context->hasMinifier() ? $this->getCompressor()->run($content) : $content;
+  public function process($file) {
+    return $this->context->hasMinifier() ? $this->getCompressor()->run($file) : $file;
   }
 
   private function getCompressor() {

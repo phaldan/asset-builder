@@ -68,7 +68,7 @@ class OyejorgeLessProcessor extends LessProcessor {
   /**
    * @inheritdoc
    */
-  public function process($content) {
-    return $this->getCompiler()->parse($content)->getCss();
+  public function process($file) {
+    return $this->getCompiler()->parse($file)->getCss();
   }
 }
