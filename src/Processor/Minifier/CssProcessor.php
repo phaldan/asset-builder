@@ -7,7 +7,7 @@ use Phaldan\AssetBuilder\Processor\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class CssProcessor implements Processor {
+abstract class CssProcessor extends Processor {
 
   const EXTENSION = 'css';
   const MIME_TYPE = 'text/css';

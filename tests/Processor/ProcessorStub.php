@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class ProcessorStub implements Processor {
+class ProcessorStub extends Processor {
 
   private $extension;
   private $mimeType;
