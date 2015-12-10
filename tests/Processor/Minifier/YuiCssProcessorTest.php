@@ -12,7 +12,7 @@ class YuiCssProcessorTest extends ProcessorTestCase {
   /**
    * @var YuiCssProcessor
    */
-  private $target;
+  protected $target;
 
   protected function setUp() {
     parent::setUp();
@@ -24,11 +24,6 @@ class YuiCssProcessorTest extends ProcessorTestCase {
     $compressor = new YuiCssMinMock();
     $compressor->set($current, $expected);
     return $this->target->setCompressor($compressor);
-  }
-
-  private function assertProcess($expected, $current) {
-    $this->fileSystem->setContent('example.css', $current);
-    $this->assertEquals($expected, $this->target->process('example.css'));
   }
 
   private function getContent() {

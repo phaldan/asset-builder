@@ -15,7 +15,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
   /**
    * @var LeafoScssProcessor
    */
-  private $target;
+  protected $target;
 
   protected function setUp() {
     parent::setUp();
@@ -27,11 +27,6 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
     $compiler = new LeafoCompilerMock();
     $this->target->setCompiler($compiler);
     return $compiler;
-  }
-
-  private function assertProcess($expected, $current) {
-    $this->fileSystem->setContent('example.scss', $current);
-    $this->assertEquals($expected, $this->target->process('example.scss'));
   }
 
   /**

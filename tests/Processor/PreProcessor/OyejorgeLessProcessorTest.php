@@ -12,7 +12,7 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
   /**
    * @var OyejorgeLessProcessor
    */
-  private $target;
+  protected $target;
 
   protected function setUp() {
     parent::setUp();
@@ -29,11 +29,6 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
   private function stubImportPath(array $current, array $expected) {
     $this->fileSystem->setAbsolutePaths($current, $expected);
     return $this->target->setImportPaths($current);
-  }
-
-  private function assertProcess($expected, $current) {
-    $this->fileSystem->setContent('example.less', $current);
-    $this->assertEquals($expected, $this->target->process('example.less'));
   }
 
   /**

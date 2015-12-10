@@ -13,6 +13,11 @@ use PHPUnit_Framework_TestCase;
 class ProcessorTestCase extends PHPUnit_Framework_TestCase {
 
   /**
+   * @var Processor
+   */
+  protected $target;
+
+  /**
    * @var FileSystemMock
    */
   protected $fileSystem;
@@ -31,5 +36,10 @@ class ProcessorTestCase extends PHPUnit_Framework_TestCase {
     $this->fileSystem = new FileSystemMock();
     $this->cache = new CacheMock();
     $this->context = new ContextMock();
+  }
+
+  protected function assertProcess($expected, $current) {
+    $this->fileSystem->setContent('example.file', $current);
+    $this->assertEquals($expected, $this->target->process('example.file'));
   }
 }

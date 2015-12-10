@@ -12,16 +12,11 @@ class JShrinkProcessorTest extends ProcessorTestCase {
   /**
    * @var JShrinkProcessor
    */
-  private $target;
+  protected $target;
 
   protected function setUp() {
     parent::setUp();
     $this->target = new JShrinkProcessor($this->fileSystem, $this->cache, $this->context);
-  }
-
-  private function stubFile($file) {
-    $content = $this->getContent();
-    $this->fileSystem->setContent($file, $content);
   }
 
   private function getContent() {
@@ -61,15 +56,13 @@ class JShrinkProcessorTest extends ProcessorTestCase {
    */
   public function process_success() {
     $this->context->enableMinifier(true);
-    $this->stubFile('example.css');
-    $this->assertEquals($this->getExpected(), $this->target->executeProcessing('example.css'));
+    $this->assertProcess($this->getExpected(), $this->getContent());
   }
 
   /**
    * @test
    */
   public function process_fail() {
-    $this->stubFile('example.css');
-    $this->assertEquals($this->getContent(), $this->target->executeProcessing('example.css'));
+    $this->assertProcess($this->getContent(), $this->getContent());
   }
 }
