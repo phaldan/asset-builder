@@ -77,4 +77,12 @@ class ProcessorTest extends PHPUnit_Framework_TestCase {
     $this->cache->setEntry('example.css', 'cached');
     $this->assertEquals('cached', $this->target->process('example.css'));
   }
+
+  /**
+   * @test
+   */
+  public function getContent_success() {
+    $this->fileSystem->setContent('example.css', 'content');
+    $this->assertEquals('content', $this->target->getContent('example.css'));
+  }
 }

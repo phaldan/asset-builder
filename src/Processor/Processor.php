@@ -11,6 +11,8 @@ use Phaldan\AssetBuilder\FileSystem\FileSystem;
  */
 abstract class Processor {
 
+  const MESSAGE_EXCEPTION = 'Please provide an implementation for executeProcessing(...) method';
+
   /**
    * @var FileSystem
    */
@@ -36,11 +38,12 @@ abstract class Processor {
   public abstract function getOutputMimeType();
 
   /**
-   * @param $file
+   * @param $filePath
    * @return string
+   * @throws \Exception
    */
-  protected function executeProcessing($file) {
-
+  protected function executeProcessing($filePath) {
+    throw new \Exception();
   }
 
   /**
@@ -85,5 +88,20 @@ abstract class Processor {
     if ($this->context->hasCache()) {
       $this->cache->setEntry($filePath, $content);
     }
+  }
+
+  /**
+   * @param $filePath
+   * @return null|string
+   */
+  protected function getContent($filePath) {
+    return $this->fileSystem->getContent($filePath);
+  }
+
+  /**
+   * @return Context
+   */
+  protected function getContext() {
+    return $this->context;
   }
 }

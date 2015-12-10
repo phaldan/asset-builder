@@ -15,11 +15,15 @@ class ProcessorImpl extends Processor {
   public function getOutputMimeType() {
   }
 
-  protected function executeProcessing($file) {
-    return isset($this->returns[$file]) ? $this->returns[$file] : null;
+  protected function executeProcessing($filePath) {
+    return isset($this->returns[$filePath]) ? $this->returns[$filePath] : null;
   }
 
   public function setExecuteProcessingReturn($file, $return) {
     $this->returns[$file] = $return;
+  }
+
+  public function getContent($filePath) {
+    return parent::getContent($filePath);
   }
 }

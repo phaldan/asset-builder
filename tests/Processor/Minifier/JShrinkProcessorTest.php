@@ -2,27 +2,26 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
-use Phaldan\AssetBuilder\ContextMock;
-use PHPUnit_Framework_TestCase;
+use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class JShrinkProcessorTest extends PHPUnit_Framework_TestCase {
+class JShrinkProcessorTest extends ProcessorTestCase {
 
   /**
    * @var JShrinkProcessor
    */
   private $target;
 
-  /**
-   * @var ContextMock
-   */
-  private $context;
-
   protected function setUp() {
-    $this->context = new ContextMock();
-    $this->target = new JShrinkProcessor($this->context);
+    parent::setUp();
+    $this->target = new JShrinkProcessor($this->fileSystem, $this->cache, $this->context);
+  }
+
+  private function stubFile($file) {
+    $content = $this->getContent();
+    $this->fileSystem->setContent($file, $content);
   }
 
   private function getContent() {
@@ -62,15 +61,15 @@ class JShrinkProcessorTest extends PHPUnit_Framework_TestCase {
    */
   public function process_success() {
     $this->context->enableMinifier(true);
-    $content = $this->getContent();
-    $this->assertEquals($this->getExpected(), $this->target->process($content));
+    $this->stubFile('example.css');
+    $this->assertEquals($this->getExpected(), $this->target->executeProcessing('example.css'));
   }
 
   /**
    * @test
    */
   public function process_fail() {
-    $content = $this->getContent();
-    $this->assertEquals($content, $this->target->process($content));
+    $this->stubFile('example.css');
+    $this->assertEquals($this->getContent(), $this->target->executeProcessing('example.css'));
   }
 }
