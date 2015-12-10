@@ -5,41 +5,33 @@ namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
-use Phaldan\AssetBuilder\ContextMock;
-use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
-use PHPUnit_Framework_TestCase;
+use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class LeafoScssProcessorTest extends PHPUnit_Framework_TestCase {
+class LeafoScssProcessorTest extends ProcessorTestCase {
 
   /**
    * @var LeafoScssProcessor
    */
   private $target;
 
-  /**
-   * @var FileSystemMock
-   */
-  private $fileSystem;
-
-  /**
-   * @var ContextMock
-   */
-  private $context;
-
   protected function setUp() {
-    $this->fileSystem = new FileSystemMock();
-    $this->context = new ContextMock();
+    parent::setUp();
     $this->context->enableMinifier(true);
-    $this->target = new LeafoScssProcessor($this->fileSystem, $this->context);
+    $this->target = new LeafoScssProcessor($this->fileSystem, $this->cache, $this->context);
   }
 
   private function stubCompiler() {
     $compiler = new LeafoCompilerMock();
     $this->target->setCompiler($compiler);
     return $compiler;
+  }
+
+  private function assertProcess($expected, $current) {
+    $this->fileSystem->setContent('example.scss', $current);
+    $this->assertEquals($expected, $this->target->process('example.scss'));
   }
 
   /**
@@ -88,7 +80,7 @@ class LeafoScssProcessorTest extends PHPUnit_Framework_TestCase {
       }
     ";
     $expected = "body{padding:0;margin:0}body p{padding:20px 0}";
-    $this->assertEquals($expected, $this->target->process($content));
+    $this->assertProcess($expected, $content);
   }
 
   /**
@@ -106,7 +98,7 @@ class LeafoScssProcessorTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals(Expanded::class, $compiler->getFormatter());
     $this->assertEquals($expected, $compiler->getImportPaths());
-    $this->assertEquals('output', $this->target->process('input'));
+    $this->assertProcess('output', 'input');
   }
 
   /**
@@ -119,7 +111,7 @@ class LeafoScssProcessorTest extends PHPUnit_Framework_TestCase {
     $this->assertSame($this->target, $this->target->setCompiler($compiler));
     $this->assertEquals(Crunched::class, $compiler->getFormatter());
     $this->assertNull($compiler->getLineNumberStyle());
-    $this->assertEquals('output', $this->target->process('input'));
+    $this->assertProcess('output', 'input');
   }
 
 
@@ -133,6 +125,6 @@ class LeafoScssProcessorTest extends PHPUnit_Framework_TestCase {
 
     $this->target->setCompiler($compiler);
     $this->assertEquals(LeafoCompiler::LINE_COMMENTS, $compiler->getLineNumberStyle());
-    $this->assertEquals('output', $this->target->process('input'));
+    $this->assertProcess('output', 'input');
   }
 }

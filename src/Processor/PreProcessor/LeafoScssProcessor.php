@@ -5,37 +5,23 @@ namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
-use Phaldan\AssetBuilder\Context;
-use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
 class LeafoScssProcessor extends ScssProcessor {
 
-  private $fileSystem;
-  private $context;
-  private $importPaths = [];
-
   /**
    * @var LeafoCompiler
    */
   private $compiler;
-
-  /**
-   * @param FileSystem $fileSystem
-   * @param Context $context
-   */
-  public function __construct(FileSystem $fileSystem, Context $context) {
-    $this->fileSystem = $fileSystem;
-    $this->context = $context;
-  }
+  private $importPaths = [];
 
   /**
    * @inheritdoc
    */
   public function setImportPaths(array $paths) {
-    $this->importPaths = $this->fileSystem->getAbsolutePaths($paths);
+    $this->importPaths = $this->getFileSystem()->getAbsolutePaths($paths);
     if (!is_null($this->compiler)) {
       $this->compiler->setImportPaths($this->importPaths);
     }
@@ -55,11 +41,11 @@ class LeafoScssProcessor extends ScssProcessor {
   }
 
   private function getFormatter() {
-    return ($this->context->hasMinifier()) ? Crunched::class : Expanded::class;
+    return ($this->getContext()->hasMinifier()) ? Crunched::class : Expanded::class;
   }
 
   private function getLineNumberStyle() {
-    return $this->context->hasDebug() ? LeafoCompiler::LINE_COMMENTS : null;
+    return $this->getContext()->hasDebug() ? LeafoCompiler::LINE_COMMENTS : null;
   }
 
   private function getCompiler() {
@@ -72,7 +58,8 @@ class LeafoScssProcessor extends ScssProcessor {
   /**
    * @inheritdoc
    */
-  public function process($file) {
-    return $this->getCompiler()->compile($file);
+  public function executeProcessing($filePath) {
+    $content = $this->getFileSystem()->getContent($filePath);
+    return $this->getCompiler()->compile($content);
   }
 }

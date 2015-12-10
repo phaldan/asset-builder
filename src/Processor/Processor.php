@@ -104,4 +104,11 @@ abstract class Processor {
   protected function getContext() {
     return $this->context;
   }
+
+  /**
+   * @return FileSystem
+   */
+  protected function getFileSystem() {
+    return $this->fileSystem;
+  }
 }
