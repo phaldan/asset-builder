@@ -13,7 +13,7 @@ class ProcessorList {
    * @param Processor $compiler
    */
   public function add(Processor $compiler) {
-    $this->list[$compiler->getSupportedExtension()] = $compiler;
+    $this->list[$compiler->getFileExtension()] = $compiler;
   }
 
   /**

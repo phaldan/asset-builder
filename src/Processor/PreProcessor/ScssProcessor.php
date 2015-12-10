@@ -12,7 +12,7 @@ abstract class ScssProcessor extends CssPreProcessor {
   /**
    * @inheritdoc
    */
-  public function getSupportedExtension() {
+  public function getFileExtension() {
     return self::EXTENSION;
   }
 }

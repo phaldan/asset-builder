@@ -163,7 +163,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   public function addCompiler_success() {
     $compiler = new ProcessorStub();
-    $compiler->setSupportedExtension('css');
+    $compiler->setFileExtension('css');
     $this->assertSame($this->target, $this->target->addCompiler($compiler));
     $this->assertSame($compiler, $this->compiler->get('asset/test.css'));
   }

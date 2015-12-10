@@ -37,7 +37,7 @@ class JShrinkProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function getSupportedExtension_success() {
-    $result = $this->target->getSupportedExtension();
+    $result = $this->target->getFileExtension();
     $this->assertNotEmpty($result);
     $this->assertEquals(JShrinkProcessor::EXTENSION, $result);
   }

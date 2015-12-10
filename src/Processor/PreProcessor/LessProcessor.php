@@ -12,7 +12,7 @@ abstract class LessProcessor extends CssPreProcessor {
   /**
    * @inheritdoc
    */
-  public function getSupportedExtension() {
+  public function getFileExtension() {
     return self::EXTENSION;
   }
 }

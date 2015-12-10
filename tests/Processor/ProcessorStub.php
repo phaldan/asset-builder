@@ -13,11 +13,11 @@ class ProcessorStub extends Processor {
   public function __construct() {
   }
 
-  public function getSupportedExtension() {
+  public function getFileExtension() {
     return $this->extension;
   }
 
-  public function setSupportedExtension($extension) {
+  public function setFileExtension($extension) {
     $this->extension = $extension;
   }
 

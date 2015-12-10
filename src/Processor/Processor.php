@@ -27,10 +27,10 @@ abstract class Processor {
   private $context;
 
   /**
-   * Returns file extension
+   * Returns file extension of supported files
    * @return string
    */
-  public abstract function getSupportedExtension();
+  public abstract function getFileExtension();
 
   /**
    * @return string

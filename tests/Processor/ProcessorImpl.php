@@ -9,7 +9,7 @@ class ProcessorImpl extends Processor {
 
   private $returns = [];
 
-  public function getSupportedExtension() {
+  public function getFileExtension() {
   }
 
   public function getOutputMimeType() {

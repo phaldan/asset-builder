@@ -20,7 +20,7 @@ class ProcessorListTest extends PHPUnit_Framework_TestCase {
 
   private function stubCompiler($extension) {
     $compiler = new ProcessorStub();
-    $compiler->setSupportedExtension($extension);
+    $compiler->setFileExtension($extension);
     $this->target->add($compiler);
     return $compiler;
   }

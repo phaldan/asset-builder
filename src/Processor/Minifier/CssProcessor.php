@@ -15,7 +15,7 @@ abstract class CssProcessor extends Processor {
   /**
    * @inheritdoc
    */
-  public function getSupportedExtension() {
+  public function getFileExtension() {
     return self::EXTENSION;
   }
 
