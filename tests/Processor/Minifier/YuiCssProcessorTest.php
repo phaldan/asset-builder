@@ -2,34 +2,33 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
-use Phaldan\AssetBuilder\ContextMock;
-use PHPUnit_Framework_TestCase;
+use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class YuiCssProcessorTest extends PHPUnit_Framework_TestCase {
+class YuiCssProcessorTest extends ProcessorTestCase {
 
   /**
    * @var YuiCssProcessor
    */
   private $target;
 
-  /**
-   * @var ContextMock
-   */
-  private $context;
-
   protected function setUp() {
-    $this->context = new ContextMock();
+    parent::setUp();
     $this->context->enableMinifier(true);
-    $this->target = new YuiCssProcessor($this->context);
+    $this->target = new YuiCssProcessor($this->fileSystem, $this->cache, $this->context);
   }
 
   private function stubCompressor($current, $expected) {
     $compressor = new YuiCssMinMock();
     $compressor->set($current, $expected);
     return $this->target->setCompressor($compressor);
+  }
+
+  private function assertProcess($expected, $current) {
+    $this->fileSystem->setContent('example.css', $current);
+    $this->assertEquals($expected, $this->target->process('example.css'));
   }
 
   private function getContent() {
@@ -66,7 +65,7 @@ class YuiCssProcessorTest extends PHPUnit_Framework_TestCase {
    */
   public function process_success() {
     $expected = "/*! Important comment */\nbody{margin:0;padding:0}";
-    $this->assertEquals($expected, $this->target->process($this->getContent()));
+    $this->assertProcess($expected, $this->getContent());
   }
 
   /**
@@ -74,7 +73,7 @@ class YuiCssProcessorTest extends PHPUnit_Framework_TestCase {
    */
   public function setCompressor_success() {
     $this->assertSame($this->target, $this->stubCompressor('input', 'output'));
-    $this->assertEquals('output', $this->target->process('input'));
+    $this->assertProcess('output', 'input');
   }
 
   /**
@@ -83,6 +82,6 @@ class YuiCssProcessorTest extends PHPUnit_Framework_TestCase {
   public function process_false() {
     $this->context->enableMinifier(false);
     $this->stubCompressor('input', 'output');
-    $this->assertEquals('input', $this->target->process('input'));
+    $this->assertProcess('input', 'input');
   }
 }

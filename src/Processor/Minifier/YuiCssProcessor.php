@@ -3,7 +3,6 @@
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
 use CSSmin;
-use Phaldan\AssetBuilder\Context;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -16,20 +15,12 @@ class YuiCssProcessor extends CssProcessor {
   private $compressor;
 
   /**
-   * @var Context
-   */
-  private $context;
-
-  public function __construct(Context $context) {
-    $this->context = $context;
-  }
-
-  /**
-   * @param $file
+   * @param $filePath
    * @return string
    */
-  public function process($file) {
-    return $this->context->hasMinifier() ? $this->getCompressor()->run($file) : $file;
+  public function executeProcessing($filePath) {
+    $content = $this->getContent($filePath);
+    return $this->getContext()->hasMinifier() ? $this->getCompressor()->run($content) : $content;
   }
 
   private function getCompressor() {
