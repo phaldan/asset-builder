@@ -27,8 +27,8 @@ class ProcessorStub extends Processor {
     return isset($this->responses[$file]) ? $this->responses[$file] : null;
   }
 
-  public function set($content, $response) {
-    $this->responses[$content] = $response;
+  public function set($file, $response) {
+    $this->responses[$file] = $response;
   }
 
   public function getOutputMimeType() {

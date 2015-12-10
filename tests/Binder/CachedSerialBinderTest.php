@@ -51,9 +51,9 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
   }
 
   private function stubCompiler($file, $content) {
-    $this->fileSystem->setContent($file, 'plain');
     $compiler = new ProcessorStub();
-    $compiler->set('plain', $content);
+    $compiler->set($file, $content);
+
     $list = new ProcessorListStub();
     $list->set($file, $compiler);
     return $list;

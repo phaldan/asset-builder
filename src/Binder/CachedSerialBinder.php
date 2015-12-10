@@ -28,7 +28,6 @@ class CachedSerialBinder extends SerialBinder {
   private $context;
 
   public function __construct(FileSystem $fileSystem, Cache $cache, Context $context) {
-    parent::__construct($fileSystem);
     $this->fileSystem = $fileSystem;
     $this->cache = $cache;
     $this->context = $context;
