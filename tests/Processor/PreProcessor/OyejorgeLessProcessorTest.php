@@ -2,35 +2,22 @@
 
 namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
-use Phaldan\AssetBuilder\ContextMock;
-use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
-use PHPUnit_Framework_TestCase;
+use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class OyejorgeLessProcessorTest extends PHPUnit_Framework_TestCase {
+class OyejorgeLessProcessorTest extends ProcessorTestCase {
 
   /**
    * @var OyejorgeLessProcessor
    */
   private $target;
 
-  /**
-   * @var FileSystemMock
-   */
-  private $fileSystem;
-
-  /**
-   * @var ContextMock
-   */
-  private $context;
-
   protected function setUp() {
-    $this->fileSystem = new FileSystemMock();
-    $this->context = new ContextMock();
+    parent::setUp();
     $this->context->enableMinifier(true);
-    $this->target = new OyejorgeLessProcessor($this->fileSystem, $this->context);
+    $this->target = new OyejorgeLessProcessor($this->fileSystem, $this->cache, $this->context);
   }
 
   private function stubCompiler() {
@@ -42,6 +29,11 @@ class OyejorgeLessProcessorTest extends PHPUnit_Framework_TestCase {
   private function stubImportPath(array $current, array $expected) {
     $this->fileSystem->setAbsolutePaths($current, $expected);
     return $this->target->setImportPaths($current);
+  }
+
+  private function assertProcess($expected, $current) {
+    $this->fileSystem->setContent('example.less', $current);
+    $this->assertEquals($expected, $this->target->process('example.less'));
   }
 
   /**
@@ -89,7 +81,7 @@ class OyejorgeLessProcessorTest extends PHPUnit_Framework_TestCase {
       }
     ";
     $expected = "body{padding: 0;margin: 0}body p{padding: 20px 0}";
-    $this->assertEquals($expected, $this->target->process($content));
+    $this->assertProcess($expected, $content);
   }
 
   /**
@@ -99,7 +91,7 @@ class OyejorgeLessProcessorTest extends PHPUnit_Framework_TestCase {
     $this->context->enableMinifier(false);
     $compiler = $this->stubCompiler();
     $compiler->setCss('input', 'output');
-    $this->assertEquals('output', $this->target->process('input'));
+    $this->assertProcess('output', 'input');
     $this->assertFalse($compiler->GetOption(OyejorgeLessProcessor::OPTION_MINIFY));
   }
 

@@ -3,8 +3,6 @@
 namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
 use Less_Parser;
-use Phaldan\AssetBuilder\Context;
-use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -18,25 +16,7 @@ class OyejorgeLessProcessor extends LessProcessor {
    */
   private $compiler;
 
-  /**
-   * @var Context
-   */
-  private $context;
   private $importPaths = [];
-
-  /**
-   * @var FileSystem
-   */
-  private $fileSystem;
-
-  /**
-   * @param FileSystem $fileSystem
-   * @param Context $context
-   */
-  public function __construct(FileSystem $fileSystem, Context $context) {
-    $this->fileSystem = $fileSystem;
-    $this->context = $context;
-  }
 
   private function getCompiler() {
     if (is_null($this->compiler)) {
@@ -51,14 +31,14 @@ class OyejorgeLessProcessor extends LessProcessor {
   public function setCompiler(Less_Parser $compiler) {
     $this->compiler = $compiler;
     $compiler->SetImportDirs($this->importPaths);
-    $compiler->SetOption(self::OPTION_MINIFY, $this->context->hasMinifier());
+    $compiler->SetOption(self::OPTION_MINIFY, $this->getContext()->hasMinifier());
   }
 
   /**
    * @inheritdoc
    */
   public function setImportPaths(array $paths) {
-    $this->importPaths = $this->fileSystem->getAbsolutePaths($paths);
+    $this->importPaths = $this->getFileSystem()->getAbsolutePaths($paths);
     if (!is_null($this->compiler)) {
       $this->compiler->SetImportDirs($this->importPaths);
     }
@@ -68,7 +48,8 @@ class OyejorgeLessProcessor extends LessProcessor {
   /**
    * @inheritdoc
    */
-  public function process($file) {
-    return $this->getCompiler()->parse($file)->getCss();
+  public function executeProcessing($filePath) {
+    $content = $this->getFileSystem()->getContent($filePath);
+    return $this->getCompiler()->parse($content)->getCss();
   }
 }
