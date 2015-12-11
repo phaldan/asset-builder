@@ -25,6 +25,7 @@ abstract class Processor {
    * @var Context
    */
   private $context;
+  private $files = [];
 
   /**
    * Returns file extension of supported files
@@ -65,6 +66,7 @@ abstract class Processor {
   public function process($file) {
     $content = $this->getCacheEntry($file);
     if (is_null($content)) {
+      $this->setFiles($file);
       $content = $this->executeProcessing($file);
       $this->setCacheEntry($file, $content);
     }
@@ -91,14 +93,6 @@ abstract class Processor {
   }
 
   /**
-   * @param $filePath
-   * @return null|string
-   */
-  protected function getContent($filePath) {
-    return $this->fileSystem->getContent($filePath);
-  }
-
-  /**
    * @return Context
    */
   protected function getContext() {
@@ -110,5 +104,17 @@ abstract class Processor {
    */
   protected function getFileSystem() {
     return $this->fileSystem;
+  }
+
+  protected function setFiles($filePath) {
+    $this->files = [$filePath => $this->getFileSystem()->getModifiedTime($filePath)];
+  }
+
+  /**
+   * Return all related files of processed file, like all imported files from processed less or sass.
+   * @return array
+   */
+  public function getFiles() {
+    return $this->files;
   }
 }

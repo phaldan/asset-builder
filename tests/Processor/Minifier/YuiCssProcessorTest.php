@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
+use DateTime;
 use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
@@ -78,5 +79,18 @@ class YuiCssProcessorTest extends ProcessorTestCase {
     $this->context->enableMinifier(false);
     $this->stubCompressor('input', 'output');
     $this->assertProcess('input', 'input');
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_success() {
+    $time = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $time);
+
+    $this->stubCompressor('input', 'output');
+    $this->assertProcess('output', 'input');
+    $this->assertArrayHasKey('example.file', $this->target->getFiles());
+    $this->assertSame($time, $this->target->getFiles()['example.file']);
   }
 }

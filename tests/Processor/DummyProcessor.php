@@ -12,11 +12,14 @@ class DummyProcessor extends JavaScriptProcessor {
   public function __construct() {
   }
 
-  /**
-   * @param $file
-   * @return string
-   */
   public function process($file) {
     return $file;
+  }
+
+  public function getFiles() {
+  }
+
+  public function executeProcessing($filePath) {
+    parent::executeProcessing($filePath);
   }
 }

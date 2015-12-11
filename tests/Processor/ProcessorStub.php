@@ -38,4 +38,7 @@ class ProcessorStub extends Processor {
   public function setOutputMimeType($mimeType) {
     $this->mimeType = $mimeType;
   }
+
+  public function getFiles() {
+  }
 }

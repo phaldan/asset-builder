@@ -10,12 +10,11 @@ use JShrink\Minifier;
 class JShrinkProcessor extends JavaScriptProcessor {
 
   /**
-   * @param $filePath
-   * @return string
+   * @inheritdoc
    * @throws \Exception
    */
-  public function executeProcessing($filePath) {
-    $content = $this->getContent($filePath);
+  protected function executeProcessing($filePath) {
+    $content = $this->getFileSystem()->getContent($filePath);
     return $this->getContext()->hasMinifier() ? Minifier::minify($content) : $content;
   }
 }

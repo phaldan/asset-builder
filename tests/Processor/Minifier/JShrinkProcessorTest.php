@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
+use DateTime;
 use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
@@ -64,5 +65,17 @@ class JShrinkProcessorTest extends ProcessorTestCase {
    */
   public function process_fail() {
     $this->assertProcess($this->getContent(), $this->getContent());
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_success() {
+    $time = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $time);
+
+    $this->assertProcess($this->getContent(), $this->getContent());
+    $this->assertArrayHasKey('example.file', $this->target->getFiles());
+    $this->assertSame($time, $this->target->getFiles()['example.file']);
   }
 }

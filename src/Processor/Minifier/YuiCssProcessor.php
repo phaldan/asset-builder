@@ -15,11 +15,10 @@ class YuiCssProcessor extends CssProcessor {
   private $compressor;
 
   /**
-   * @param $filePath
-   * @return string
+   * @inheritdoc
    */
-  public function executeProcessing($filePath) {
-    $content = $this->getContent($filePath);
+  protected function executeProcessing($filePath) {
+    $content = $this->getFileSystem()->getContent($filePath);
     return $this->getContext()->hasMinifier() ? $this->getCompressor()->run($content) : $content;
   }
 

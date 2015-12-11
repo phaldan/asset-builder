@@ -80,9 +80,10 @@ class ProcessorTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
+   * @expectedException \Exception
    */
-  public function getContent_success() {
-    $this->fileSystem->setContent('example.css', 'content');
-    $this->assertEquals('content', $this->target->getContent('example.css'));
+  public function executeProcessing_success() {
+    $target = new DummyProcessor();
+    $target->executeProcessing('test');
   }
 }
