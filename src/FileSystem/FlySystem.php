@@ -90,7 +90,7 @@ class FlySystem implements FileSystem {
    */
   public function setContent($filePath, $content) {
     $relative = $this->getRelativePath($filePath);
-    $this->getFlySystem($filePath)->write($relative, $content);
+    $this->getFlySystem($filePath)->put($relative, $content);
   }
 
   /**

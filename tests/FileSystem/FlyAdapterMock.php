@@ -15,6 +15,7 @@ class FlyAdapterMock implements AdapterInterface {
   private $has = [];
   private $read = [];
   private $write = [];
+  private $update = [];
   private $time = [];
 
   /**
@@ -38,6 +39,11 @@ class FlyAdapterMock implements AdapterInterface {
    * @inheritdoc
    */
   public function update($path, $contents, Config $config) {
+    $this->update[$path] = $contents;
+  }
+
+  public function getUpdate($path) {
+    return isset($this->update[$path]) ? $this->update[$path] : null;
   }
 
   /**
