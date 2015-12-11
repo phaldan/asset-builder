@@ -30,6 +30,7 @@ class OyejorgeLessProcessor extends LessProcessor {
    */
   public function setCompiler(Less_Parser $compiler) {
     $this->compiler = $compiler;
+    $compiler->Reset();
     $compiler->SetImportDirs($this->importPaths);
     $compiler->SetOption(self::OPTION_MINIFY, $this->getContext()->hasMinifier());
   }
@@ -49,8 +50,10 @@ class OyejorgeLessProcessor extends LessProcessor {
    * @inheritdoc
    */
   public function executeProcessing($filePath) {
+    $this->setCompiler($this->getCompiler());
     $content = $this->getFileSystem()->getContent($filePath);
-    return $this->getCompiler()->parse($content)->getCss();
+    $this->getCompiler()->parse($content);
+    return $this->getCompiler()->getCss();
   }
 
   /**

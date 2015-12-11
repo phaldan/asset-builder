@@ -17,6 +17,7 @@ class LeafoScssProcessor extends ScssProcessor {
    */
   private $compiler;
   private $importPaths = [];
+  private $relatedFiles = [];
 
   /**
    * @inheritdoc
@@ -61,13 +62,20 @@ class LeafoScssProcessor extends ScssProcessor {
    */
   protected function executeProcessing($filePath) {
     $content = $this->getFileSystem()->getContent($filePath);
-    return $this->getCompiler()->compile($content);
+    $return = $this->getCompiler()->compile($content);
+    $this->relatedFiles = $this->buildFilesList();
+    $this->compiler = null;
+    return $return;
   }
 
   /**
    * @inheritdoc
    */
   public function getFiles() {
+    return $this->relatedFiles;
+  }
+
+  private function buildFilesList() {
     $array = parent::getFiles();
     foreach ($this->getCompiler()->getParsedFiles() as $key => $value) {
       $time = new DateTime();

@@ -30,6 +30,19 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
     return $compiler;
   }
 
+  private function getExampleScss() {
+    return "
+      body {
+        padding: 0;
+        margin: 0;
+
+        p {
+          padding: 20px 0;
+        }
+      }
+    ";
+  }
+
   /**
    * @test
    */
@@ -65,18 +78,18 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function process_success() {
-    $content = "
-      body {
-        padding: 0;
-        margin: 0;
-
-        p {
-          padding: 20px 0;
-        }
-      }
-    ";
     $expected = "body{padding:0;margin:0}body p{padding:20px 0}";
-    $this->assertProcess($expected, $content);
+    $this->assertProcess($expected, $this->getExampleScss());
+  }
+
+  /**
+   * @test
+   */
+  public function process_successMultipleTimes() {
+    $this->assertProcess("body{padding:0;margin:0}body p{padding:20px 0}", $this->getExampleScss());
+    $this->context->enableMinifier(false);
+    $expected = "body {\n  padding: 0;\n  margin: 0;\n}\nbody p {\n  padding: 20px 0;\n}\n";
+    $this->assertProcess($expected, $this->getExampleScss());
   }
 
   /**

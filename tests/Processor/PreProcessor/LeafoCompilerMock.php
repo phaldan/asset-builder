@@ -13,7 +13,7 @@ class LeafoCompilerMock extends LeafoCompiler {
   protected $formatter;
   private $compileReturn = [];
   private $style;
-  private $parsetFiles;
+  private $parsedFiles = [];
 
   public function __construct() {
   }
@@ -60,10 +60,10 @@ class LeafoCompilerMock extends LeafoCompiler {
   }
 
   public function getParsedFiles() {
-    return $this->parsetFiles;
+    return $this->parsedFiles;
   }
 
   public function setParsedFiles(array $files) {
-    $this->parsetFiles = $files;
+    $this->parsedFiles = $files;
   }
 }
