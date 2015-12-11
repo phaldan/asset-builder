@@ -112,4 +112,21 @@ class ContextTest extends PHPUnit_Framework_TestCase {
   public function hasCache_fail() {
     $this->assertFalse($this->target->hasCache());
   }
+
+  /**
+   * @test
+   */
+  public function serialize_success() {
+    $this->assertNotEmpty($this->target->serialize());
+  }
+
+  /**
+   * @test
+   */
+  public function unserialize_success() {
+    $input = new Context();
+    $input->enableDebug(true);
+    $this->target->unserialize($input->serialize());
+    $this->assertTrue($this->target->hasDebug());
+  }
 }
