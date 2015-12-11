@@ -13,6 +13,7 @@ class LeafoCompilerMock extends LeafoCompiler {
   protected $formatter;
   private $compileReturn = [];
   private $style;
+  private $parsetFiles;
 
   public function __construct() {
   }
@@ -56,5 +57,13 @@ class LeafoCompilerMock extends LeafoCompiler {
 
   public function getLineNumberStyle() {
     return $this->style;
+  }
+
+  public function getParsedFiles() {
+    return $this->parsetFiles;
+  }
+
+  public function setParsedFiles(array $files) {
+    $this->parsetFiles = $files;
   }
 }

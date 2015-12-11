@@ -22,6 +22,7 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
 
   private function stubCompiler() {
     $compiler = new OyejorgeLessParserMock();
+    $compiler->setParsedFiles([]);
     $this->target->setCompiler($compiler);
     return $compiler;
   }
@@ -99,5 +100,24 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
 
     $this->assertSame($this->target, $this->stubImportPath(['asset/css'], $expected));
     $this->assertEquals($expected, $compiler->GetImportDirs());
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_success() {
+    $compiler = $this->stubCompiler();
+    $compiler->setCss('input', 'output');
+    $compiler->setParsedFiles(['import.file']);
+
+    $time = new \DateTime();
+    $this->fileSystem->setModifiedTime('import.file', $time);
+    $this->fileSystem->setModifiedTime('example.file', $time);
+
+    $this->assertProcess('output', 'input');
+    $this->assertArrayHasKey('import.file', $this->target->getFiles());
+    $this->assertSame($time, $this->target->getFiles()['import.file']);
+    $this->assertArrayHasKey('example.file', $this->target->getFiles());
+    $this->assertSame($time, $this->target->getFiles()['example.file']);
   }
 }

@@ -13,6 +13,7 @@ class OyejorgeLessParserMock extends Less_Parser {
   private $str;
   private $importDirs;
   private $option = [];
+  private static $files;
 
   public function __construct() {
   }
@@ -44,5 +45,13 @@ class OyejorgeLessParserMock extends Less_Parser {
 
   public function GetOption($option) {
     return isset($this->option[$option]) ? $this->option[$option] : null;
+  }
+
+  public static function AllParsedFiles() {
+    return self::$files;
+  }
+
+  public static function setParsedFiles(array $files) {
+    self::$files = $files;
   }
 }

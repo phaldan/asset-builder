@@ -52,4 +52,15 @@ class OyejorgeLessProcessor extends LessProcessor {
     $content = $this->getFileSystem()->getContent($filePath);
     return $this->getCompiler()->parse($content)->getCss();
   }
+
+  /**
+   * @inheritdoc
+   */
+  public function getFiles() {
+    $array = parent::getFiles();
+    foreach ($this->getCompiler()->AllParsedFiles() as $file) {
+      $array[$file] = $this->getFileSystem()->getModifiedTime($file);
+    }
+    return $array;
+  }
 }

@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
+use DateTime;
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
@@ -121,5 +122,23 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
     $this->target->setCompiler($compiler);
     $this->assertEquals(LeafoCompiler::LINE_COMMENTS, $compiler->getLineNumberStyle());
     $this->assertProcess('output', 'input');
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_success() {
+    $time = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $time);
+
+    $compiler = $this->stubCompiler();
+    $compiler->setCompileReturn('input', 'output');
+    $compiler->setParsedFiles(['imported.file' => 1337]);
+
+    $this->assertProcess('output', 'input');
+    $this->assertArrayHasKey('imported.file', $this->target->getFiles());
+    $this->assertEquals(1337, $this->target->getFiles()['imported.file']->getTimestamp());
+    $this->assertArrayHasKey('example.file', $this->target->getFiles());
+    $this->assertSame($time, $this->target->getFiles()['example.file']);
   }
 }

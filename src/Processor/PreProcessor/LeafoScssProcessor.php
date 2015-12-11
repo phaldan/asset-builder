@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
+use DateTime;
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
@@ -58,8 +59,20 @@ class LeafoScssProcessor extends ScssProcessor {
   /**
    * @inheritdoc
    */
-  public function executeProcessing($filePath) {
+  protected function executeProcessing($filePath) {
     $content = $this->getFileSystem()->getContent($filePath);
     return $this->getCompiler()->compile($content);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getFiles() {
+    $array = parent::getFiles();
+    foreach ($this->getCompiler()->getParsedFiles() as $key => $value) {
+      $time = new DateTime();
+      $array[$key] = $time->setTimestamp($value);
+    }
+    return $array;
   }
 }
