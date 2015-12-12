@@ -27,6 +27,11 @@ class CachedSerialBinder extends SerialBinder {
    */
   private $context;
 
+  /**
+   * @var
+   */
+  private $relatedFiles = [];
+
   public function __construct(FileSystem $fileSystem, Cache $cache, Context $context) {
     $this->fileSystem = $fileSystem;
     $this->cache = $cache;
@@ -37,13 +42,14 @@ class CachedSerialBinder extends SerialBinder {
     return $this->context->hasCache() ? $this->caching($file, $compiler) : parent::process($file, $compiler);
   }
 
-  private function caching($file, $compiler) {
+  private function caching($file, ProcessorList $compiler) {
     $time = $this->fileSystem->getModifiedTime($file);
     return $this->cache->hasEntry($file, $time) ? $this->cache->getEntry($file) : $this->set($file, $compiler);
   }
 
-  private function set($file, $compiler) {
+  private function set($file, ProcessorList $compiler) {
     $content = parent::process($file, $compiler);
+    $this->relatedFiles[$file] = $compiler->get($file)->getFiles();
     $this->cache->setEntry($file, $content);
     return $content;
   }

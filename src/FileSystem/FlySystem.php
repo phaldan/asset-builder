@@ -120,7 +120,7 @@ class FlySystem implements FileSystem {
    */
   public function resolveGlob($pattern) {
     $absolute = $this->getAbsolutePath($pattern);
-    return glob($absolute);
+    return glob($absolute, GLOB_BRACE);
   }
 
   /**

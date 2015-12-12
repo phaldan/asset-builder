@@ -40,6 +40,13 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     return $adapter;
   }
 
+  private function assertGlob($expected, $pattern) {
+    $this->context->setRootPath(__DIR__ . DIRECTORY_SEPARATOR);
+    $result = $this->target->resolveGlob($pattern);
+    $this->assertNotEmpty($result);
+    $this->assertContains($expected, $result);
+  }
+
   /**
    * @test
    * @expectedException League\Flysystem\FileNotFoundException
@@ -124,11 +131,54 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
-  public function resolveGlob_success() {
-    $this->context->setRootPath(__DIR__ . DIRECTORY_SEPARATOR);
-    $result = $this->target->resolveGlob('*.php');
-    $this->assertNotEmpty($result);
-    $this->assertContains(__FILE__, $result);
+  public function resolveGlob_successSpecific() {
+    $this->assertGlob(__FILE__, basename(__FILE__));
+  }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_successMultipleChar() {
+    $this->assertGlob(__FILE__, '*.php');
+  }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_successSingleChar() {
+    $file = basename(__FILE__);
+    $this->assertGlob(__FILE__, '?' . substr($file, 1));
+  }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_successSpecificChars() {
+    $file = basename(__FILE__);
+    $this->assertGlob(__FILE__, '[A-Z]' . substr($file, 1));
+  }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_successSpecificCharList() {
+    $file = basename(__FILE__);
+    $this->assertGlob(__FILE__, '[EFG]' . substr($file, 1));
+  }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_successNegateSpecificCharList() {
+    $file = basename(__FILE__);
+    $this->assertGlob(__FILE__, '[!A-D]' . substr($file, 1));
+  }
+
+  /**
+   * @test
+   */
+  public function resolveGlob_successList() {
+    $this->assertGlob(__FILE__, '*.{php,sh}');
   }
 
   /**
