@@ -28,26 +28,49 @@ class GlobFileList extends FileList {
   }
 
   /**
-   * @return FileList
+   * @inheritdoc
    */
   public function getIterator() {
-    return is_null($this->iterator) ? $this->processGlobs() : $this->iterator;
+    return is_null($this->iterator) ? $this->processGlobs() : $this->iterator->getIterator();
   }
 
   private function processGlobs() {
     $this->iterator = new FileList();
     foreach (parent::getIterator() as $pattern) {
-      $files = $this->fileSystem->resolveGlob($pattern);
+      $files = $this->resolvePattern($pattern);
       $this->iterator->addAll($files);
     }
-    return $this->iterator;
+    return $this->iterator->getIterator();
   }
 
   /**
-   * @param $file
+   * Resolve pattern and returns file list
+   * @param $pattern
+   * @return array
    */
-  public function add($file) {
-    parent::add($file);
+  protected function resolvePattern($pattern) {
+    return $this->fileSystem->resolveGlob($pattern);
+  }
+
+  /**
+   * @param FileList $iterator
+   */
+  protected function setIterator(FileList $iterator) {
+    $this->iterator = $iterator;
+  }
+
+  /**
+   * @param $pattern
+   */
+  public function add($pattern) {
+    parent::add($pattern);
     $this->iterator = null;
+  }
+
+  /**
+   * @return FileSystem
+   */
+  protected function getFileSystem() {
+    return $this->fileSystem;
   }
 }
