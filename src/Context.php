@@ -10,7 +10,6 @@ use Serializable;
 class Context implements Serializable {
 
   const DEFAULT_ROOT_PATH = '.';
-  const MESSAGE_REAL_PATH = "The following path doesn't exists: '%s'";
   const OPTION_ROOT = 'path';
   const OPTION_CACHE = 'cache';
   const OPTION_MINIFIER = 'minifier';
@@ -42,7 +41,7 @@ class Context implements Serializable {
   private function getRealPath($path) {
     $realPath = realpath($path);
     if (!$realPath) {
-      throw new \InvalidArgumentException(sprintf(self::MESSAGE_REAL_PATH, $path));
+      throw Exception::pathNotFound($path);
     }
     return $realPath . DIRECTORY_SEPARATOR;
   }

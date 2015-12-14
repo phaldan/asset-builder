@@ -47,11 +47,11 @@ class Generator {
 
   private function validateParameter(ReflectionClass $class, ReflectionParameter $parameter) {
     if (is_null($parameter->getClass())) {
-      InvalidArgumentException::createStaticParameter($class->getName(), $parameter->getName());
-    } // @codeCoverageIgnore
+      throw InvalidArgumentException::constructorContainsStaticParameter($class->getName(), $parameter->getName());
+    }
     if ($this->dependencyChain->contains($parameter->getClass()->getName())) {
       $this->dependencyChain->push($parameter->getClass()->getName());
-      InvalidArgumentException::createDependencyLoop($parameter->getName(), $class->getName(), $this->dependencyChain);
-    } // @codeCoverageIgnore
+      throw InvalidArgumentException::dependencyChainContainsLoop($parameter->getName(), $class->getName(), $this->dependencyChain);
+    }
   }
 }

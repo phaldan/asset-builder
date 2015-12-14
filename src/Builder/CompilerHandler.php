@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Builder;
 
+use Phaldan\AssetBuilder\Exception;
 use Phaldan\AssetBuilder\Processor\Processor;
 use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
@@ -54,13 +55,13 @@ class CompilerHandler {
     } elseif (class_exists($compiler)) {
       return $this->container->getInstance($compiler);
     }
-    InvalidArgumentException::createNeitherObjectOrClass($compiler);
-  } // @codeCoverageIgnore
+    throw Exception::neitherObjectOrClass($compiler);
+  }
 
   private function validateInstance($instance) {
     if (!is_subclass_of($instance, Processor::class)) {
-      InvalidArgumentException::createNotSubclass($instance);
-    } // @codeCoverageIgnore
+      throw Exception::notSubclass($instance, Processor::class);
+    }
   }
 
   /**

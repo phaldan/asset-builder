@@ -4,6 +4,7 @@ namespace Phaldan\AssetBuilder\Processor;
 
 use Phaldan\AssetBuilder\Cache\Cache;
 use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\Exception;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
 /**
@@ -44,7 +45,7 @@ abstract class Processor {
    * @throws \Exception
    */
   protected function executeProcessing($filePath) {
-    throw new \Exception();
+    throw Exception::processorOverrideNecessary(get_class($this));
   }
 
   /**

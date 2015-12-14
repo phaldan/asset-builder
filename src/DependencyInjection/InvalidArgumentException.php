@@ -15,46 +15,47 @@ class InvalidArgumentException extends \InvalidArgumentException {
 
   /**
    * @param $class
-   * @throws InvalidArgumentException
+   * @return InvalidArgumentException
    */
-  public static function createNewInstance($class) {
-    throw new self(sprintf(self::MESSAGE_REGISTER, $class));
+  public static function classIsAbstractOrInterface($class) {
+    return new self(sprintf(self::MESSAGE_REGISTER, $class));
   }
 
   /**
    * @param $concreteClass
    * @param $abstractClass
-   * @throws InvalidArgumentException
+   * @return InvalidArgumentException
    */
-  public static function createNotSubclass($concreteClass, $abstractClass) {
+  public static function notSubclass($concreteClass, $abstractClass) {
     $class = is_object($concreteClass) ? get_class($concreteClass) : $concreteClass;
-    throw new self(sprintf(self::MESSAGE_NOT_SUBCLASS, $class, $abstractClass));
+    return new self(sprintf(self::MESSAGE_NOT_SUBCLASS, $class, $abstractClass));
   }
 
   /**
    * @param $class
-   * @throws InvalidArgumentException
+   * @return InvalidArgumentException
    */
-  public static function createNotConcrete($class) {
-    throw new self(sprintf(self::MESSAGE_NOT_CONCRETE, $class));
+  public static function couldNotCreateConcreteInstance($class) {
+    return new self(sprintf(self::MESSAGE_NOT_CONCRETE, $class));
   }
 
   /**
    * @param $class
    * @param $param
-   * @throws InvalidArgumentException
+   * @return InvalidArgumentException
    */
-  public static function createStaticParameter($class, $param) {
-    throw new self(sprintf(self::MESSAGE_STATIC_PARAMETER, $param, $class));
+  public static function constructorContainsStaticParameter($class, $param) {
+    return new self(sprintf(self::MESSAGE_STATIC_PARAMETER, $param, $class));
   }
 
   /**
    * @param $parameter
    * @param $class
    * @param Stack $dependencyChain
+   * @return InvalidArgumentException
    */
-  public static function createDependencyLoop($parameter, $class, Stack $dependencyChain) {
+  public static function dependencyChainContainsLoop($parameter, $class, Stack $dependencyChain) {
     $chain = $dependencyChain->toString(' <= ');
-    throw new self(sprintf(self::MESSAGE_DEPENDENCY_LOOP, $parameter, $class, $chain));
+    return new self(sprintf(self::MESSAGE_DEPENDENCY_LOOP, $parameter, $class, $chain));
   }
 }

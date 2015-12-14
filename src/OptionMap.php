@@ -54,7 +54,7 @@ class OptionMap implements Serializable, ArrayAccess {
    */
   public function unserialize($serialized) {
     if (!is_string($serialized)) {
-      throw new \InvalidArgumentException('Input is for unserialize() must be a string.');
+      throw Exception::invalidUnserializeInput();
     }
     $this->options = array_merge($this->options, unserialize($serialized));
   }

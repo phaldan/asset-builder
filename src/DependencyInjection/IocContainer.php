@@ -46,8 +46,8 @@ class IocContainer {
   private function validateClass($class) {
     $reflection = new ReflectionClass($class);
     if ($reflection->isInterface() || $reflection->isAbstract()) {
-      InvalidArgumentException::createNewInstance($class);
-    } // @codeCoverageIgnore
+      throw InvalidArgumentException::classIsAbstractOrInterface($class);
+    }
     return $class;
   }
 
@@ -69,10 +69,10 @@ class IocContainer {
   private function validateConcrete($abstractClass, $concreteClass) {
     $reflection = new ReflectionClass($concreteClass);
     if (!$reflection->isSubclassOf($abstractClass) && $abstractClass != $reflection->getName()) {
-      InvalidArgumentException::createNotSubclass($concreteClass, $abstractClass);
-    } // @codeCoverageIgnore
+      throw InvalidArgumentException::notSubclass($concreteClass, $abstractClass);
+    }
     if ($reflection->isInterface() || $reflection->isAbstract()) {
-      InvalidArgumentException::createNotConcrete($concreteClass);
-    } // @codeCoverageIgnore
+      throw InvalidArgumentException::couldNotCreateConcreteInstance($concreteClass);
+    }
   }
 }

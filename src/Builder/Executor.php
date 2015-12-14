@@ -7,6 +7,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Binder\Binder;
 use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\Exception;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -75,8 +76,8 @@ class Executor {
 
   private function process($group, CompilerHandler $compiler) {
     if (!$this->groups->offsetExists($group)) {
-      Exception::createGroupNotFound($group);
-    } // @codeCoverageIgnore
+      throw Exception::groupNotFound($group);
+    }
     $files = $this->groups->offsetGet($group);
     return $this->binder->bind($files, $compiler->get());
   }

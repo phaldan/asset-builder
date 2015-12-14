@@ -2,14 +2,13 @@
 
 namespace Phaldan\AssetBuilder\Binder;
 
-use Exception;
+use Phaldan\AssetBuilder\Exception;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
 abstract class ContentTypeBinder implements Binder {
 
-  const MESSAGE_MULTIPLE_MIME_TYPES = "Could not setup 'Content-Type'-Header. Multiple Content-Types exists: %s";
   const HEADER = "Content-Type: %s";
 
   private $mimeTypes = [];
@@ -20,7 +19,7 @@ abstract class ContentTypeBinder implements Binder {
 
   private function getType() {
     if (count($this->mimeTypes) > 1) {
-      throw new Exception(sprintf(self::MESSAGE_MULTIPLE_MIME_TYPES, implode(', ', array_keys($this->mimeTypes))));
+      throw Exception::foundMultipleMimiTypes(array_keys($this->mimeTypes));
     }
     return key($this->mimeTypes);
   }
