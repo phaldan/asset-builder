@@ -2,7 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
-use JShrink\Minifier;
+use JShrink\Minifier as JShrinkMin;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -15,6 +15,6 @@ class JShrinkProcessor extends JavaScriptProcessor {
    */
   protected function executeProcessing($filePath) {
     $content = $this->getFileSystem()->getContent($filePath);
-    return $this->getContext()->hasMinifier() ? Minifier::minify($content) : $content;
+    return $this->skipMinifier($filePath) ? $content : JShrinkMin::minify($content);
   }
 }

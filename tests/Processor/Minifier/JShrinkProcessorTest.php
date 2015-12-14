@@ -78,4 +78,20 @@ class JShrinkProcessorTest extends ProcessorTestCase {
     $this->assertArrayHasKey('example.file', $this->target->getFiles());
     $this->assertSame($time, $this->target->getFiles()['example.file']);
   }
+
+  /**
+   * @test
+   */
+  public function process_successSkipMinify() {
+    $this->context->enableMinifier(true);
+    $this->assertProcess($this->getContent(), $this->getContent(), 'example.min.file');
+  }
+
+  /**
+   * @test
+   */
+  public function process_successSkipMinifyUpperCase() {
+    $this->context->enableMinifier(true);
+    $this->assertProcess($this->getContent(), $this->getContent(), 'example.MIN.file');
+  }
 }

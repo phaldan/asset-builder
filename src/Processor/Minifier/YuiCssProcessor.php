@@ -19,7 +19,7 @@ class YuiCssProcessor extends CssProcessor {
    */
   protected function executeProcessing($filePath) {
     $content = $this->getFileSystem()->getContent($filePath);
-    return $this->getContext()->hasMinifier() ? $this->getCompressor()->run($content) : $content;
+    return $this->skipMinifier($filePath) ? $content : $this->getCompressor()->run($content);
   }
 
   private function getCompressor() {

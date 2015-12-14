@@ -38,8 +38,8 @@ class ProcessorTestCase extends PHPUnit_Framework_TestCase {
     $this->context = new ContextMock();
   }
 
-  protected function assertProcess($expected, $current) {
-    $this->fileSystem->setContent('example.file', $current);
-    $this->assertEquals($expected, $this->target->process('example.file'));
+  protected function assertProcess($expected, $current, $file = 'example.file') {
+    $this->fileSystem->setContent($file, $current);
+    $this->assertEquals($expected, $this->target->process($file));
   }
 }

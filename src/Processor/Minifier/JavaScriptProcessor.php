@@ -2,12 +2,10 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
-use Phaldan\AssetBuilder\Processor\Processor;
-
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class JavaScriptProcessor extends Processor {
+abstract class JavaScriptProcessor extends Minifier {
 
   const EXTENSION = 'js';
   const MIME_TYPE = 'text/javascript';

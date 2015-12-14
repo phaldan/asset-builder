@@ -2,12 +2,10 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
-use Phaldan\AssetBuilder\Processor\Processor;
-
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class CssProcessor extends Processor {
+abstract class CssProcessor extends Minifier {
 
   const EXTENSION = 'css';
   const MIME_TYPE = 'text/css';
