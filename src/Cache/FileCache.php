@@ -5,6 +5,7 @@ namespace Phaldan\AssetBuilder\Cache;
 use DateTime;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
+use Serializable;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -36,7 +37,11 @@ class FileCache implements Cache {
    */
   public function setEntry($key, $value) {
     $filePath = $this->getFilePath($key);
-    $this->fileSystem->setContent($filePath, $value);
+    $this->fileSystem->setContent($filePath, $this->serialize($value));
+  }
+
+  private function serialize($value) {
+    return (is_object($value) && $value instanceof Serializable) ? $value->serialize() : $value;
   }
 
   /**
