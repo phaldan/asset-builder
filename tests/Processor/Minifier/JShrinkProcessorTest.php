@@ -56,15 +56,23 @@ class JShrinkProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function process_success() {
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $dateTime);
+
     $this->context->enableMinifier(true);
-    $this->assertProcess($this->getExpected(), $this->getContent());
+    $this->assertProcess($this->getExpected(), $this->getContent(), 'example.file');
+    $this->assertSame($dateTime, $this->target->getLastModified());
   }
 
   /**
    * @test
    */
   public function process_fail() {
-    $this->assertProcess($this->getContent(), $this->getContent());
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $dateTime);
+
+    $this->assertProcess($this->getContent(), $this->getContent(), 'example.file');
+    $this->assertSame($dateTime, $this->target->getLastModified());
   }
 
   /**
@@ -83,15 +91,23 @@ class JShrinkProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function process_successSkipMinify() {
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime('example.min.file', $dateTime);
+
     $this->context->enableMinifier(true);
     $this->assertProcess($this->getContent(), $this->getContent(), 'example.min.file');
+    $this->assertSame($dateTime, $this->target->getLastModified());
   }
 
   /**
    * @test
    */
   public function process_successSkipMinifyUpperCase() {
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime('example.MIN.file', $dateTime);
+
     $this->context->enableMinifier(true);
     $this->assertProcess($this->getContent(), $this->getContent(), 'example.MIN.file');
+    $this->assertSame($dateTime, $this->target->getLastModified());
   }
 }

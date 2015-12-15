@@ -17,6 +17,7 @@ class Exception extends \Exception {
   const MESSAGE_REAL_PATH = "The following path doesn't exists: '%s'";
   const MESSAGE_UNSERIALIZE_INPUT = "Input for 'unserialize()' must be a string.";
   const MESSAGE_PROCESSOR_OVERRIDE = "Please provide an implementation for '%s::executeProcessing(...)' method";
+  const MESSAGE_UNSET_LAST_MODIFIED = "'%s::getLastModified()' returns null. Please override 'getLastModified()' or use 'setLastModified(...)'";
 
   /**
    * @param array $mimeTypes
@@ -69,9 +70,17 @@ class Exception extends \Exception {
 
   /**
    * @param $class
-   * @return Exception
+   * @return LogicException
    */
   public static function processorOverrideNecessary($class) {
     return new LogicException(sprintf(self::MESSAGE_PROCESSOR_OVERRIDE, $class));
+  }
+
+  /**
+   * @param $class
+   * @return LogicException
+   */
+  public static function unsetLastModified($class) {
+    return new LogicException(sprintf(self::MESSAGE_UNSET_LAST_MODIFIED, $class));
   }
 }

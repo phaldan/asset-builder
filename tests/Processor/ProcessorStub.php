@@ -1,6 +1,7 @@
 <?php
 
 namespace Phaldan\AssetBuilder\Processor;
+use DateTime;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -40,5 +41,9 @@ class ProcessorStub extends Processor {
   }
 
   public function getFiles() {
+  }
+
+  public function setLastModified(DateTime $dateTime) {
+    parent::setLastModified($dateTime);
   }
 }

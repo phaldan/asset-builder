@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Binder;
 
+use DateTime;
 use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\Group\FileList;
@@ -43,6 +44,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $compiler = new ProcessorStub();
     $compiler->set($file, $return);
     $compiler->setOutputMimeType($mimeType);
+    $compiler->setLastModified(new DateTime());
     $this->compiler->set($file, $compiler);
   }
 

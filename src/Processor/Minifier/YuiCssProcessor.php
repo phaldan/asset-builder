@@ -18,7 +18,9 @@ class YuiCssProcessor extends CssProcessor {
    * @inheritdoc
    */
   protected function executeProcessing($filePath) {
-    $content = $this->getFileSystem()->getContent($filePath);
+    $fs = $this->getFileSystem();
+    $content = $fs->getContent($filePath);
+    $this->setLastModified($fs->getModifiedTime($filePath));
     return $this->skipMinifier($filePath) ? $content : $this->getCompressor()->run($content);
   }
 

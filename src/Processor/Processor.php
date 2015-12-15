@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Processor;
 
+use DateTime;
 use Phaldan\AssetBuilder\Cache\Cache;
 use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\Exception;
@@ -26,6 +27,10 @@ abstract class Processor {
    * @var Context
    */
   private $context;
+  /**
+   * @var DateTime
+   */
+  private $lastModified;
   private $files = [];
 
   /**
@@ -107,6 +112,9 @@ abstract class Processor {
     return $this->fileSystem;
   }
 
+  /**
+   * @param $filePath
+   */
   protected function setFiles($filePath) {
     $this->files = [$filePath => $this->getFileSystem()->getModifiedTime($filePath)];
   }
@@ -117,5 +125,22 @@ abstract class Processor {
    */
   public function getFiles() {
     return $this->files;
+  }
+
+  /**
+   * @return DateTime
+   */
+  public function getLastModified() {
+    if (is_null($this->lastModified)) {
+      throw Exception::unsetLastModified(get_class($this));
+    }
+    return $this->lastModified;
+  }
+
+  /**
+   * @param DateTime $dateTime
+   */
+  protected function setLastModified(DateTime $dateTime) {
+    $this->lastModified = $dateTime;
   }
 }
