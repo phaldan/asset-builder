@@ -3,6 +3,7 @@
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
 use DateTime;
+use LogicException;
 use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
@@ -50,6 +51,14 @@ class JShrinkProcessorTest extends ProcessorTestCase {
     $result = $this->target->getOutputMimeType();
     $this->assertNotEmpty($result);
     $this->assertEquals(JShrinkProcessor::MIME_TYPE, $result);
+  }
+
+  /**
+   * @test
+   * @expectedException LogicException
+   */
+  public function getLastModified_fail() {
+    $this->target->getLastModified();
   }
 
   /**

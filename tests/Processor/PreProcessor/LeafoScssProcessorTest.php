@@ -6,6 +6,7 @@ use DateTime;
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
+use LogicException;
 use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
@@ -27,6 +28,12 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
   private function stubCompiler() {
     $compiler = new LeafoCompilerMock();
     $this->target->setCompiler($compiler);
+    return $compiler;
+  }
+
+  private function stubCompilerReturn($input, $output) {
+    $compiler = $this->stubCompiler();
+    $compiler->setCompileReturn($input, $output);
     return $compiler;
   }
 
@@ -144,8 +151,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
     $time = new DateTime();
     $this->fileSystem->setModifiedTime('example.file', $time);
 
-    $compiler = $this->stubCompiler();
-    $compiler->setCompileReturn('input', 'output');
+    $compiler = $this->stubCompilerReturn('input', 'output');
     $compiler->setParsedFiles(['imported.file' => 1337]);
 
     $this->assertProcess('output', 'input');
@@ -153,5 +159,40 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
     $this->assertEquals(1337, $this->target->getFiles()['imported.file']->getTimestamp());
     $this->assertArrayHasKey('example.file', $this->target->getFiles());
     $this->assertSame($time, $this->target->getFiles()['example.file']);
+  }
+
+  /**
+   * @test
+   * @expectedException LogicException
+   */
+  public function getLastModified_fail() {
+    $this->assertNull($this->target->getLastModified());
+  }
+
+  /**
+   * @test
+   */
+  public function getLastModified_success() {
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $dateTime);
+    $this->stubCompilerReturn('input', 'output');
+
+    $this->assertProcess('output', 'input', 'example.file');
+    $this->assertSame($dateTime, $this->target->getLastModified());
+  }
+
+  /**
+   * @test
+   */
+  public function getLastModified_successMultiple() {
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime('example.file', $dateTime);
+
+    $time = $dateTime->getTimestamp() + 42;
+    $compiler = $this->stubCompilerReturn('input', 'output');
+    $compiler->setParsedFiles(['import.file' => $time]);
+
+    $this->assertProcess('output', 'input', 'example.file');
+    $this->assertEquals($time, $this->target->getLastModified()->getTimestamp());
   }
 }
