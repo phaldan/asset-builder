@@ -51,7 +51,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
   private function assertContentType($mimeType) {
     $result = xdebug_get_headers();
     $this->assertNotEmpty($result);
-    $this->assertContains(sprintf(SerialBinder::HEADER, $mimeType), $result);
+    $this->assertContains(sprintf(SerialBinder::HEADER_CONTENT_TYPE, $mimeType), $result);
   }
 
   /**
