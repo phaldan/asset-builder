@@ -17,7 +17,7 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
   protected function setUp() {
     parent::setUp();
     $this->context->enableMinifier(true);
-    $this->target = new OyejorgeLessProcessor($this->fileSystem, $this->cache, $this->context);
+    $this->target = new OyejorgeLessProcessor($this->fileSystem, $this->context);
   }
 
   private function stubCompiler() {

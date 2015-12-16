@@ -4,13 +4,12 @@ namespace Phaldan\AssetBuilder\Processor\PreProcessor;
 
 use DateTime;
 use Phaldan\AssetBuilder\Exception;
-use Phaldan\AssetBuilder\Processor\CachedProcessor;
-use Phaldan\AssetBuilder\Processor\Processor;
+use Phaldan\AssetBuilder\Processor\AbstractProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class CssPreProcessor extends CachedProcessor {
+abstract class CssPreProcessor extends AbstractProcessor {
 
   const MIME_TYPE = 'text/css';
 

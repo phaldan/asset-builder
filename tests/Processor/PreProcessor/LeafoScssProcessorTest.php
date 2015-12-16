@@ -6,7 +6,6 @@ use DateTime;
 use Leafo\ScssPhp\Compiler as LeafoCompiler;
 use Leafo\ScssPhp\Formatter\Crunched;
 use Leafo\ScssPhp\Formatter\Expanded;
-use LogicException;
 use Phaldan\AssetBuilder\Processor\ProcessorTestCase;
 
 /**
@@ -22,7 +21,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
   protected function setUp() {
     parent::setUp();
     $this->context->enableMinifier(true);
-    $this->target = new LeafoScssProcessor($this->fileSystem, $this->cache, $this->context);
+    $this->target = new LeafoScssProcessor($this->fileSystem, $this->context);
   }
 
   private function stubCompiler() {

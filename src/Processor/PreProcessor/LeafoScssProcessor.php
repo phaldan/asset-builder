@@ -75,7 +75,6 @@ class LeafoScssProcessor extends ScssProcessor {
     return array_merge(parent::processFiles($filePath), $this->relatedFiles);
   }
 
-
   private function buildFilesList($filePath) {
     $array = parent::getFiles($filePath);
     foreach ($this->getCompiler()->getParsedFiles() as $key => $value) {
