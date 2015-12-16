@@ -1,22 +1,21 @@
 <?php
 
 namespace Phaldan\AssetBuilder\Processor;
+
 use DateTime;
-use Phaldan\AssetBuilder\Cache\CacheMock;
-use Phaldan\AssetBuilder\Context;
-use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class ProcessorStub extends Processor {
+class ProcessorStub implements Processor {
 
   private $extension;
   private $mimeType;
-  private $lastModified;
+  private $responses = [];
+  private $lastModified = [];
+  private $files = [];
 
   public function __construct() {
-    parent::__construct(new FileSystemMock(), new CacheMock(), new Context());
   }
 
   public function getFileExtension() {
@@ -27,12 +26,9 @@ class ProcessorStub extends Processor {
     $this->extension = $extension;
   }
 
-  private $responses = [];
-
-  protected function executeProcessing($filePath) {
+  public function process($filePath) {
     return isset($this->responses[$filePath]) ? $this->responses[$filePath] : null;
   }
-
 
   public function set($file, $response) {
     $this->responses[$file] = $response;
@@ -46,11 +42,19 @@ class ProcessorStub extends Processor {
     $this->mimeType = $mimeType;
   }
 
-  protected function processLastModified($filePath) {
-    return $this->lastModified;
+  public function getLastModified($filePath) {
+    return isset($this->lastModified[$filePath]) ? $this->lastModified[$filePath] : null;
   }
 
-  public function setLastModified(DateTime $dateTime) {
-    $this->lastModified = $dateTime;
+  public function setLastModified($filePath, DateTime $dateTime) {
+    $this->lastModified[$filePath] = $dateTime;
+  }
+
+  public function getFiles($filePath) {
+    return isset($this->files[$filePath]) ? $this->files[$filePath] : null;
+  }
+
+  public function setFiles($filePath, array $files) {
+    $this->files[$filePath] = $files;
   }
 }

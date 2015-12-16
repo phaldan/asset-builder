@@ -44,7 +44,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $compiler = new ProcessorStub();
     $compiler->set($file, $return);
     $compiler->setOutputMimeType($mimeType);
-    $compiler->setLastModified(new DateTime());
+    $compiler->setLastModified($file, new DateTime());
     $this->compiler->set($file, $compiler);
   }
 

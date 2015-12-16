@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Processor;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class ProcessorImpl extends Processor {
+class ProcessorImpl extends CachedProcessor {
 
   private $returns = [];
 
@@ -21,9 +21,5 @@ class ProcessorImpl extends Processor {
 
   public function setExecuteProcessingReturn($file, $return) {
     $this->returns[$file] = $return;
-  }
-
-  public function getContent($filePath) {
-    return parent::getContent($filePath);
   }
 }
