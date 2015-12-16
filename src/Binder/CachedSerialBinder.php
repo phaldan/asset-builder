@@ -49,7 +49,7 @@ class CachedSerialBinder extends SerialBinder {
 
   private function set($file, ProcessorList $compiler) {
     $content = parent::process($file, $compiler);
-    $this->relatedFiles[$file] = $compiler->get($file)->getFiles();
+    $this->relatedFiles[$file] = $compiler->get($file)->getFiles($file);
     $this->cache->setEntry($file, $content);
     return $content;
   }

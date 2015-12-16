@@ -148,51 +148,56 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function getFiles_success() {
+    $file = 'example.file';
     $time = new DateTime();
-    $this->fileSystem->setModifiedTime('example.file', $time);
+    $this->fileSystem->setModifiedTime($file, $time);
 
     $compiler = $this->stubCompilerReturn('input', 'output');
     $compiler->setParsedFiles(['imported.file' => 1337]);
 
     $this->assertProcess('output', 'input');
-    $this->assertArrayHasKey('imported.file', $this->target->getFiles());
-    $this->assertEquals(1337, $this->target->getFiles()['imported.file']->getTimestamp());
-    $this->assertArrayHasKey('example.file', $this->target->getFiles());
-    $this->assertSame($time, $this->target->getFiles()['example.file']);
+    $this->assertArrayHasKey('imported.file', $this->target->getFiles($file));
+    $this->assertEquals(1337, $this->target->getFiles($file)['imported.file']->getTimestamp());
+    $this->assertArrayHasKey($file, $this->target->getFiles($file));
+    $this->assertSame($time, $this->target->getFiles($file)['example.file']);
   }
 
   /**
    * @test
-   * @expectedException LogicException
    */
-  public function getLastModified_fail() {
-    $this->assertNull($this->target->getLastModified());
+  public function getLastModified_successWithoutProcessing() {
+    $file = 'example.file';
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime($file, $dateTime);
+    $this->assertSame($dateTime, $this->target->getLastModified($file));
   }
 
   /**
    * @test
    */
   public function getLastModified_success() {
+    $file = 'example.file';
     $dateTime = new DateTime();
-    $this->fileSystem->setModifiedTime('example.file', $dateTime);
+    $this->fileSystem->setModifiedTime($file, $dateTime);
     $this->stubCompilerReturn('input', 'output');
 
-    $this->assertProcess('output', 'input', 'example.file');
-    $this->assertSame($dateTime, $this->target->getLastModified());
+    $this->assertProcess('output', 'input', $file);
+    $this->assertSame($dateTime, $this->target->getLastModified($file));
   }
 
   /**
    * @test
    */
   public function getLastModified_successMultiple() {
+    $file = 'example.file';
     $dateTime = new DateTime();
-    $this->fileSystem->setModifiedTime('example.file', $dateTime);
+    $this->fileSystem->setModifiedTime($file, $dateTime);
 
     $time = $dateTime->getTimestamp() + 42;
     $compiler = $this->stubCompilerReturn('input', 'output');
     $compiler->setParsedFiles(['import.file' => $time]);
 
-    $this->assertProcess('output', 'input', 'example.file');
-    $this->assertEquals($time, $this->target->getLastModified()->getTimestamp());
+    $this->assertProcess('output', 'input', $file);
+    $this->assertEquals($time, $this->target->getLastModified($file)->getTimestamp());
   }
 }

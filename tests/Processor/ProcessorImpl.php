@@ -26,7 +26,4 @@ class ProcessorImpl extends Processor {
   public function getContent($filePath) {
     return parent::getContent($filePath);
   }
-
-  public function getFiles() {
-  }
 }

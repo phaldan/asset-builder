@@ -26,18 +26,16 @@ abstract class CssPreProcessor extends Processor {
     return self::MIME_TYPE;
   }
 
-  /**
-   * @inheritdoc
-   */
-  public function getLastModified() {
+  public function processLastModified($filePath) {
     $lastModified = null;
-    foreach ($this->getFiles() as $file => $time) {
-      $lastModified = $this->processLastModified($lastModified, $time);
+    foreach ($this->getFiles($filePath) as $file => $time) {
+      $lastModified = $this->compareLastModified($lastModified, $time);
     }
-    return $this->validateLastModified($lastModified);
+    $this->validateLastModified($lastModified);
+    return $lastModified;
   }
 
-  private function processLastModified(DateTime $oldTime = null, DateTime $newTime) {
+  private function compareLastModified(DateTime $oldTime = null, DateTime $newTime) {
     return is_null($oldTime) || !empty($newTime->diff($oldTime)->format('%r')) ? $newTime : $oldTime;
   }
 
@@ -45,6 +43,5 @@ abstract class CssPreProcessor extends Processor {
     if (is_null($dateTime)) {
       throw Exception::unsetLastModified(get_class($this));
     }
-    return $dateTime;
   }
 }

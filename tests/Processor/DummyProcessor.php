@@ -12,13 +12,6 @@ class DummyProcessor extends JavaScriptProcessor {
   public function __construct() {
   }
 
-  public function process($file) {
-    return $file;
-  }
-
-  public function getFiles() {
-  }
-
   public function executeProcessing($filePath) {
     parent::executeProcessing($filePath);
   }

@@ -74,7 +74,8 @@ class ProcessorTest extends PHPUnit_Framework_TestCase {
     $this->context->setCache(true);
     $this->cache->setHas('example.css', new DateTime());
     $this->fileSystem->setModifiedTime('example.css', new DateTime());
-    $this->cache->setEntry('example.css', 'cached');
+
+    $this->cache->setEntry('example.css', new CacheEntry('cached'));
     $this->assertEquals('cached', $this->target->process('example.css'));
   }
 

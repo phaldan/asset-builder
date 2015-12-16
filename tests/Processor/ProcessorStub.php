@@ -2,6 +2,9 @@
 
 namespace Phaldan\AssetBuilder\Processor;
 use DateTime;
+use Phaldan\AssetBuilder\Cache\CacheMock;
+use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -10,8 +13,10 @@ class ProcessorStub extends Processor {
 
   private $extension;
   private $mimeType;
+  private $lastModified;
 
   public function __construct() {
+    parent::__construct(new FileSystemMock(), new CacheMock(), new Context());
   }
 
   public function getFileExtension() {
@@ -24,9 +29,10 @@ class ProcessorStub extends Processor {
 
   private $responses = [];
 
-  public function process($file) {
-    return isset($this->responses[$file]) ? $this->responses[$file] : null;
+  protected function executeProcessing($filePath) {
+    return isset($this->responses[$filePath]) ? $this->responses[$filePath] : null;
   }
+
 
   public function set($file, $response) {
     $this->responses[$file] = $response;
@@ -40,10 +46,11 @@ class ProcessorStub extends Processor {
     $this->mimeType = $mimeType;
   }
 
-  public function getFiles() {
+  protected function processLastModified($filePath) {
+    return $this->lastModified;
   }
 
   public function setLastModified(DateTime $dateTime) {
-    parent::setLastModified($dateTime);
+    $this->lastModified = $dateTime;
   }
 }

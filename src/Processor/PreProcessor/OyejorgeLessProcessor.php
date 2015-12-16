@@ -49,7 +49,7 @@ class OyejorgeLessProcessor extends LessProcessor {
   /**
    * @inheritdoc
    */
-  public function executeProcessing($filePath) {
+  protected function executeProcessing($filePath) {
     $this->setCompiler($this->getCompiler());
     $content = $this->getFileSystem()->getContent($filePath);
     $this->getCompiler()->parse($content);
@@ -59,8 +59,8 @@ class OyejorgeLessProcessor extends LessProcessor {
   /**
    * @inheritdoc
    */
-  public function getFiles() {
-    $array = parent::getFiles();
+  protected function processFiles($filePath) {
+    $array = parent::processFiles($filePath);
     foreach ($this->getCompiler()->AllParsedFiles() as $file) {
       $array[$file] = $this->getFileSystem()->getModifiedTime($file);
     }

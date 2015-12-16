@@ -14,9 +14,7 @@ class JShrinkProcessor extends JavaScriptProcessor {
    * @throws \Exception
    */
   protected function executeProcessing($filePath) {
-    $fs = $this->getFileSystem();
-    $content = $fs->getContent($filePath);
-    $this->setLastModified($fs->getModifiedTime($filePath));
+    $content = $this->getFileSystem()->getContent($filePath);
     return $this->skipMinifier($filePath) ? $content : JShrinkMin::minify($content);
   }
 }

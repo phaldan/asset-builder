@@ -55,10 +55,12 @@ class JShrinkProcessorTest extends ProcessorTestCase {
 
   /**
    * @test
-   * @expectedException LogicException
    */
-  public function getLastModified_fail() {
-    $this->target->getLastModified();
+  public function getLastModified_success() {
+    $file = 'example.file';
+    $dateTime = new DateTime();
+    $this->fileSystem->setModifiedTime($file, $dateTime);
+    $this->assertSame($dateTime, $this->target->getLastModified($file));
   }
 
   /**
@@ -70,7 +72,7 @@ class JShrinkProcessorTest extends ProcessorTestCase {
 
     $this->context->enableMinifier(true);
     $this->assertProcess($this->getExpected(), $this->getContent(), 'example.file');
-    $this->assertSame($dateTime, $this->target->getLastModified());
+    $this->assertSame($dateTime, $this->target->getLastModified('example.file'));
   }
 
   /**
@@ -81,42 +83,45 @@ class JShrinkProcessorTest extends ProcessorTestCase {
     $this->fileSystem->setModifiedTime('example.file', $dateTime);
 
     $this->assertProcess($this->getContent(), $this->getContent(), 'example.file');
-    $this->assertSame($dateTime, $this->target->getLastModified());
+    $this->assertSame($dateTime, $this->target->getLastModified('example.file'));
   }
 
   /**
    * @test
    */
   public function getFiles_success() {
+    $file = 'example.file';
     $time = new DateTime();
-    $this->fileSystem->setModifiedTime('example.file', $time);
+    $this->fileSystem->setModifiedTime($file, $time);
 
     $this->assertProcess($this->getContent(), $this->getContent());
-    $this->assertArrayHasKey('example.file', $this->target->getFiles());
-    $this->assertSame($time, $this->target->getFiles()['example.file']);
+    $this->assertArrayHasKey($file, $this->target->getFiles($file));
+    $this->assertSame($time, $this->target->getFiles($file)[$file]);
   }
 
   /**
    * @test
    */
   public function process_successSkipMinify() {
+    $file = 'example.min.file';
     $dateTime = new DateTime();
-    $this->fileSystem->setModifiedTime('example.min.file', $dateTime);
+    $this->fileSystem->setModifiedTime($file, $dateTime);
 
     $this->context->enableMinifier(true);
-    $this->assertProcess($this->getContent(), $this->getContent(), 'example.min.file');
-    $this->assertSame($dateTime, $this->target->getLastModified());
+    $this->assertProcess($this->getContent(), $this->getContent(), $file);
+    $this->assertSame($dateTime, $this->target->getLastModified($file));
   }
 
   /**
    * @test
    */
   public function process_successSkipMinifyUpperCase() {
+    $file = 'example.MIN.file';
     $dateTime = new DateTime();
-    $this->fileSystem->setModifiedTime('example.MIN.file', $dateTime);
+    $this->fileSystem->setModifiedTime($file, $dateTime);
 
     $this->context->enableMinifier(true);
-    $this->assertProcess($this->getContent(), $this->getContent(), 'example.MIN.file');
-    $this->assertSame($dateTime, $this->target->getLastModified());
+    $this->assertProcess($this->getContent(), $this->getContent(), $file);
+    $this->assertSame($dateTime, $this->target->getLastModified($file));
   }
 }

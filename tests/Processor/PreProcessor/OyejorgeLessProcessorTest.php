@@ -124,14 +124,15 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
     $compiler->setCss('input', 'output');
     $compiler->setParsedFiles(['import.file']);
 
+    $file = 'example.file';
     $time = new \DateTime();
     $this->fileSystem->setModifiedTime('import.file', $time);
-    $this->fileSystem->setModifiedTime('example.file', $time);
+    $this->fileSystem->setModifiedTime($file, $time);
 
     $this->assertProcess('output', 'input');
-    $this->assertArrayHasKey('import.file', $this->target->getFiles());
-    $this->assertSame($time, $this->target->getFiles()['import.file']);
-    $this->assertArrayHasKey('example.file', $this->target->getFiles());
-    $this->assertSame($time, $this->target->getFiles()['example.file']);
+    $this->assertArrayHasKey('import.file', $this->target->getFiles($file));
+    $this->assertSame($time, $this->target->getFiles($file)['import.file']);
+    $this->assertArrayHasKey('example.file', $this->target->getFiles($file));
+    $this->assertSame($time, $this->target->getFiles($file)['example.file']);
   }
 }

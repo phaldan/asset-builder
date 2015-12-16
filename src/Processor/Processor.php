@@ -27,11 +27,6 @@ abstract class Processor {
    * @var Context
    */
   private $context;
-  /**
-   * @var DateTime
-   */
-  private $lastModified;
-  private $files = [];
 
   /**
    * Returns file extension of supported files
@@ -54,6 +49,22 @@ abstract class Processor {
   }
 
   /**
+   * @param $filePath
+   * @return array
+   */
+  protected function processFiles($filePath) {
+    return [$filePath => $this->getFileSystem()->getModifiedTime($filePath)];
+  }
+
+  /**
+   * @param $filePath
+   * @return DateTime
+   */
+  protected function processLastModified($filePath) {
+    return $this->fileSystem->getModifiedTime($filePath);
+  }
+
+  /**
    * @param FileSystem $fileSystem
    * @param Cache $cache
    * @param Context $context
@@ -66,19 +77,24 @@ abstract class Processor {
 
   /**
    * Transform to native language like CSS or JavaScript, and compress
-   * @param $file
+   * @param $filePath
    * @return string
    */
-  public function process($file) {
-    $content = $this->getCacheEntry($file);
-    if (is_null($content)) {
-      $this->setFiles($file);
-      $content = $this->executeProcessing($file);
-      $this->setCacheEntry($file, $content);
+  public final function process($filePath) {
+    $cache = $this->getCacheEntry($filePath);
+    if (is_null($cache)) {
+      $content = $this->executeProcessing($filePath);
+      $this->setCacheEntry($filePath, $content);
+      return $content;
+    } else {
+      return $cache->getContent();
     }
-    return $content;
   }
 
+  /**
+   * @param $filePath
+   * @return null|CacheEntry
+   */
   private function getCacheEntry($filePath) {
     return $this->context->hasCache() ? $this->requestCacheEntry($filePath) : null;
   }
@@ -94,7 +110,8 @@ abstract class Processor {
 
   private function setCacheEntry($filePath, $content) {
     if ($this->context->hasCache()) {
-      $this->cache->setEntry($filePath, $content);
+      $entry = new CacheEntry($content, $this->getFiles($filePath), $this->getLastModified($filePath));
+      $this->cache->setEntry($filePath, $entry);
     }
   }
 
@@ -113,34 +130,19 @@ abstract class Processor {
   }
 
   /**
-   * @param $filePath
-   */
-  protected function setFiles($filePath) {
-    $this->files = [$filePath => $this->getFileSystem()->getModifiedTime($filePath)];
-  }
-
-  /**
    * Return all related files of processed file, like all imported files from processed less or sass.
+   * @param $filePath
    * @return array
    */
-  public function getFiles() {
-    return $this->files;
+  public final function getFiles($filePath) {
+    return $this->processFiles($filePath);
   }
 
   /**
+   * @param $filePath
    * @return DateTime
    */
-  public function getLastModified() {
-    if (is_null($this->lastModified)) {
-      throw Exception::unsetLastModified(get_class($this));
-    }
-    return $this->lastModified;
-  }
-
-  /**
-   * @param DateTime $dateTime
-   */
-  protected function setLastModified(DateTime $dateTime) {
-    $this->lastModified = $dateTime;
+  public final function getLastModified($filePath) {
+    return $this->processLastModified($filePath);
   }
 }

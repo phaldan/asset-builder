@@ -28,7 +28,7 @@ class SerialBinder extends HttpHeaderBinder {
     $processor = $list->get($file);
     $result = $processor->process($file);
     $this->addMimeType($processor->getOutputMimeType());
-    $this->setLastModified($processor->getLastModified());
+    $this->setLastModified($processor->getLastModified($file));
     return $result;
   }
 }
