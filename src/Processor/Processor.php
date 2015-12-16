@@ -20,7 +20,6 @@ interface Processor {
    */
   public function getOutputMimeType();
 
-
   /**
    * Transform to native language like CSS or JavaScript, and compress
    * @param $filePath
@@ -34,7 +33,6 @@ interface Processor {
    * @return array
    */
   public function getFiles($filePath);
-
 
   /**
    * @param $filePath

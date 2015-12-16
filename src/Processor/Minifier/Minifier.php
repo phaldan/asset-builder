@@ -2,12 +2,12 @@
 
 namespace Phaldan\AssetBuilder\Processor\Minifier;
 
-use Phaldan\AssetBuilder\Processor\CachedProcessor;
+use Phaldan\AssetBuilder\Processor\AbstractProcessor;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class Minifier extends CachedProcessor {
+abstract class Minifier extends AbstractProcessor {
 
   const SKIP_EXTENSION = 'min';
 

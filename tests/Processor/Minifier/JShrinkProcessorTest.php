@@ -18,7 +18,7 @@ class JShrinkProcessorTest extends ProcessorTestCase {
 
   protected function setUp() {
     parent::setUp();
-    $this->target = new JShrinkProcessor($this->fileSystem, $this->cache, $this->context);
+    $this->target = new JShrinkProcessor($this->fileSystem, $this->context);
   }
 
   private function getContent() {

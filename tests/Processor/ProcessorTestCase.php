@@ -23,18 +23,12 @@ class ProcessorTestCase extends PHPUnit_Framework_TestCase {
   protected $fileSystem;
 
   /**
-   * @var CacheMock
-   */
-  protected $cache;
-
-  /**
    * @var ContextMock
    */
   protected $context;
 
   protected function setUp() {
     $this->fileSystem = new FileSystemMock();
-    $this->cache = new CacheMock();
     $this->context = new ContextMock();
   }
 

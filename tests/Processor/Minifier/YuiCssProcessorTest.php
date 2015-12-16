@@ -18,7 +18,7 @@ class YuiCssProcessorTest extends ProcessorTestCase {
   protected function setUp() {
     parent::setUp();
     $this->context->enableMinifier(true);
-    $this->target = new YuiCssProcessor($this->fileSystem, $this->cache, $this->context);
+    $this->target = new YuiCssProcessor($this->fileSystem, $this->context);
   }
 
   private function stubCompressor($current, $expected) {
