@@ -2,8 +2,6 @@
 
 namespace Phaldan\AssetBuilder\DependencyInjection;
 
-use ReflectionClass;
-
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
@@ -12,8 +10,10 @@ class IocContainer {
   private $relations = [];
   private $instances = [];
   private $generator;
+  private $validator;
 
   public function __construct() {
+    $this->validator = new Validator();
     $this->configure();
     $this->instances[get_class($this)] = $this;
     $this->instances[IocContainer::class] = $this;
@@ -38,17 +38,18 @@ class IocContainer {
 
   private function create($class) {
     if (!isset($this->instances[$class])) {
-      $concrete = isset($this->relations[$class]) ? $this->relations[$class] : $this->validateClass($class);
+      $concrete = $this->getConcreteClass($class);
       $this->instances[$class] = $this->generator->newInstance($concrete);
     }
   }
 
-  private function validateClass($class) {
-    $reflection = new ReflectionClass($class);
-    if ($reflection->isInterface() || $reflection->isAbstract()) {
-      throw InvalidArgumentException::classIsAbstractOrInterface($class);
+  private function getConcreteClass($class) {
+    if (isset($this->relations[$class])) {
+      return $this->relations[$class];
+    } else {
+      $this->validator->validateClass($class);
+      return $class;
     }
-    return $class;
   }
 
   /**
@@ -58,21 +59,11 @@ class IocContainer {
    * @throws InvalidArgumentException
    */
   public function register($abstractClass, $concreteClass) {
-    $this->validateConcrete($abstractClass, $concreteClass);
+    $this->validator->validateConcrete($abstractClass, $concreteClass);
     if (is_object($concreteClass)) {
       $this->instances[$abstractClass] = $concreteClass;
     } else {
       $this->relations[$abstractClass] = $concreteClass;
-    }
-  }
-
-  private function validateConcrete($abstractClass, $concreteClass) {
-    $reflection = new ReflectionClass($concreteClass);
-    if (!$reflection->isSubclassOf($abstractClass) && $abstractClass != $reflection->getName()) {
-      throw InvalidArgumentException::notSubclass($concreteClass, $abstractClass);
-    }
-    if ($reflection->isInterface() || $reflection->isAbstract()) {
-      throw InvalidArgumentException::couldNotCreateConcreteInstance($concreteClass);
     }
   }
 }
