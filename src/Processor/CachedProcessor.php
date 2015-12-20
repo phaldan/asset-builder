@@ -39,6 +39,13 @@ class CachedProcessor implements Processor {
     $this->fileSystem = $fileSystem;
   }
 
+  /**
+   * @return Processor
+   */
+  public function getProcessor() {
+    return $this->processor;
+  }
+
   private function getCacheEntry($filePath) {
     return $this->cache->hasEntry($filePath) ? $this->requestCacheEntry($filePath) : $this->setCacheEntry($filePath);
   }

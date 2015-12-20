@@ -2,6 +2,9 @@
 
 namespace Phaldan\AssetBuilder\Processor;
 
+use Phaldan\AssetBuilder\Cache\CacheMock;
+use Phaldan\AssetBuilder\ContextMock;
+use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -14,8 +17,14 @@ class ProcessorListTest extends PHPUnit_Framework_TestCase {
    */
   private $target;
 
+  /**
+   * @var ContextMock
+   */
+  private $context;
+
   protected function setUp() {
-    $this->target = new ProcessorList();
+    $this->context = new ContextMock();
+    $this->target = new ProcessorList($this->context, new CacheMock(), new FileSystemMock());
   }
 
   private function stubCompiler($extension) {
@@ -38,6 +47,17 @@ class ProcessorListTest extends PHPUnit_Framework_TestCase {
   public function get_success() {
     $compiler = $this->stubCompiler('css');
     $this->assertSame($compiler, $this->target->get('asset/test.css'));
+  }
+
+  /**
+   * @test
+   */
+  public function get_successWithCache() {
+    $this->context->setCache(true);
+    $compiler = $this->stubCompiler('css');
+    $result = $this->target->get('asset/test.css');
+    $this->assertInstanceOf(CachedProcessor::class, $result);
+    $this->assertSame($compiler, $result->getProcessor());
   }
 
   /**

@@ -5,7 +5,7 @@ namespace Phaldan\AssetBuilder\Builder;
 use ArrayIterator;
 use Exception;
 use Phaldan\AssetBuilder\Binder\BinderStub;
-use Phaldan\AssetBuilder\Processor\ProcessorList;
+use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\Processor\DummyProcessor;
 use Phaldan\AssetBuilder\ContextMock;
@@ -34,7 +34,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   private $context;
 
   /**
-   * @var ProcessorList
+   * @var ProcessorListStub
    */
   private $compiler;
 
@@ -46,7 +46,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   protected function setUp() {
     $this->binder = new BinderStub();
     $this->context = new ContextMock();
-    $this->compiler = new ProcessorList();
+    $this->compiler = new ProcessorListStub();
     $this->container = new IocContainer();
 
     $handler = new CompilerHandler($this->compiler, $this->container);
@@ -165,7 +165,9 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
     $compiler = new ProcessorStub();
     $compiler->setFileExtension('css');
     $this->assertSame($this->target, $this->target->addCompiler($compiler));
-    $this->assertSame($compiler, $this->compiler->get('asset/test.css'));
+    $list = $this->compiler->getAdded();
+    $this->assertNotEmpty($list);
+    $this->assertSame($compiler, reset($list));
   }
 
   /**
@@ -173,8 +175,9 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   public function addCompiler_successWithClass() {
     $this->target->addCompiler(DummyProcessor::class);
-    $file = 'file.' . DummyProcessor::EXTENSION;
-    $this->assertInstanceOf(DummyProcessor::class, $this->compiler->get($file));
+    $list = $this->compiler->getAdded();
+    $this->assertNotEmpty($list);
+    $this->assertInstanceOf(DummyProcessor::class, reset($list));
   }
 
   /**

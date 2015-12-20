@@ -10,6 +10,10 @@ class ProcessorListStub extends ProcessorList {
   private $content = [];
   private $return = [];
   private $compiler = [];
+  private $allCompiler = [];
+
+  public function __construct() {
+  }
 
   public function process($file, $content) {
     $this->content[$file] = $content;
@@ -30,5 +34,13 @@ class ProcessorListStub extends ProcessorList {
 
   public function set($file, $compiler) {
     $this->compiler[$file] = $compiler;
+  }
+
+  public function add(Processor $compiler) {
+    $this->allCompiler[] = $compiler;
+  }
+
+  public function getAdded() {
+    return $this->allCompiler;
   }
 }
