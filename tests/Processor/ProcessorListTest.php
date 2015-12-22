@@ -68,4 +68,14 @@ class ProcessorListTest extends PHPUnit_Framework_TestCase {
     $compiler->set('some-css-definition', 'content');
     $this->assertEquals('content', $this->target->process('example.css', 'some-css-definition'));
   }
+
+  /**
+   * @test
+   * @expectedException \LogicException
+   */
+  public function process_fail() {
+    $processor = new DummyProcessor();
+    $this->target->add($processor);
+    $this->target->process('example.' . DummyProcessor::EXTENSION, 'some-js-content');
+  }
 }

@@ -41,7 +41,7 @@ abstract class CssPreProcessor extends AbstractProcessor {
 
   private function validateLastModified($dateTime) {
     if (is_null($dateTime)) {
-      throw Exception::unsetLastModified(get_class($this));
+      throw Exception::emptyFileList(get_class($this));
     }
   }
 }
