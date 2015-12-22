@@ -29,6 +29,13 @@ class CachedProcessor implements Processor {
   private $fileSystem;
 
   /**
+   * @var array
+   */
+  private $entries = [];
+
+  private $fileChanges = [];
+
+  /**
    * @param Processor $processor
    * @param Cache $cache
    * @param FileSystem $fileSystem
@@ -51,19 +58,32 @@ class CachedProcessor implements Processor {
   }
 
   private function requestCacheEntry($filePath) {
+    if (isset($this->entries[$filePath])) {
+      return $this->entries[$filePath];
+    }
+    $content = $this->cache->getEntry($filePath);
     $entry = new CacheEntry();
-    $entry->unserialize($this->cache->getEntry($filePath));
-    return $this->hasChanged($entry) ? $this->setCacheEntry($filePath) : $entry;
+    $entry->unserialize($content);
+    return $this->hasChanged($entry) ? $this->setCacheEntry($filePath) : $this->entries[$filePath] = $entry;
   }
 
   private function hasChanged(CacheEntry $entry) {
     foreach ($entry->getFiles() as $file => $lastModified) {
-      $time = $this->fileSystem->getModifiedTime($file);
-      if (!empty($time->diff($lastModified)->format('%r'))) {
+      if ($this->checkFileChanged($file, $lastModified)) {
         return true;
       }
     }
     return false;
+  }
+
+  private function checkFileChanged($file, $lastModified) {
+    if (isset($this->fileChanges[$file])) {
+      return $this->fileChanges[$file];
+    }
+    $time = $this->fileSystem->getModifiedTime($file);
+    $changed = !empty($time->diff($lastModified)->format('%r'));
+    $this->fileChanges[$file] = $changed;
+    return $changed;
   }
 
   private function setCacheEntry($filePath) {
@@ -72,6 +92,7 @@ class CachedProcessor implements Processor {
     $lastModified = $this->processor->getLastModified($filePath);
     $entry = new CacheEntry($content, $files, $lastModified);
     $this->cache->setEntry($filePath, $entry);
+    $this->entries[$filePath] = $entry;
     return $entry;
   }
 

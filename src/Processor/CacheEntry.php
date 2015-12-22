@@ -3,6 +3,7 @@
 namespace Phaldan\AssetBuilder\Processor;
 
 use DateTime;
+use DateTimeZone;
 use Serializable;
 
 /**
@@ -60,14 +61,31 @@ class CacheEntry implements Serializable {
    * @inheritdoc
    */
   public function serialize() {
-    return serialize($this->data);
+    return json_encode($this->data);
   }
 
   /**
    * @inheritdoc
    */
   public function unserialize($serialized) {
-    $this->data = unserialize($serialized);
+    $array = json_decode($serialized, true);
+    $this->data = $this->transformLastModified($this->transformFileTime($array));
     return $this;
+  }
+
+  private function transformFileTime($data) {
+    foreach ($data[self::DATA_FILES] as $file => &$time) {
+      $time = $this->transformTime($time);
+    }
+    return $data;
+  }
+
+  private function transformTime(array $time) {
+    return new DateTime($time['date'], new DateTimeZone($time['timezone']));
+  }
+
+  private function transformLastModified($data) {
+    $data[self::DATA_LAST_MODIFIED] = $this->transformTime($data[self::DATA_LAST_MODIFIED]);
+    return $data;
   }
 }
