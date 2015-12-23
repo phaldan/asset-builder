@@ -23,6 +23,7 @@ class FlyAdapterMock implements AdapterInterface {
    */
   public function write($path, $contents, Config $config) {
     $this->write[$path] = $contents;
+    return false;
   }
 
   public function getWrite($path) {

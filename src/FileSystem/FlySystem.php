@@ -5,8 +5,11 @@ namespace Phaldan\AssetBuilder\FileSystem;
 use DateTime;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\Storage\Memory;
 use League\Flysystem\Filesystem as FlyFileSystem;
 use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\Exception;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
@@ -19,6 +22,7 @@ class FlySystem implements FileSystem {
    * @var FlyFileSystem
    */
   private $flySystem = [];
+  private $cache;
   private $context;
 
   /**
@@ -26,6 +30,7 @@ class FlySystem implements FileSystem {
    */
   public function __construct(Context $context) {
     $this->context = $context;
+    $this->cache = new Memory();
   }
 
   /**
@@ -64,7 +69,8 @@ class FlySystem implements FileSystem {
    * @param $path
    */
   public function setAdapter(AdapterInterface $adapter, $path) {
-    $this->flySystem[$path] = new FlyFileSystem($adapter);
+    $cached = new CachedAdapter($adapter, $this->cache);
+    $this->flySystem[$path] = new FlyFileSystem($cached);
   }
 
   /**
@@ -135,9 +141,11 @@ class FlySystem implements FileSystem {
    * @inheritdoc
    */
   public function getModifiedTime($filePath) {
-    $relative = $this->getRelativePath($filePath);
-    $timestamp = $this->getFlySystem($filePath)->getTimestamp($relative);
+    $path = $this->getAbsolutePath($filePath);
+    if (!file_exists($path)) {
+      throw Exception::fileNotFound($path);
+    }
     $time = new DateTime();
-    return $time->setTimestamp($timestamp);
+    return $time->setTimestamp(filemtime($path));
   }
 }

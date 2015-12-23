@@ -3,6 +3,7 @@
 namespace Phaldan\AssetBuilder\FileSystem;
 
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\Cached\CachedAdapter;
 use Phaldan\AssetBuilder\ContextMock;
 use PHPUnit_Framework_TestCase;
 
@@ -92,8 +93,9 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     $this->context->setRootPath($root);
     $return = $this->target->getFlySystem($root);
     $this->assertNotNull($return);
-    $this->assertInstanceOf(Local::class, $return->getAdapter());
-    $this->assertEquals($root, $return->getAdapter()->getPathPrefix());
+    $this->assertInstanceOf(CachedAdapter::class, $return->getAdapter());
+    $this->assertInstanceOf(Local::class, $return->getAdapter()->getAdapter());
+    $this->assertEquals($root, $return->getAdapter()->getAdapter()->getPathPrefix());
   }
 
   /**
@@ -211,17 +213,13 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
    * @test
    */
   public function getModifiedTime_success() {
-    $adapter = $this->mockAdapter('/absolute/');
-    $adapter->setTimestamp('file.css', 1337);
-    $adapter->setHas('file.css');
-    $result = $this->target->getModifiedTime('file.css');
+    $result = $this->target->getModifiedTime(__FILE__);
     $this->assertNotNull($result);
-    $this->assertEquals(1337, $result->getTimestamp());
   }
 
   /**
    * @test
-   * @expectedException League\Flysystem\FileNotFoundException
+   * @expectedException \InvalidArgumentException
    */
   public function getModifiedTime_fail() {
     $this->mockAdapter('/absolute/');

@@ -18,6 +18,7 @@ class Exception extends \Exception {
   const MESSAGE_UNSERIALIZE_INPUT = "Input for 'unserialize()' must be a string.";
   const MESSAGE_PROCESSOR_OVERRIDE = "Please provide an implementation for '%s::executeProcessing(...)' method";
   const MESSAGE_EMPTY_FILE_LIST = "'%s::getFiles()' cannot return an empty list.";
+  const FILE_NOT_FOUND = "File '%s' does not exists.";
 
   /**
    * @param array $mimeTypes
@@ -82,5 +83,9 @@ class Exception extends \Exception {
    */
   public static function emptyFileList($class) {
     return new LogicException(sprintf(self::MESSAGE_EMPTY_FILE_LIST, $class));
+  }
+
+  public static function fileNotFound($path) {
+    return new InvalidArgumentException(sprintf(self::FILE_NOT_FOUND, $path));
   }
 }
