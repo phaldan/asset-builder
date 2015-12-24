@@ -11,9 +11,12 @@ class ModuleContainer extends IocContainer {
 
   public function configure() {
     $this->register(Builder\Builder::class, Builder\FluentBuilder::class);
-    $this->register(Binder\Binder::class, Binder\CachedSerialBinder::class);
-    $this->register(Cache\Cache::class, Cache\FileCache::class);
+    $this->register(Binder\Binder::class, Binder\SerialBinder::class);
     $this->register(FileSystem\FileSystem::class, FileSystem\FlySystem::class);
+
+    $this->register(Binder\CachedBinder::class, Binder\CachedSerialBinder::class);
+    $this->register(Cache\Cache::class, Cache\FileCache::class);
+
     $this->register(Processor\Minifier\CssProcessor::class, Processor\Minifier\YuiCssProcessor::class);
     $this->register(Processor\Minifier\JavaScriptProcessor::class, Processor\Minifier\JShrinkProcessor::class);
     $this->register(Processor\PreProcessor\LessProcessor::class, Processor\PreProcessor\OyejorgeLessProcessor::class);

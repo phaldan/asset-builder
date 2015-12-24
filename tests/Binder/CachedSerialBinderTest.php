@@ -4,9 +4,8 @@ namespace Phaldan\AssetBuilder\Binder;
 
 use DateTime;
 use Phaldan\AssetBuilder\Cache\CacheMock;
+use Phaldan\AssetBuilder\Processor\CacheEntry;
 use Phaldan\AssetBuilder\Processor\ProcessorListStub;
-use Phaldan\AssetBuilder\Processor\ProcessorStub;
-use Phaldan\AssetBuilder\ContextMock;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;
 use PHPUnit_Framework_TestCase;
@@ -32,66 +31,129 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
   private $cache;
 
   /**
-   * @var ContextMock
+   * @var BinderStub
    */
-  private $context;
+  private $binder;
 
   protected function setUp() {
     $this->fileSystem = new FileSystemMock();
     $this->cache = new CacheMock();
-    $this->context = new ContextMock();
-    $this->target = new CachedSerialBinder($this->fileSystem, $this->cache, $this->context);
+    $this->binder = new BinderStub();
+    $this->target = new CachedSerialBinder($this->fileSystem, $this->cache, $this->binder);
   }
 
-  private function stubCache($file, $content, $timeCache, $timeFile) {
-    $this->context->setCache(true);
-    $this->cache->setEntry($file, $content);
-    $this->cache->setHas($file, $timeCache);
-    $this->fileSystem->setModifiedTime($file, $timeFile);
+  private function executeBind($iterator) {
+    return $this->target->bind($iterator, new ProcessorListStub());
   }
 
-  private function stubCompiler($file, $content) {
-    $compiler = new ProcessorStub();
-    $compiler->set($file, $content);
-    $compiler->setLastModified($file, new DateTime());
-
-    $list = new ProcessorListStub();
-    $list->set($file, $compiler);
-    return $list;
+  private function assertBind($iterator, $expected) {
+    $this->assertEquals($expected, $this->executeBind($iterator));
   }
 
-  /**
-   * @test
-   * @runInSeparateProcess
-   */
-  public function process_fail() {
-    $file = 'example.css';
-    $compiler = $this->stubCompiler($file, 'content');
-    $this->assertEquals('content', $this->target->bind(new FileList([$file]), $compiler));
+  private function assertCache($iterator, $content, $files) {
+    $cache = $this->cache->getEntry($this->target->generateCacheKey($iterator));
+    $entry = new CacheEntry();
+    $result = $entry->unserialize($cache);
+    $this->assertEquals($content, $result->getContent());
+    $this->assertEquals($files, $result->getFiles());
   }
 
-  /**
-   * @test
-   * @runInSeparateProcess
-   */
-  public function process_success() {
-    $file = 'example.css';
-    $time = new DateTime();
-    $this->stubCache($file, 'cached', $time, $time);
+  private function assertCacheEntry($iterator, $content, $files) {
+    $entry = $this->cache->getEntry($this->target->generateCacheKey($iterator));
+    $this->assertNotNull($entry);
+    $this->assertInstanceOf(CacheEntry::class, $entry);
+    $this->assertEquals($content, $entry->getContent());
+    $this->assertEquals($files, $entry->getFiles());
+  }
 
-    $this->assertEquals('cached', $this->target->bind(new FileList([$file]), new ProcessorListStub()));
+  private function setCache($iterator, $value, $files) {
+    $key = $this->target->generateCacheKey($iterator);
+    $entry = new CacheEntry($value, $files);
+    $this->cache->setHas($key);
+    $this->cache->setEntry($key, $entry->serialize());
   }
 
   /**
    * @test
-   * @runInSeparateProcess
    */
-  public function process_failExpire() {
-    $file = 'example.css';
-    $this->stubCache($file, 'cached', (new DateTime())->setTimestamp(1337), new DateTime());
+  public function bind_successCacheSet() {
+    $iterator = new FileList(['example1.file', 'example2.file']);
+    $this->binder->set($iterator, 'Lorem Ipsum');
+    $this->binder->setFiles(['example.file']);
 
-    $compiler = $this->stubCompiler('example.css', 'content');
-    $this->assertEquals('content', $this->target->bind(new FileList([$file]), $compiler));
-    $this->assertEquals('content', $this->cache->getEntry($file));
+    $this->assertBind($iterator, 'Lorem Ipsum');
+    $this->assertCacheEntry($iterator, 'Lorem Ipsum', ['example.file']);
+  }
+
+  /**
+   * @test
+   */
+  public function bind_successCacheGet() {
+    $iterator = new FileList(['example1.file', 'example2.file']);
+    $files = ['example.file' => new DateTime()];
+    $this->fileSystem->setModifiedTime('example.file', new DateTime());
+
+    $this->binder->set($iterator, 'Lorem Ipsum');
+    $this->setCache($iterator, 'cached', $files);
+
+    $this->assertBind($iterator, 'cached');
+    $this->assertCache($iterator, 'cached', $files);
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_fail() {
+    $this->assertEmpty($this->target->getFiles());
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_success() {
+    $iterator = new FileList(['example.file']);
+    $this->binder->set($iterator, 'string');
+    $this->binder->setFiles(['example.file' => new DateTime()]);
+
+    $this->executeBind($iterator);
+    $this->assertNotEmpty($this->target->getFiles());
+    $this->assertArrayHasKey('example.file', $this->target->getFiles());
+  }
+
+  /**
+   * @test
+   */
+  public function getFiles_successFromCache() {
+    $iterator = new FileList(['example.file']);
+    $files = ['example.file' => new DateTime()];
+    $this->fileSystem->setModifiedTime('example.file', new DateTime());
+
+    $this->binder->set($iterator, 'string');
+    $this->setCache($iterator, 'cached', $files);
+    $this->executeBind($iterator);
+
+    $this->assertNotEmpty($this->target->getFiles());
+    $this->assertArrayHasKey('example.file', $this->target->getFiles());
+  }
+
+  /**
+   * @test
+   */
+  public function bind_successCacheTooOld() {
+    $newerTime = new DateTime();
+    $newerTime->setTimestamp($newerTime->getTimestamp() + 42);
+
+    $file = 'example.file';
+    $iterator = new FileList([$file]);
+    $files = [$file => $newerTime];
+
+    $this->fileSystem->setModifiedTime($file, $newerTime);
+
+    $this->binder->set($iterator, 'Lorem Ipsum');
+    $this->binder->setFiles($files);
+    $this->setCache($iterator, 'cached', [$file => new DateTime()]);
+
+    $this->assertBind($iterator, 'Lorem Ipsum');
+    $this->assertCacheEntry($iterator, 'Lorem Ipsum', $files);
   }
 }
