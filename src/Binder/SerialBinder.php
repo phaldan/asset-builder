@@ -8,15 +8,13 @@ use Phaldan\AssetBuilder\Processor\ProcessorList;
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class SerialBinder extends HttpHeaderBinder {
+class SerialBinder extends AbstractBinder {
 
   /**
-   * @param IteratorAggregate $files
-   * @param ProcessorList $compiler
-   * @return string
+   * @inheritdoc
    */
   public function bind(IteratorAggregate $files, ProcessorList $compiler) {
-    $return = '';
+    $return = parent::bind($files, $compiler);
     foreach ($files as $file) {
       $return .= $this->process($file, $compiler);
     }
@@ -29,6 +27,7 @@ class SerialBinder extends HttpHeaderBinder {
     $result = $processor->process($file);
     $this->addMimeType($processor->getOutputMimeType());
     $this->setLastModified($processor->getLastModified($file));
+    $this->addAllFiles($processor->getFiles($file));
     return $result;
   }
 }

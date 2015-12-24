@@ -15,6 +15,7 @@ class BinderStub implements Binder {
    * @var SplObjectStorage
    */
   private $list;
+  private $files;
 
   public function __construct() {
     $this->list = new SplObjectStorage();
@@ -32,5 +33,16 @@ class BinderStub implements Binder {
 
   public function set(IteratorAggregate $files, $return) {
     $this->list->offsetSet($files, $return);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getFiles() {
+    return $this->files;
+  }
+
+  public function setFiles(array $files) {
+    $this->files = $files;
   }
 }

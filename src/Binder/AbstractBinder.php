@@ -3,12 +3,14 @@
 namespace Phaldan\AssetBuilder\Binder;
 
 use DateTime;
+use IteratorAggregate;
 use Phaldan\AssetBuilder\Exception;
+use Phaldan\AssetBuilder\Processor\ProcessorList;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-abstract class HttpHeaderBinder implements Binder {
+abstract class AbstractBinder implements Binder {
 
   const HEADER_CONTENT_TYPE = "Content-Type: %s";
   const HEADER_LAST_MODIFIED = "Last-Modified: %s";
@@ -18,6 +20,16 @@ abstract class HttpHeaderBinder implements Binder {
    */
   private $lastModified;
   private $mimeTypes = [];
+  private $files = [];
+
+  /**
+   * @inheritdoc
+   */
+  public function bind(IteratorAggregate $files, ProcessorList $compiler) {
+    $this->files = [];
+    return '';
+  }
+
 
   protected function addMimeType($mimeType) {
     $this->mimeTypes[$mimeType] = true;
@@ -43,5 +55,16 @@ abstract class HttpHeaderBinder implements Binder {
     if (is_null($this->lastModified) || !empty($dateTime->diff($this->lastModified)->format('%r'))) {
       $this->lastModified = $dateTime;
     }
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getFiles() {
+    return $this->files;
+  }
+
+  protected function addAllFiles(array $files) {
+    $this->files = array_merge($this->files, $files);
   }
 }

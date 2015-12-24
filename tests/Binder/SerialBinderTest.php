@@ -26,26 +26,27 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
   /**
    * @var ProcessorListStub
    */
-  private $compiler;
+  private $processor;
 
   protected function setUp() {
     $this->target = new SerialBinder();
 
     $this->files = new FileList();
-    $this->compiler = new ProcessorListStub();
+    $this->processor = new ProcessorListStub();
   }
 
   private function assertBind($expected) {
-    $this->assertEquals($expected, $this->target->bind($this->files, $this->compiler));
+    $this->assertEquals($expected, $this->target->bind($this->files, $this->processor));
   }
 
-  private function stubFileWithCompiler($file, $return, $mimeType) {
+  private function stubFileWithProcessor($file, $return, $mimeType) {
     $this->files->add($file);
-    $compiler = new ProcessorStub();
-    $compiler->set($file, $return);
-    $compiler->setOutputMimeType($mimeType);
-    $compiler->setLastModified($file, new DateTime());
-    $this->compiler->set($file, $compiler);
+    $processor = new ProcessorStub();
+    $processor->set($file, $return);
+    $processor->setOutputMimeType($mimeType);
+    $processor->setLastModified($file, new DateTime());
+    $processor->setFiles($file, [$file => new DateTime()]);
+    $this->processor->set($file, $processor);
   }
 
   private function assertContentType($mimeType) {
@@ -68,10 +69,11 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
    * @runInSeparateProcess
    */
   public function bind_successSingleFile() {
-    $this->stubFileWithCompiler('example.css', 'success', 'text/css');
+    $this->stubFileWithProcessor('example.css', 'success', 'text/css');
 
     $this->assertBind('success');
     $this->assertContentType('text/css');
+    $this->assertArrayHasKey('example.css', $this->target->getFiles());
   }
 
   /**
@@ -79,11 +81,14 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
    * @runInSeparateProcess
    */
   public function bind_successMultipleFiles() {
-    $this->stubFileWithCompiler('example1.css', 'success1', 'text/css');
-    $this->stubFileWithCompiler('example2.css', 'success2', 'text/css');
+    $this->stubFileWithProcessor('example1.css', 'success1', 'text/css');
+    $this->stubFileWithProcessor('example2.css', 'success2', 'text/css');
 
     $this->assertBind('success1success2');
     $this->assertContentType('text/css');
+    $this->assertNotNull($this->target->getFiles());
+    $this->assertArrayHasKey('example1.css', $this->target->getFiles());
+    $this->assertArrayHasKey('example2.css', $this->target->getFiles());
   }
 
   /**
@@ -91,9 +96,27 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
    * @expectedException \Exception
    */
   public function bind_successDifferentContentTypes() {
-    $this->stubFileWithCompiler('example.css', 'success1', 'text/css');
-    $this->stubFileWithCompiler('example.js', 'success2', 'text/javascript');
+    $this->stubFileWithProcessor('example.css', 'success1', 'text/css');
+    $this->stubFileWithProcessor('example.js', 'success2', 'text/javascript');
 
     $this->assertBind(null);
+  }
+
+  /**
+   * @test
+   * @runInSeparateProcess
+   */
+  public function bind_successResetFiles() {
+    $this->stubFileWithProcessor('example1.css', 'success1', 'text/css');
+    $this->stubFileWithProcessor('example2.css', 'success2', 'text/css');
+    $this->target->bind($this->files, $this->processor);
+    $this->processor = new ProcessorListStub();
+    $this->files = new FileList();
+
+    $this->stubFileWithProcessor('example.css', 'success', 'text/css');
+    $this->assertBind('success');
+    $this->assertArrayHasKey('example.css', $this->target->getFiles());
+    $this->assertArrayNotHasKey('example1.css', $this->target->getFiles());
+    $this->assertArrayNotHasKey('example2.css', $this->target->getFiles());
   }
 }
