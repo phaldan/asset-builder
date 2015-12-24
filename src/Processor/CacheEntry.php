@@ -74,8 +74,10 @@ class CacheEntry implements Serializable {
   }
 
   private function transformFileTime($data) {
-    foreach ($data[self::DATA_FILES] as $file => &$time) {
-      $time = $this->transformTime($time);
+    if (!is_null($data[self::DATA_FILES])) {
+      foreach ($data[self::DATA_FILES] as $file => &$time) {
+        $time = $this->transformTime($time);
+      }
     }
     return $data;
   }
@@ -85,7 +87,9 @@ class CacheEntry implements Serializable {
   }
 
   private function transformLastModified($data) {
-    $data[self::DATA_LAST_MODIFIED] = $this->transformTime($data[self::DATA_LAST_MODIFIED]);
+    if (!is_null($data[self::DATA_LAST_MODIFIED])) {
+      $data[self::DATA_LAST_MODIFIED] = $this->transformTime($data[self::DATA_LAST_MODIFIED]);
+    }
     return $data;
   }
 }

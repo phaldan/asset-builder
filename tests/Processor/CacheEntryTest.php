@@ -32,4 +32,16 @@ class CacheEntryTest extends PHPUnit_Framework_TestCase {
     $this->assertNotEmpty($target->getFiles());
     $this->assertNotEmpty($target->getLastModified());
   }
+
+  /**
+   * @test
+   */
+  public function unserialize_sucessEmpty() {
+    $input = new CacheEntry();
+    $target = new CacheEntry('example', ['example.file' => new DateTime()], new DateTime());
+    $target->unserialize($input->serialize());
+    $this->assertNull($target->getContent());
+    $this->assertNull($target->getFiles());
+    $this->assertNull($target->getLastModified());
+  }
 }
