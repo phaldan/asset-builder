@@ -4,7 +4,10 @@ namespace Phaldan\AssetBuilder\Builder;
 
 use ArrayIterator;
 use Exception;
+use Phaldan\AssetBuilder\Binder\Binder;
 use Phaldan\AssetBuilder\Binder\BinderStub;
+use Phaldan\AssetBuilder\Binder\CachedBinder;
+use Phaldan\AssetBuilder\Binder\CachedBinderStub;
 use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\Processor\ProcessorStub;
 use Phaldan\AssetBuilder\Processor\DummyProcessor;
@@ -29,6 +32,11 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
   private $binder;
 
   /**
+   * @var CachedBinderStub
+   */
+  private $cache;
+
+  /**
    * @var ContextMock
    */
   private $context;
@@ -38,19 +46,19 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
    */
   private $compiler;
 
-  /**
-   * @var IocContainer
-   */
-  private $container;
-
   protected function setUp() {
+    $container = new IocContainer();
+
     $this->binder = new BinderStub();
+    $container->register(Binder::class, $this->binder);
+    $this->cache = new CachedBinderStub();
+    $container->register(CachedBinder::class, $this->cache);
+
     $this->context = new ContextMock();
     $this->compiler = new ProcessorListStub();
-    $this->container = new IocContainer();
 
-    $handler = new CompilerHandler($this->compiler, $this->container);
-    $executor = new Executor($this->binder, $this->context);
+    $handler = new CompilerHandler($this->compiler, $container);
+    $executor = new Executor($container, $this->context);
     $this->target = new FluentBuilder($executor, $this->context, $handler);
   }
 
@@ -182,7 +190,7 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
-   * @expectedException InvalidArgumentException
+   * @expectedException \InvalidArgumentException
    */
   public function add_failNotObjectOrClass() {
     $this->target->addCompiler(1234);
@@ -190,9 +198,22 @@ class FluentBuilderTest extends PHPUnit_Framework_TestCase {
 
   /**
    * @test
-   * @expectedException InvalidArgumentException
+   * @expectedException \InvalidArgumentException
    */
   public function add_failNotSubClass() {
     $this->target->addCompiler(new \stdClass());
+  }
+
+  /**
+   * @test
+   */
+  public function execute_successWithCaching() {
+    $this->context->setCache(true);
+
+    $this->cache->set(new FileList(), 'cached');
+    $iterator = $this->createGroupList('success', 'group-name');
+
+    $this->assertSame($this->target, $this->target->addGroups($iterator));
+    $this->assertEquals('cached', $this->target->execute('group-name'));
   }
 }

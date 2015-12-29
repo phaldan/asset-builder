@@ -14,12 +14,8 @@ class BinderStub implements Binder {
   /**
    * @var SplObjectStorage
    */
-  private $list;
+  private $list = [];
   private $files;
-
-  public function __construct() {
-    $this->list = new SplObjectStorage();
-  }
 
 
   /**
@@ -28,11 +24,13 @@ class BinderStub implements Binder {
    * @return string
    */
   public function bind(IteratorAggregate $files, ProcessorList $compiler) {
-    return $this->list->offsetExists($files) ? $this->list->offsetGet($files) : null;
+    $key = json_encode(iterator_to_array($files));
+    return isset($this->list[$key]) ? $this->list[$key] : null;
   }
 
   public function set(IteratorAggregate $files, $return) {
-    $this->list->offsetSet($files, $return);
+    $key = json_encode(iterator_to_array($files));
+    $this->list[$key] = $return;
   }
 
   /**

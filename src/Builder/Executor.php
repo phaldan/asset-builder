@@ -6,7 +6,9 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Binder\Binder;
+use Phaldan\AssetBuilder\Binder\CachedBinder;
 use Phaldan\AssetBuilder\Context;
+use Phaldan\AssetBuilder\DependencyInjection\IocContainer;
 use Phaldan\AssetBuilder\Exception;
 
 /**
@@ -18,9 +20,9 @@ class Executor {
   const COMMENT_TIMING = '/*! Runtime: %s */';
 
   /**
-   * @var Binder
+   * @var IocContainer
    */
-  private $binder;
+  private $container;
 
   /**
    * @var ArrayAccess
@@ -33,11 +35,11 @@ class Executor {
   private $context;
 
   /**
-   * @param Binder $binder
+   * @param IocContainer $container
    * @param Context $context
    */
-  public function __construct(Binder $binder, Context $context) {
-    $this->binder = $binder;
+  public function __construct(IocContainer $container, Context $context) {
+    $this->container = $container;
     $this->context = $context;
     $this->groups = new ArrayIterator();
   }
@@ -79,7 +81,12 @@ class Executor {
       throw Exception::groupNotFound($group);
     }
     $files = $this->groups->offsetGet($group);
-    return $this->binder->bind($files, $compiler->get());
+    return $this->getBinder()->bind($files, $compiler->get());
+  }
+
+  private function getBinder() {
+    $class = $this->context->hasCache() ? CachedBinder::class : Binder::class;
+    return $this->container->getInstance($class);
   }
 
   private function startTimer() {
