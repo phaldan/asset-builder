@@ -4,7 +4,6 @@ namespace Phaldan\AssetBuilder\Binder;
 
 use DateTime;
 use Phaldan\AssetBuilder\Cache\CacheMock;
-use Phaldan\AssetBuilder\Processor\CacheEntry;
 use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;
@@ -49,11 +48,12 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
   private function assertBind($iterator, $expected) {
     $this->assertEquals($expected, $this->executeBind($iterator));
     $this->assertNotEmpty($this->target->getLastModified());
+    $this->assertEquals('text/css', $this->target->getMimeType());
   }
 
   private function assertCache($iterator, $content, $files) {
     $cache = $this->cache->getEntry($this->target->generateCacheKey($iterator));
-    $entry = new CacheEntry();
+    $entry = new CacheBinderEntry();
     $result = $entry->unserialize($cache);
     $this->assertEquals($content, $result->getContent());
     $this->assertEquals($files, $result->getFiles());
@@ -63,7 +63,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
   private function assertCacheEntry($iterator, $content, $files) {
     $entry = $this->cache->getEntry($this->target->generateCacheKey($iterator));
     $this->assertNotNull($entry);
-    $this->assertInstanceOf(CacheEntry::class, $entry);
+    $this->assertInstanceOf(CacheBinderEntry::class, $entry);
     $this->assertEquals($content, $entry->getContent());
     $this->assertEquals($files, $entry->getFiles());
     $this->assertNotEmpty($entry->getLastModified());
@@ -71,7 +71,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
 
   private function setCache($iterator, $value, $files) {
     $key = $this->target->generateCacheKey($iterator);
-    $entry = new CacheEntry($value, $files, new DateTime());
+    $entry = new CacheBinderEntry($value, $files, new DateTime(), 'text/css');
     $this->cache->setHas($key);
     $this->cache->setEntry($key, $entry->serialize());
   }
@@ -80,6 +80,7 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->binder->set($iterator, $return);
     $this->binder->setFiles($files);
     $this->binder->setLastModified($time);
+    $this->binder->setMimeType('text/css');
   }
 
   /**

@@ -36,7 +36,7 @@ abstract class AbstractBinder implements Binder {
     $this->mimeTypes[$mimeType] = true;
   }
 
-  private function getMimeType() {
+  public function getMimeType() {
     if (count($this->mimeTypes) > 1) {
       throw Exception::foundMultipleMimiTypes(array_keys($this->mimeTypes));
     }

@@ -28,11 +28,11 @@ class CacheEntry implements Serializable {
     $this->set(self::DATA_LAST_MODIFIED, $lastModified);
   }
 
-  private function set($key, $value) {
+  protected function set($key, $value) {
     $this->data[$key] = $value;
   }
 
-  private function get($key) {
+  protected function get($key) {
     return $this->data[$key];
   }
 

@@ -18,6 +18,7 @@ class BinderStub implements Binder {
   private $list = [];
   private $files;
   private $lastModified;
+  private $mimeType;
 
   /**
    * @param IteratorAggregate $files
@@ -54,5 +55,16 @@ class BinderStub implements Binder {
 
   public function setLastModified(DateTime $dateTime) {
     $this->lastModified = $dateTime;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getMimeType() {
+    return $this->mimeType;
+  }
+
+  public function setMimeType($type) {
+    $this->mimeType = $type;
   }
 }

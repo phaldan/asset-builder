@@ -31,4 +31,10 @@ interface Binder {
    * @return DateTime
    */
   public function getLastModified();
+
+  /**
+   * Return MIME-Type of bound files.
+   * @return string
+   */
+  public function getMimeType();
 }

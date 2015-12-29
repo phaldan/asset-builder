@@ -4,7 +4,6 @@ namespace Phaldan\AssetBuilder\Binder;
 
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Cache\Cache;
-use Phaldan\AssetBuilder\Processor\CacheEntry;
 use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\FileSystem\FileSystem;
 
@@ -49,6 +48,7 @@ class CachedSerialBinder extends AbstractBinder implements CachedBinder {
     $entry = $this->cache->hasEntry($key) ? $this->requestCache($key, $files, $compiler) : $this->process($key, $files, $compiler);
     $this->setFiles($entry->getFiles());
     $this->setLastModified($entry->getLastModified());
+    $this->addMimeType($entry->getMimeType());
     return $entry->getContent();
   }
 
@@ -61,12 +61,12 @@ class CachedSerialBinder extends AbstractBinder implements CachedBinder {
   }
 
   private function requestCache($key, $files, $compiler) {
-    $cache = new CacheEntry();
+    $cache = new CacheBinderEntry();
     $entry = $cache->unserialize($this->cache->getEntry($key));
     return $this->validateCache($entry) ? $entry : $this->process($key, $files, $compiler);
   }
 
-  private function validateCache(CacheEntry $entry) {
+  private function validateCache(CacheBinderEntry $entry) {
     foreach ($entry->getFiles() as $file => $time) {
       $lastModified = $this->fileSystem->getModifiedTime($file);
       if (!empty($lastModified->diff($time)->format('%r'))) {
@@ -78,7 +78,7 @@ class CachedSerialBinder extends AbstractBinder implements CachedBinder {
 
   private function process($key, $files, $compiler) {
     $result = $this->binder->bind($files, $compiler);
-    $entry = new CacheEntry($result, $this->binder->getFiles(), $this->binder->getLastModified());
+    $entry = new CacheBinderEntry($result, $this->binder->getFiles(), $this->binder->getLastModified(), $this->binder->getMimeType());
     $this->cache->setEntry($key, $entry);
     return $entry;
   }

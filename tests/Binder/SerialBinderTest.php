@@ -42,6 +42,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
   private function assertBind($expected) {
     $this->assertEquals($expected, $this->executeBind());
     $this->assertNotEmpty($this->target->getLastModified());
+    $this->assertNotEmpty($this->target->getMimeType());
   }
 
   private function stubFileWithProcessor($file, $return, $mimeType) {
@@ -67,6 +68,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
   public function bind_successWithoutFiles() {
     $this->assertEmpty($this->executeBind());
     $this->assertEmpty($this->target->getLastModified());
+    $this->assertEmpty($this->target->getMimeType());
     $this->assertEmpty(xdebug_get_headers());
   }
 
