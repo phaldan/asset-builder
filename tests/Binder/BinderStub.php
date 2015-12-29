@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Binder;
 
+use DateTime;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Processor\ProcessorList;
 use SplObjectStorage;
@@ -16,7 +17,7 @@ class BinderStub implements Binder {
    */
   private $list = [];
   private $files;
-
+  private $lastModified;
 
   /**
    * @param IteratorAggregate $files
@@ -42,5 +43,16 @@ class BinderStub implements Binder {
 
   public function setFiles(array $files) {
     $this->files = $files;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getLastModified() {
+    return $this->lastModified;
+  }
+
+  public function setLastModified(DateTime $dateTime) {
+    $this->lastModified = $dateTime;
   }
 }

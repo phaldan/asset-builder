@@ -35,8 +35,13 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->processor = new ProcessorListStub();
   }
 
+  private function executeBind() {
+    return $this->target->bind($this->files, $this->processor);
+  }
+
   private function assertBind($expected) {
-    $this->assertEquals($expected, $this->target->bind($this->files, $this->processor));
+    $this->assertEquals($expected, $this->executeBind());
+    $this->assertNotEmpty($this->target->getLastModified());
   }
 
   private function stubFileWithProcessor($file, $return, $mimeType) {
@@ -60,7 +65,8 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
    * @runInSeparateProcess
    */
   public function bind_successWithoutFiles() {
-    $this->assertBind('');
+    $this->assertEmpty($this->executeBind());
+    $this->assertEmpty($this->target->getLastModified());
     $this->assertEmpty(xdebug_get_headers());
   }
 

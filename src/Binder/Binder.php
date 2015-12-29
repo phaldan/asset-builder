@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder\Binder;
 
+use DateTime;
 use IteratorAggregate;
 use Phaldan\AssetBuilder\Processor\ProcessorList;
 
@@ -24,4 +25,10 @@ interface Binder {
    * @return array
    */
   public function getFiles();
+
+  /**
+   * Return time of the last changed file.
+   * @return DateTime
+   */
+  public function getLastModified();
 }

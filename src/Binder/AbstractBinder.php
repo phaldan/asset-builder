@@ -27,6 +27,7 @@ abstract class AbstractBinder implements Binder {
    */
   public function bind(IteratorAggregate $files, ProcessorList $compiler) {
     $this->files = [];
+    $this->lastModified = null;
     return '';
   }
 
@@ -58,13 +59,30 @@ abstract class AbstractBinder implements Binder {
   }
 
   /**
+   * @return DateTime
+   */
+  public function getLastModified() {
+    return $this->lastModified;
+  }
+
+  /**
    * @inheritdoc
    */
   public function getFiles() {
     return $this->files;
   }
 
+  /**
+   * @param array $files
+   */
   protected function addAllFiles(array $files) {
     $this->files = array_merge($this->files, $files);
+  }
+
+  /**
+   * @param array $files
+   */
+  protected function setFiles(array $files) {
+    $this->files = $files;
   }
 }
