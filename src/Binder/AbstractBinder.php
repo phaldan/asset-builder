@@ -12,9 +12,6 @@ use Phaldan\AssetBuilder\Processor\ProcessorList;
  */
 abstract class AbstractBinder implements Binder {
 
-  const HEADER_CONTENT_TYPE = "Content-Type: %s";
-  const HEADER_LAST_MODIFIED = "Last-Modified: %s";
-
   /**
    * @var DateTime
    */
@@ -27,6 +24,7 @@ abstract class AbstractBinder implements Binder {
    */
   public function bind(IteratorAggregate $files, ProcessorList $compiler) {
     $this->files = [];
+    $this->mimeTypes = [];
     $this->lastModified = null;
     return '';
   }
@@ -41,15 +39,6 @@ abstract class AbstractBinder implements Binder {
       throw Exception::foundMultipleMimiTypes(array_keys($this->mimeTypes));
     }
     return key($this->mimeTypes);
-  }
-
-  protected function processHttpHeader() {
-    if (!is_null($this->getMimeType())) {
-      header(sprintf(self::HEADER_CONTENT_TYPE, $this->getMimeType()));
-    }
-    if (!is_null($this->lastModified)) {
-      header(sprintf(self::HEADER_LAST_MODIFIED, $this->lastModified->format('D, d M Y H:i:s T')));
-    }
   }
 
   protected function setLastModified(DateTime $dateTime) {

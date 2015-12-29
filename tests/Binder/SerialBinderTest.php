@@ -55,12 +55,6 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->processor->set($file, $processor);
   }
 
-  private function assertContentType($mimeType) {
-    $result = xdebug_get_headers();
-    $this->assertNotEmpty($result);
-    $this->assertContains(sprintf(SerialBinder::HEADER_CONTENT_TYPE, $mimeType), $result);
-  }
-
   /**
    * @test
    * @runInSeparateProcess
@@ -69,7 +63,6 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->assertEmpty($this->executeBind());
     $this->assertEmpty($this->target->getLastModified());
     $this->assertEmpty($this->target->getMimeType());
-    $this->assertEmpty(xdebug_get_headers());
   }
 
   /**
@@ -80,7 +73,7 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->stubFileWithProcessor('example.css', 'success', 'text/css');
 
     $this->assertBind('success');
-    $this->assertContentType('text/css');
+    $this->assertEquals('text/css', $this->target->getMimeType());
     $this->assertArrayHasKey('example.css', $this->target->getFiles());
   }
 
@@ -93,21 +86,10 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->stubFileWithProcessor('example2.css', 'success2', 'text/css');
 
     $this->assertBind('success1success2');
-    $this->assertContentType('text/css');
+    $this->assertEquals('text/css', $this->target->getMimeType());
     $this->assertNotNull($this->target->getFiles());
     $this->assertArrayHasKey('example1.css', $this->target->getFiles());
     $this->assertArrayHasKey('example2.css', $this->target->getFiles());
-  }
-
-  /**
-   * @test
-   * @expectedException \Exception
-   */
-  public function bind_successDifferentContentTypes() {
-    $this->stubFileWithProcessor('example.css', 'success1', 'text/css');
-    $this->stubFileWithProcessor('example.js', 'success2', 'text/javascript');
-
-    $this->assertBind(null);
   }
 
   /**
@@ -126,5 +108,17 @@ class SerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey('example.css', $this->target->getFiles());
     $this->assertArrayNotHasKey('example1.css', $this->target->getFiles());
     $this->assertArrayNotHasKey('example2.css', $this->target->getFiles());
+  }
+
+  /**
+   * @test
+   * @expectedException \Exception
+   */
+  public function bind_successDifferentContentTypes() {
+    $this->stubFileWithProcessor('example.css', 'success1', 'text/css');
+    $this->stubFileWithProcessor('example.js', 'success2', 'text/javascript');
+
+    $this->executeBind();
+    $this->target->getMimeType();
   }
 }

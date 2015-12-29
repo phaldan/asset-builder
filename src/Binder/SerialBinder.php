@@ -18,7 +18,6 @@ class SerialBinder extends AbstractBinder {
     foreach ($files as $file) {
       $return .= $this->process($file, $compiler);
     }
-    $this->processHttpHeader();
     return $return;
   }
 
