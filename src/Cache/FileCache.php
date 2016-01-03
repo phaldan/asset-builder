@@ -12,7 +12,7 @@ use Serializable;
  */
 class FileCache implements Cache {
 
-  const FILENAME_FORMAT = 'pas-%s.cache';
+  const FILENAME_FORMAT = 'pab-%s.cache';
 
   /**
    * @var Context
@@ -71,5 +71,15 @@ class FileCache implements Cache {
    */
   public function getFilePath($key) {
     return $this->context->getCachePath() . sprintf(self::FILENAME_FORMAT, md5($key));
+  }
+
+  /**
+   * @param $key
+   */
+  public function deleteEntry($key) {
+    $filePath = $this->getFilePath($key);
+    if ($this->fileSystem->exists($filePath)) {
+      $this->fileSystem->deleteFile($filePath);
+    }
   }
 }

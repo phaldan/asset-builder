@@ -11,6 +11,7 @@ class CacheMock implements Cache {
 
   private $entries = [];
   private $has = [];
+  private $deleted = [];
 
   /**
    * @param $key
@@ -43,5 +44,16 @@ class CacheMock implements Cache {
    */
   public function setHas($key, DateTime $expire = null) {
     $this->has[$key] = is_null($expire) ? true : $expire;
+  }
+
+  /**
+   * @param $key
+   */
+  public function deleteEntry($key) {
+    $this->deleted[$key] = true;
+  }
+
+  public function hasDeleted($key) {
+    return isset($this->deleted[$key]);
   }
 }

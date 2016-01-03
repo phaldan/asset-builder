@@ -27,4 +27,9 @@ interface Cache {
    * @return boolean
    */
   public function hasEntry($key, DateTime $expire = null);
+
+  /**
+   * @param $key
+   */
+  public function deleteEntry($key);
 }

@@ -114,4 +114,15 @@ class FileCacheTest extends PHPUnit_Framework_TestCase {
     $this->fileSystem->setModifiedTime($this->target->getFilePath($key), $expire);
     $this->assertTrue($this->target->hasEntry($key, $expire));
   }
+
+  /**
+   * @test
+   */
+  public function deleteEntry_success() {
+    $key = '/path/file.txt';
+    $path = $this->target->getFilePath($key);
+    $this->fileSystem->setExists($path);
+    $this->target->deleteEntry($key);
+    $this->assertTrue($this->fileSystem->hasDeleted($path));
+  }
 }
