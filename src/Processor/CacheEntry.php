@@ -66,7 +66,7 @@ class CacheEntry implements Serializable {
 
   /**
    * @param string $serialized
-   * @return self
+   * @return $this
    */
   public function unserialize($serialized) {
     $array = json_decode($serialized, true);

@@ -71,7 +71,8 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
 
   private function setCache($iterator, $value, $files) {
     $key = $this->target->generateCacheKey($iterator);
-    $entry = new CacheBinderEntry($value, $files, new DateTime(), 'text/css');
+    $entry = new CacheBinderEntry($value, $files, new DateTime());
+    $entry->setMimeType('text/css');
     $this->cache->setHas($key);
     $this->cache->setEntry($key, $entry->serialize());
   }

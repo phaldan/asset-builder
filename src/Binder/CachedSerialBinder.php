@@ -91,7 +91,8 @@ class CachedSerialBinder extends AbstractBinder implements CachedBinder {
 
   private function process($key, $files, $compiler) {
     $result = $this->binder->bind($files, $compiler);
-    $entry = new CacheBinderEntry($result, $this->binder->getFiles(), $this->binder->getLastModified(), $this->binder->getMimeType());
+    $entry = new CacheBinderEntry($result, $this->binder->getFiles(), $this->binder->getLastModified());
+    $entry->setMimeType($this->binder->getMimeType());
     $this->cache->setEntry($key, $entry);
     return $entry;
   }
