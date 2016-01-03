@@ -53,4 +53,9 @@ interface FileSystem {
    * @return DateTime
    */
   public function getModifiedTime($filePath);
+
+  /**
+   * @param $filePath
+   */
+  public function deleteFile($filePath);
 }

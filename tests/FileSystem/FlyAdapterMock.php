@@ -17,6 +17,7 @@ class FlyAdapterMock implements AdapterInterface {
   private $write = [];
   private $update = [];
   private $time = [];
+  private $deleted = [];
 
   /**
    * @inheritdoc
@@ -69,6 +70,11 @@ class FlyAdapterMock implements AdapterInterface {
    * @inheritdoc
    */
   public function delete($path) {
+    $this->deleted[$path] = true;
+  }
+
+  public function hasDeleted($path) {
+    return isset($this->deleted[$path]);
   }
 
   /**

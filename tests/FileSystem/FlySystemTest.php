@@ -225,4 +225,14 @@ class FlySystemTest extends PHPUnit_Framework_TestCase {
     $this->mockAdapter('/absolute/');
     $this->target->getModifiedTime('file.css');
   }
+
+  /**
+   * @test
+   */
+  public function deleteFile_success() {
+    $adapter = $this->mockAdapter('/absolute/');
+    $adapter->setHas('file.css');
+    $this->target->deleteFile('file.css');
+    $this->assertTrue($adapter->hasDeleted('file.css'));
+  }
 }

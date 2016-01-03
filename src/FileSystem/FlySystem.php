@@ -148,4 +148,12 @@ class FlySystem implements FileSystem {
     $time = new DateTime();
     return $time->setTimestamp(filemtime($path));
   }
+
+  /**
+   * @param $filePath
+   */
+  public function deleteFile($filePath) {
+    $relative = $this->getRelativePath($filePath);
+    $this->getFlySystem($filePath)->delete($relative);
+  }
 }

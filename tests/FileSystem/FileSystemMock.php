@@ -13,6 +13,7 @@ class FileSystemMock implements FileSystem {
   private $globs = [];
   private $exists = [];
   private $mTime = [];
+  private $deleted = [];
 
   public function getContent($filePath) {
     return isset($this->content[$filePath]) ? $this->content[$filePath] : null;
@@ -56,5 +57,13 @@ class FileSystemMock implements FileSystem {
 
   public function setModifiedTime($filePath, DateTime $time) {
     $this->mTime[$filePath] = $time;
+  }
+
+  public function deleteFile($filePath) {
+    $this->deleted[$filePath] = true;
+  }
+
+  public function hasDeleted($filePath) {
+    return isset($this->deleted[$filePath]);
   }
 }
