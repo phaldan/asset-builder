@@ -129,5 +129,6 @@ class Context implements Serializable {
    */
   public function unserialize($serialized) {
     $this->options->unserialize($serialized);
+    return $this;
   }
 }

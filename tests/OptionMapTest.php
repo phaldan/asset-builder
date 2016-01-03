@@ -79,4 +79,16 @@ class OptionMapTest extends PHPUnit_Framework_TestCase {
   public function unserialize_fail() {
     $this->target->unserialize(1337);
   }
+
+  /**
+   * @test
+   */
+  public function jsonSerialize_success() {
+    $this->target->offsetSet('test', 1337);
+    $result = json_encode($this->target);
+
+    $this->assertNotEmpty($result);
+    $this->assertContains('test', $result);
+    $this->assertContains('1337', $result);
+  }
 }

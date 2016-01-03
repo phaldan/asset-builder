@@ -3,12 +3,13 @@
 namespace Phaldan\AssetBuilder;
 
 use ArrayAccess;
+use JsonSerializable;
 use Serializable;
 
 /**
  * @author Philipp Daniels <philipp.daniels@gmail.com>
  */
-class OptionMap implements Serializable, ArrayAccess {
+class OptionMap implements Serializable, ArrayAccess, JsonSerializable {
 
   private $options = [];
 
@@ -46,7 +47,7 @@ class OptionMap implements Serializable, ArrayAccess {
    * @inheritdoc
    */
   public function serialize() {
-    return serialize($this->options);
+    return json_encode($this->options);
   }
 
   /**
@@ -56,6 +57,13 @@ class OptionMap implements Serializable, ArrayAccess {
     if (!is_string($serialized)) {
       throw Exception::invalidUnserializeInput();
     }
-    $this->options = array_merge($this->options, unserialize($serialized));
+    $this->options = array_merge($this->options, json_decode($serialized, true));
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function jsonSerialize() {
+    return $this->serialize();
   }
 }
