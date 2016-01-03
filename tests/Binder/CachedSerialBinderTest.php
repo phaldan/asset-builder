@@ -4,6 +4,7 @@ namespace Phaldan\AssetBuilder\Binder;
 
 use DateTime;
 use Phaldan\AssetBuilder\Cache\CacheMock;
+use Phaldan\AssetBuilder\Context;
 use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use Phaldan\AssetBuilder\FileSystem\FileSystemMock;
 use Phaldan\AssetBuilder\Group\FileList;
@@ -34,11 +35,18 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
    */
   private $binder;
 
+  /**
+   * @var Context
+   */
+  private $context;
+
   protected function setUp() {
     $this->fileSystem = new FileSystemMock();
     $this->cache = new CacheMock();
     $this->binder = new BinderStub();
-    $this->target = new CachedSerialBinder($this->fileSystem, $this->cache, $this->binder);
+    $this->context = new Context();
+    $validator = new CacheValidator($this->fileSystem, $this->context, $this->cache);
+    $this->target = new CachedSerialBinder($this->cache, $this->binder, $validator, $this->context);
   }
 
   private function executeBind($iterator) {
@@ -60,19 +68,26 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->assertNotEmpty($result->getLastModified());
   }
 
-  private function assertCacheEntry($iterator, $content, $files) {
+  private function assertCacheEntry($iterator, $content, $files, $deleted = false) {
     $entry = $this->cache->getEntry($this->target->generateCacheKey($iterator));
     $this->assertNotNull($entry);
     $this->assertInstanceOf(CacheBinderEntry::class, $entry);
     $this->assertEquals($content, $entry->getContent());
     $this->assertEquals($files, $entry->getFiles());
     $this->assertNotEmpty($entry->getLastModified());
+    $this->assertNotEmpty($entry->getMimeType());
+    $this->assertNotEmpty($entry->getContext());
+
+    foreach ($files as $file => $time) {
+      $this->assertEquals($deleted, $this->cache->hasDeleted($file));
+    }
   }
 
   private function setCache($iterator, $value, $files) {
     $key = $this->target->generateCacheKey($iterator);
     $entry = new CacheBinderEntry($value, $files, new DateTime());
     $entry->setMimeType('text/css');
+    $entry->setContext(new Context());
     $this->cache->setHas($key);
     $this->cache->setEntry($key, $entry->serialize());
   }
@@ -82,6 +97,14 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
     $this->binder->setFiles($files);
     $this->binder->setLastModified($time);
     $this->binder->setMimeType('text/css');
+  }
+
+  private function stubBinderAndCache($file, $fileContent, $cacheContent, $fileTime, $cacheTime) {
+    $iterator = new FileList([$file]);
+    $this->fileSystem->setModifiedTime($file, $fileTime);
+    $this->stubBinder($iterator, $fileContent, [$file => $fileTime], $fileTime);
+    $this->setCache($iterator, $cacheContent, [$file => $cacheTime]);
+    return $iterator;
   }
 
   /**
@@ -154,15 +177,22 @@ class CachedSerialBinderTest extends PHPUnit_Framework_TestCase {
     $newerTime->setTimestamp($newerTime->getTimestamp() + 42);
 
     $file = 'example.file';
-    $iterator = new FileList([$file]);
-    $files = [$file => $newerTime];
-
-    $this->fileSystem->setModifiedTime($file, $newerTime);
-
-    $this->stubBinder($iterator, 'Lorem Ipsum', $files, new DateTime());
-    $this->setCache($iterator, 'cached', [$file => new DateTime()]);
+    $iterator = $this->stubBinderAndCache($file, 'Lorem Ipsum', 'cached', $newerTime, new DateTime());
 
     $this->assertBind($iterator, 'Lorem Ipsum');
-    $this->assertCacheEntry($iterator, 'Lorem Ipsum', $files);
+    $this->assertCacheEntry($iterator, 'Lorem Ipsum', [$file => $newerTime]);
+  }
+
+  /**
+   * @test
+   */
+  public function bind_successContextChanged() {
+    $file = 'example.file';
+    $time = new DateTime();
+    $iterator = $this->stubBinderAndCache($file, 'Lorem Ipsum', 'cached', $time, $time);
+    $this->context->enableDebug(true);
+
+    $this->assertBind($iterator, 'Lorem Ipsum');
+    $this->assertCacheEntry($iterator, 'Lorem Ipsum', [$file => $time], true);
   }
 }
