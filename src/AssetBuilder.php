@@ -84,7 +84,7 @@ class AssetBuilder {
    * @return GlobFileList
    */
   public function getGlobFileList(array $globPatterns) {
-    $fs = $this->getContainer()->getInstance(FileSystem::class);
-    return new GlobFileList($fs, $globPatterns);
+    $fileSystem = $this->getContainer()->getInstance(FileSystem::class);
+    return new GlobFileList($fileSystem, $globPatterns);
   }
 }

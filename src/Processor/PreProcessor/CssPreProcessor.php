@@ -28,7 +28,7 @@ abstract class CssPreProcessor extends AbstractProcessor {
 
   public function processLastModified($filePath) {
     $lastModified = null;
-    foreach ($this->getFiles($filePath) as $file => $time) {
+    foreach ($this->getFiles($filePath) as $time) {
       $lastModified = $this->compareLastModified($lastModified, $time);
     }
     $this->validateLastModified($lastModified);

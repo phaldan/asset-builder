@@ -16,7 +16,7 @@ class Exception extends \Exception {
   const MESSAGE_NOT_SUBCLASS = "'%s' must be a subclass of '%s'";
   const MESSAGE_REAL_PATH = "The following path doesn't exists: '%s'";
   const MESSAGE_UNSERIALIZE_INPUT = "Input for 'unserialize()' must be a string.";
-  const MESSAGE_PROCESSOR_OVERRIDE = "Please provide an implementation for '%s::executeProcessing(...)' method";
+  const MESSAGE_PROCESSOR_OVERRIDE = "Please provide an implementation for '%s::executeProcessing(...)' method. FilePath: %s";
   const MESSAGE_EMPTY_FILE_LIST = "'%s::getFiles()' cannot return an empty list.";
   const FILE_NOT_FOUND = "File '%s' does not exists.";
 
@@ -71,10 +71,11 @@ class Exception extends \Exception {
 
   /**
    * @param $class
+   * @param $filePath
    * @return LogicException
    */
-  public static function processorOverrideNecessary($class) {
-    return new LogicException(sprintf(self::MESSAGE_PROCESSOR_OVERRIDE, $class));
+  public static function processorOverrideNecessary($class, $filePath) {
+    return new LogicException(sprintf(self::MESSAGE_PROCESSOR_OVERRIDE, $class, $filePath));
   }
 
   /**

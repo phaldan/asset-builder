@@ -76,7 +76,7 @@ class CacheEntry implements Serializable {
 
   private function transformFileTime($data) {
     if (!is_null($data[self::DATA_FILES])) {
-      foreach ($data[self::DATA_FILES] as $file => &$time) {
+      foreach ($data[self::DATA_FILES] as &$time) {
         $time = $this->transformTime($time);
       }
     }

@@ -53,7 +53,7 @@ class CacheValidator {
   }
 
   private function clearCacheEntries(CacheBinderEntry $entry) {
-    foreach ($entry->getFiles() as $file => $time) {
+    foreach (array_keys($entry->getFiles()) as $file) {
       $this->cache->deleteEntry($file);
     }
   }

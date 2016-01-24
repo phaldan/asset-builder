@@ -53,7 +53,7 @@ abstract class AbstractProcessor implements Processor {
    * @throws \Exception
    */
   protected function executeProcessing($filePath) {
-    throw Exception::processorOverrideNecessary(get_class($this));
+    throw Exception::processorOverrideNecessary(get_class($this), $filePath);
   }
 
   /**
