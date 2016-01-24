@@ -54,11 +54,12 @@ class Context implements Serializable {
     return $this->options->offsetGet(self::OPTION_ROOT);
   }
 
-  /**
-   * @param bool|true $boolean
-   */
-  public function enableMinifier($boolean = true) {
-    $this->options->offsetSet(self::OPTION_MINIFIER, $boolean);
+  public function enableMinifier() {
+    $this->options->offsetSet(self::OPTION_MINIFIER, true);
+  }
+
+  public function disableMinifier() {
+    $this->options->offsetSet(self::OPTION_MINIFIER, false);
   }
 
   /**
@@ -68,11 +69,12 @@ class Context implements Serializable {
     return $this->options->offsetGet(self::OPTION_MINIFIER);
   }
 
-  /**
-   * @param bool|true $boolean
-   */
-  public function enableDebug($boolean = true) {
-    $this->options->offsetSet(self::OPTION_DEBUG, $boolean);
+  public function enableDebug() {
+    $this->options->offsetSet(self::OPTION_DEBUG, true);
+  }
+
+  public function disableDebug() {
+    $this->options->offsetSet(self::OPTION_DEBUG, false);
   }
 
   /**
@@ -82,11 +84,12 @@ class Context implements Serializable {
     return $this->options->offsetGet(self::OPTION_DEBUG);
   }
 
-  /**
-   * @param bool|true $boolean
-   */
-  public function enableStopWatch($boolean = true) {
-    $this->options->offsetSet(self::OPTION_STOPWATCH, $boolean);
+  public function enableStopWatch() {
+    $this->options->offsetSet(self::OPTION_STOPWATCH, true);
+  }
+
+  public function disableStopWatch() {
+    $this->options->offsetSet(self::OPTION_STOPWATCH, false);
   }
 
   /**

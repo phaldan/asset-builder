@@ -65,7 +65,7 @@ class FluentBuilder implements Builder {
    * @inheritdoc
    */
   public function enableMinifier($boolean = true) {
-    $this->context->enableMinifier($boolean);
+    $boolean ? $this->context->enableMinifier() : $this->context->disableMinifier();
     return $this;
   }
 
@@ -73,7 +73,7 @@ class FluentBuilder implements Builder {
    * @inheritdoc
    */
   public function enableDebug($boolean = true) {
-    $this->context->enableDebug($boolean);
+    $boolean ? $this->context->enableDebug() : $this->context->disableDebug();
     return $this;
   }
 
@@ -81,7 +81,7 @@ class FluentBuilder implements Builder {
    * @inheritdoc
    */
   public function enableStopWatch($boolean = true) {
-    $this->context->enableStopWatch($boolean);
+    $boolean ? $this->context->enableStopWatch() : $this->context->disableStopWatch();
     return $this;
   }
 

@@ -16,7 +16,7 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
 
   protected function setUp() {
     parent::setUp();
-    $this->context->enableMinifier(true);
+    $this->context->enableMinifier();
     $this->target = new OyejorgeLessProcessor($this->fileSystem, $this->context);
   }
 
@@ -88,7 +88,7 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
    */
   public function process_successMultipleTimes() {
     $this->assertProcess("body{padding:0;margin:0}body p{padding:20px 0}", $this->getContent());
-    $this->context->enableMinifier(false);
+    $this->context->disableMinifier();
     $expected = "body {\n  padding:0;\n  margin:0;\n}\nbody p {\n  padding:20px 0;\n}\n";
     $this->assertProcess($expected, $this->getContent());
   }
@@ -97,7 +97,7 @@ class OyejorgeLessProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function process_false() {
-    $this->context->enableMinifier(false);
+    $this->context->disableMinifier();
     $compiler = $this->stubCompiler();
     $compiler->setCss('input', 'output');
     $this->assertProcess('output', 'input');

@@ -17,7 +17,7 @@ class YuiCssProcessorTest extends ProcessorTestCase {
 
   protected function setUp() {
     parent::setUp();
-    $this->context->enableMinifier(true);
+    $this->context->enableMinifier();
     $this->target = new YuiCssProcessor($this->fileSystem, $this->context);
   }
 
@@ -90,7 +90,7 @@ class YuiCssProcessorTest extends ProcessorTestCase {
     $dateTime = new DateTime();
     $this->fileSystem->setModifiedTime($file, $dateTime);
 
-    $this->context->enableMinifier(false);
+    $this->context->disableMinifier();
     $this->stubCompressor('input', 'output');
     $this->assertProcess('input', 'input', $file);
     $this->assertSame($dateTime, $this->target->getLastModified($file));

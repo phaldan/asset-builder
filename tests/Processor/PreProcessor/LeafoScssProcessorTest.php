@@ -20,7 +20,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
 
   protected function setUp() {
     parent::setUp();
-    $this->context->enableMinifier(true);
+    $this->context->enableMinifier();
     $this->target = new LeafoScssProcessor($this->fileSystem, $this->context);
   }
 
@@ -93,7 +93,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
    */
   public function process_successMultipleTimes() {
     $this->assertProcess("body{padding:0;margin:0}body p{padding:20px 0}", $this->getExampleScss());
-    $this->context->enableMinifier(false);
+    $this->context->disableMinifier();
     $expected = "body {\n  padding: 0;\n  margin: 0;\n}\nbody p {\n  padding: 20px 0;\n}\n";
     $this->assertProcess($expected, $this->getExampleScss());
   }
@@ -102,7 +102,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function process_false() {
-    $this->context->enableMinifier(false);
+    $this->context->disableMinifier();
     $compiler = $this->stubCompiler();
     $compiler->setCompileReturn('input', 'output');
 
@@ -134,7 +134,7 @@ class LeafoScssProcessorTest extends ProcessorTestCase {
    * @test
    */
   public function setCompiler_successWithDebug() {
-    $this->context->enableDebug(true);
+    $this->context->enableDebug();
     $compiler = new LeafoCompilerMock();
     $compiler->setCompileReturn('input', 'output');
 
