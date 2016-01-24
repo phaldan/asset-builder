@@ -46,10 +46,9 @@ class IocContainer {
   private function getConcreteClass($class) {
     if (isset($this->relations[$class])) {
       return $this->relations[$class];
-    } else {
-      $this->validator->validateClass($class);
-      return $class;
     }
+    $this->validator->validateClass($class);
+    return $class;
   }
 
   /**
@@ -62,8 +61,7 @@ class IocContainer {
     $this->validator->validateConcrete($abstractClass, $concreteClass);
     if (is_object($concreteClass)) {
       $this->instances[$abstractClass] = $concreteClass;
-    } else {
-      $this->relations[$abstractClass] = $concreteClass;
     }
+    $this->relations[$abstractClass] = $concreteClass;
   }
 }

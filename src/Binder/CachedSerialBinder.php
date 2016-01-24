@@ -60,9 +60,8 @@ class CachedSerialBinder extends AbstractBinder implements CachedBinder {
   private function getEntry($key, IteratorAggregate $files, ProcessorList $compiler) {
     if ($this->cache->hasEntry($key)) {
       return $this->requestCache($key, $files, $compiler);
-    } else {
-      return $this->process($key, $files, $compiler);
     }
+    return $this->process($key, $files, $compiler);
   }
 
   private function update(CacheBinderEntry $entry) {
