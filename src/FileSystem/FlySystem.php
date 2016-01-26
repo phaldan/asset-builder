@@ -150,7 +150,7 @@ class FlySystem implements FileSystem {
   }
 
   /**
-   * @param $filePath
+   * @inheritdoc
    */
   public function deleteFile($filePath) {
     $relative = $this->getRelativePath($filePath);

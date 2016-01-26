@@ -48,7 +48,7 @@ abstract class AbstractBinder implements Binder {
   }
 
   /**
-   * @return DateTime
+   * @inheritdoc
    */
   public function getLastModified() {
     return $this->lastModified;
