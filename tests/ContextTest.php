@@ -53,6 +53,15 @@ class ContextTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
+  public function disableMinifier_success() {
+    $this->target->enableMinifier();
+    $this->target->disableMinifier();
+    $this->assertFalse($this->target->hasMinifier());
+  }
+
+  /**
+   * @test
+   */
   public function hasDebug_success() {
     $this->assertNotNull($this->target->hasDebug());
     $this->assertFalse($this->target->hasDebug());
@@ -69,6 +78,15 @@ class ContextTest extends PHPUnit_Framework_TestCase {
   /**
    * @test
    */
+  public function disableDebug_success() {
+    $this->target->enableDebug();
+    $this->target->disableDebug();
+    $this->assertFalse($this->target->hasDebug());
+  }
+
+  /**
+   * @test
+   */
   public function hasStopWatch_success() {
     $this->assertNotNull($this->target->hasStopWatch());
     $this->assertFalse($this->target->hasStopWatch());
@@ -80,6 +98,15 @@ class ContextTest extends PHPUnit_Framework_TestCase {
   public function enableStopWatch_success() {
     $this->target->enableStopWatch();
     $this->assertTrue($this->target->hasStopWatch());
+  }
+
+  /**
+   * @test
+   */
+  public function disableStopWatch_success() {
+    $this->target->enableStopWatch();
+    $this->target->disableStopWatch();
+    $this->assertFalse($this->target->hasStopWatch());
   }
 
   /**

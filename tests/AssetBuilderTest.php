@@ -2,6 +2,7 @@
 
 namespace Phaldan\AssetBuilder;
 
+use Phaldan\AssetBuilder\Group\GlobFileList;
 use Phaldan\AssetBuilder\Processor\ProcessorList;
 use Phaldan\AssetBuilder\Processor\ProcessorListStub;
 use PHPUnit_Framework_TestCase;
@@ -56,5 +57,14 @@ class AssetBuilderTest extends PHPUnit_Framework_TestCase {
     $this->assertFalse($this->context->hasMinifier());
     $this->assertTrue($this->context->hasDebug());
     $this->assertTrue($this->context->hasStopWatch());
+  }
+
+  /**
+   * @test
+   */
+  public function createGlobFileList_success() {
+    $result = $this->target->getGlobFileList([]);
+    $this->assertNotNull($result);
+    $this->assertInstanceOf(GlobFileList::class, $result);
   }
 }
